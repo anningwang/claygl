@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Shader.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.animation.Animation.html">Animation</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animation.html#addAnimator">addAnimator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animation.html#addClip">addClip</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animation.html#animate">animate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animation.html#pause">pause</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animation.html#removeAnimator">removeAnimator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animation.html#removeClip">removeClip</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animation.html#removeClipsAll">removeClipsAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animation.html#resume">resume</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animation.html#start">start</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animation.html#stop">stop</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.animation.Animator.html">Animator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animator.html#delay">delay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animator.html#done">done</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animator.html#during">during</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animator.html#getClips">getClips</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animator.html#start">start</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animator.html#stop">stop</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Animator.html#when">when</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.animation.Blend1DClip.html">Blend1DClip</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Blend1DClip.html#addInput">addInput</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Blend1DClip.html#clone">clone</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.animation.Blend2DClip.html">Blend2DClip</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Blend2DClip.html#addInput">addInput</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Blend2DClip.html#clone">clone</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.animation.Clip.html">Clip</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Clip.html#pause">pause</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Clip.html#resume">resume</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Clip.html#setEasing">setEasing</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Clip.html#setLoop">setLoop</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Clip.html#setTime">setTime</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.Clip.html#step">step</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.animation.SamplerTrack.html">SamplerTrack</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.SamplerTrack.html#additiveBlend">additiveBlend</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.SamplerTrack.html#blend1D">blend1D</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.SamplerTrack.html#blend2D">blend2D</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.SamplerTrack.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.SamplerTrack.html#getMaxTime">getMaxTime</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.SamplerTrack.html#getSubTrack">getSubTrack</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.SamplerTrack.html#subtractiveBlend">subtractiveBlend</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.SamplerTrack.html#updateTarget">updateTarget</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.animation.TrackClip.html">TrackClip</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.TrackClip.html#additiveBlend">additiveBlend</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.TrackClip.html#addTrack">addTrack</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.TrackClip.html#blend1D">blend1D</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.TrackClip.html#blend2D">blend2D</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.TrackClip.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.TrackClip.html#getSubClip">getSubClip</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.TrackClip.html#removeTarck">removeTarck</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.TrackClip.html#setRange">setRange</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.TrackClip.html#subtractiveBlend">subtractiveBlend</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.async.Task.html">Task</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#.makeRequestTask">makeRequestTask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#.makeTask">makeTask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#after">after</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#before">before</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#error">error</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#has">has</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#isFullfilled">isFullfilled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#isRejected">isRejected</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#isSettled">isSettled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#off">off</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#once">once</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#reject">reject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#resolve">resolve</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#success">success</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.Task.html#trigger">trigger</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.async.TaskGroup.html">TaskGroup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.TaskGroup.html#all">all</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.TaskGroup.html#allSettled">allSettled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.TaskGroup.html#getFulfilledNumber">getFulfilledNumber</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.TaskGroup.html#getRejectedNumber">getRejectedNumber</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.TaskGroup.html#getSettledNumber">getSettledNumber</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.async.TaskGroup.html#getTaskNumber">getTaskNumber</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Camera_.html">Camera</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Camera_.html#castRay">castRay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Camera_.html#decomposeProjectionMatrix">decomposeProjectionMatrix</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Camera_.html#setProjectionMatrix">setProjectionMatrix</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Camera_.html#setViewMatrix">setViewMatrix</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Camera_.html#updateProjectionMatrix">updateProjectionMatrix</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.camera.Orthographic.html">Orthographic</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.camera.Orthographic.html#clone">clone</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.camera.Perspective.html">Perspective</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.camera.Perspective.html#clone">clone</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.compositor.Compositor.html">Compositor</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Compositor.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Compositor.html#render">render</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.compositor.FilterNode.html">FilterNode</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.compositor.Graph.html">Graph</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Graph.html#addNode">addNode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Graph.html#dirty">dirty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Graph.html#getNodeByName">getNodeByName</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Graph.html#removeNode">removeNode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Graph.html#update">update</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.compositor.Node.html">Node</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Node.html#getParameter">getParameter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Node.html#getParameter">getParameter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Node.html#render">render</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Node.html#setParameter">setParameter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Node.html#setParameter">setParameter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Node.html#setParameters">setParameters</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Node.html#setParameters">setParameters</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Node.html#setShader">setShader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Node.html#shaderDefine">shaderDefine</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Node.html#shaderUndefine">shaderUndefine</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.compositor.Pass.html">Pass</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Pass.html#attachOutput">attachOutput</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Pass.html#detachOutput">detachOutput</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Pass.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Pass.html#getUniform">getUniform</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Pass.html#render">render</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Pass.html#renderQuad">renderQuad</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.compositor.Pass.html#setUniform">setUniform</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.compositor.SceneNode.html">SceneNode</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.compositor.TextureNode.html">TextureNode</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.core.Base.html">Base</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.Base.html#after">after</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.Base.html#before">before</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.Base.html#error">error</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.Base.html#has">has</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.Base.html#off">off</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.Base.html#on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.Base.html#once">once</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.Base.html#success">success</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.Base.html#trigger">trigger</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html">LinkedList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#clear">clear</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#forEach">forEach</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#getAt">getAt</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#getHead">getHead</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#getTail">getTail</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#indexOf">indexOf</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#insert">insert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#insertAt">insertAt</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#insertEntry">insertEntry</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#isEmpty">isEmpty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#length">length</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#remove">remove</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LinkedList.html#removeAt">removeAt</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.core.LinkedList.Entry.html">Entry</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.core.LRU.html">LRU</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LRU.html#clear">clear</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LRU.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LRU.html#put">put</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LRU.html#remove">remove</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.LRU.html#setMaxSize">setMaxSize</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.deferred.GBuffer.html">GBuffer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.deferred.GBuffer.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.deferred.GBuffer.html#getTargetTexture1">getTargetTexture1</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.deferred.GBuffer.html#getTargetTexture2">getTargetTexture2</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.deferred.GBuffer.html#getTargetTexture3">getTargetTexture3</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.deferred.GBuffer.html#resize">resize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.deferred.GBuffer.html#update">update</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.deferred.Renderer.html">Renderer</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.FrameBuffer.html">FrameBuffer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.FrameBuffer.html#attach">attach</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.FrameBuffer.html#bind">bind</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.FrameBuffer.html#detach">detach</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.FrameBuffer.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.FrameBuffer.html#getTextureHeight">getTextureHeight</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.FrameBuffer.html#getTextureWidth">getTextureWidth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.FrameBuffer.html#unbind">unbind</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Geometry_.html">Geometry</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#applyTransform">applyTransform</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#createAttribute">createAttribute</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#dirty">dirty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#dirtyAttribute">dirtyAttribute</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#dirtyIndices">dirtyIndices</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#generateBarycentric">generateBarycentric</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#generateFaceNormals">generateFaceNormals</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#generateTangents">generateTangents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#generateUniqueVertex">generateUniqueVertex</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#generateVertexNormals">generateVertexNormals</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#getAttribute">getAttribute</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#getEnabledAttributes">getEnabledAttributes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#getTriangleIndices">getTriangleIndices</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#initIndicesFromArray">initIndicesFromArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#isUniqueVertex">isUniqueVertex</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#removeAttribute">removeAttribute</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#setTriangleIndices">setTriangleIndices</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry_.html#updateBoundingBox">updateBoundingBox</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Geometry.Attribute.html">Attribute</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry.Attribute.html#fromArray">fromArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry.Attribute.html#init">init</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry.Attribute.html#set">set</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Geometry.Attribute.html#set">set</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.geometry.Cone.html">Cone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.geometry.Cone.html#build">build</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.geometry.Cube.html">Cube</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.geometry.Cube.html#build">build</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.geometry.Cylinder.html">Cylinder</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.geometry.Cylinder.html#build">build</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.geometry.Plane.html">Plane</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.geometry.Plane.html#build">build</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.geometry.Sphere.html">Sphere</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.geometry.Sphere.html#build">build</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Joint.html">Joint</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Light.html">Light</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Light.html#clone">clone</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.light.Ambient.html">Ambient</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.light.AmbientCubemap.html">AmbientCubemap</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.light.AmbientSH.html">AmbientSH</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.light.Directional.html">Directional</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.light.Directional.html#clone">clone</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.light.Point.html">Point</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.light.Point.html#clone">clone</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.light.Sphere.html">Sphere</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.light.Spot.html">Spot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.light.Spot.html#clone">clone</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.light.Tube.html">Tube</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.loader.FX.html">FX</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.loader.FX.html#load">load</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.loader.FX.html#parse">parse</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.loader.GLTF.html">GLTF</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.loader.GLTF.html#load">load</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.loader.GLTF.html#parse">parse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.loader.GLTF.html#parseBinary">parseBinary</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.loader.GLTF.html#resolveBinaryPath">resolveBinaryPath</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.loader.GLTF.html#resolveTexturePath">resolveTexturePath</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Material.html">Material</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Material.html#attachShader">attachShader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Material.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Material.html#detachShader">detachShader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Material.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Material.html#get">get</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Material.html#isUniformEnabled">isUniformEnabled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Material.html#set">set</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Material.html#setUniform">setUniform</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Material.html#setUniforms">setUniforms</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.BoundingBox.html">BoundingBox</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.BoundingBox.html#applyProjection">applyProjection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.BoundingBox.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.BoundingBox.html#containBoundingBox">containBoundingBox</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.BoundingBox.html#containPoint">containPoint</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.BoundingBox.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.BoundingBox.html#intersectBoundingBox">intersectBoundingBox</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.BoundingBox.html#intersection">intersection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.BoundingBox.html#isFinite">isFinite</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.BoundingBox.html#union">union</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.BoundingBox.html#updateFromVertices">updateFromVertices</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Frustum.html">Frustum</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Frustum.html#getTransformedBoundingBox">getTransformedBoundingBox</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Frustum.html#setFromProjection">setFromProjection</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html">Matrix2</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#adjoint">adjoint</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#determinant">determinant</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#identity">identity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#invert">invert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#mulLeft">mulLeft</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#multiplyLeft">multiplyLeft</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#rotate">rotate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#setArray">setArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#transpose">transpose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#.adjoint">adjoint</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#.copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#.determinant">determinant</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#.identity">identity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#.invert">invert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#.mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#.multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#.rotate">rotate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#.scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2.html#.transpose">transpose</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html">Matrix2d</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#.copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#.determinant">determinant</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#.identity">identity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#.invert">invert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#.mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#.multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#.rotate">rotate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#.scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#.translate">translate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#determinant">determinant</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#identity">identity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#invert">invert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#mulLeft">mulLeft</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#multiplyLeft">multiplyLeft</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#rotate">rotate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#setArray">setArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix2d.html#translate">translate</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html">Matrix3</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#adjoint">adjoint</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#determinant">determinant</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#fromMat2d">fromMat2d</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#fromMat4">fromMat4</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#fromQuat">fromQuat</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#identity">identity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#invert">invert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#mulLeft">mulLeft</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#multiplyLeft">multiplyLeft</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#normalFromMat4">normalFromMat4</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#rotate">rotate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#setArray">setArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#translate">translate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#transpose">transpose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.adjoint">adjoint</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.determinant">determinant</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.fromMat2d">fromMat2d</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.fromMat4">fromMat4</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.fromQuat">fromQuat</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.identity">identity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.invert">invert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.normalFromMat4">normalFromMat4</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.rotate">rotate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.translate">translate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix3.html#.transpose">transpose</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html">Matrix4</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#adjoint">adjoint</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#determinant">determinant</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#fromMat2d">fromMat2d</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#fromQuat">fromQuat</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#fromRotationTranslation">fromRotationTranslation</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#frustum">frustum</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#identity">identity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#invert">invert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#lookAt">lookAt</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#mulLeft">mulLeft</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#multiplyLeft">multiplyLeft</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#ortho">ortho</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#perspective">perspective</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#rotate">rotate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#rotateX">rotateX</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#rotateY">rotateY</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#rotateZ">rotateZ</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#setArray">setArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#translate">translate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#transpose">transpose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.adjoint">adjoint</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.determinant">determinant</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.fromMat2d">fromMat2d</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.fromQuat">fromQuat</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.fromRotationTranslation">fromRotationTranslation</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.identity">identity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.invert">invert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.lookAt">lookAt</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.ortho">ortho</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.perspective">perspective</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.rotate">rotate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.rotateX">rotateX</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.rotateY">rotateY</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.rotateZ">rotateZ</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.translate">translate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Matrix4.html#.transpose">transpose</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Plane.html">Plane</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Plane.html#applyTransform">applyTransform</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Plane.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Plane.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Plane.html#distanceToPoint">distanceToPoint</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Plane.html#intersectFrustum">intersectFrustum</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Plane.html#intersectLine">intersectLine</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Plane.html#normalize">normalize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Plane.html#projectPoint">projectPoint</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html">Quaternion</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.add">add</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.calculateW">calculateW</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.conjugate">conjugate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.dot">dot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.fromEuler">fromEuler</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.fromMat3">fromMat3</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.identity">identity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.invert">invert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.len">len</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.lerp">lerp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.normalize">normalize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.rotateX">rotateX</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.rotateY">rotateY</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.rotateZ">rotateZ</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.rotationTo">rotationTo</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.set">set</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.setAxes">setAxes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.setAxisAngle">setAxisAngle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.slerp">slerp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.sqrLen">sqrLen</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#.squaredLength">squaredLength</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#add">add</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#calculateW">calculateW</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#conjugate">conjugate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#dot">dot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#fromEuler">fromEuler</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#fromMat3">fromMat3</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#identity">identity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#invert">invert</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#len">len</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#length">length</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#lerp">lerp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#mulLeft">mulLeft</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#multiplyLeft">multiplyLeft</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#normalize">normalize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#rotateX">rotateX</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#rotateY">rotateY</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#rotateZ">rotateZ</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#rotationTo">rotationTo</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#set">set</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#setArray">setArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#setAxes">setAxes</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#setAxisAngle">setAxisAngle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#slerp">slerp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#sqrLen">sqrLen</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Quaternion.html#squaredLength">squaredLength</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Ray.html">Ray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Ray.html#applyTransform">applyTransform</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Ray.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Ray.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Ray.html#intersectBoundingBox">intersectBoundingBox</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Ray.html#intersectPlane">intersectPlane</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Ray.html#mirrorAgainstPlane">mirrorAgainstPlane</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Value.html">Value</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Value.html#.constant">constant</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Value.html#.random1D">random1D</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Value.html#.random2D">random2D</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Value.html#.random3D">random3D</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Value.html#.vector">vector</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Value.html#get">get</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Vector2.html">Vector2</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#add">add</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#cross">cross</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#dist">dist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#distance">distance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#div">div</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#divide">divide</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#dot">dot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#len">len</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#length">length</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#lerp">lerp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#max">max</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#min">min</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#negate">negate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#normalize">normalize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#random">random</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#scaleAndAdd">scaleAndAdd</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#set">set</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#setArray">setArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#sqrDist">sqrDist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#sqrLen">sqrLen</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#squaredDistance">squaredDistance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#squaredLength">squaredLength</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#sub">sub</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#subtract">subtract</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#transformMat2">transformMat2</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#transformMat2d">transformMat2d</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#transformMat3">transformMat3</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#transformMat4">transformMat4</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.add">add</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.cross">cross</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.dist">dist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.distance">distance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.div">div</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.divide">divide</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.dot">dot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.len">len</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.lerp">lerp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.max">max</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.min">min</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.negate">negate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.normalize">normalize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.random">random</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.scaleAndAdd">scaleAndAdd</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.set">set</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.sqrDist">sqrDist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.sqrLen">sqrLen</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.squaredDistance">squaredDistance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.squaredLength">squaredLength</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.sub">sub</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.subtract">subtract</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.transformMat2">transformMat2</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.transformMat2d">transformMat2d</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.transformMat3">transformMat3</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector2.html#.transformMat4">transformMat4</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Vector3.html">Vector3</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#add">add</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#applyProjection">applyProjection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#cross">cross</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#dist">dist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#distance">distance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#div">div</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#divide">divide</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#dot">dot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#len">len</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#length">length</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#lerp">lerp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#max">max</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#min">min</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#negate">negate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#normalize">normalize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#random">random</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#scaleAndAdd">scaleAndAdd</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#set">set</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#setArray">setArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#sqrDist">sqrDist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#sqrLen">sqrLen</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#squaredDistance">squaredDistance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#squaredLength">squaredLength</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#sub">sub</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#subtract">subtract</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#transformMat3">transformMat3</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#transformMat4">transformMat4</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#transformQuat">transformQuat</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.add">add</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.cross">cross</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.dist">dist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.distance">distance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.div">div</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.divide">divide</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.dot">dot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.eulerFromMat3">eulerFromMat3</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.eulerFromQuat">eulerFromQuat</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.len">len</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.lerp">lerp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.max">max</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.min">min</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.negate">negate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.normalize">normalize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.random">random</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.scaleAndAdd">scaleAndAdd</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.set">set</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.sqrDist">sqrDist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.sqrLen">sqrLen</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.squaredDistance">squaredDistance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.squaredLength">squaredLength</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.sub">sub</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.subtract">subtract</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.transformMat3">transformMat3</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.transformMat4">transformMat4</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector3.html#.transformQuat">transformQuat</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.math.Vector4.html">Vector4</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#add">add</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#dist">dist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#distance">distance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#div">div</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#divide">divide</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#dot">dot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#len">len</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#length">length</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#lerp">lerp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#max">max</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#min">min</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#negate">negate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#normalize">normalize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#random">random</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#scaleAndAdd">scaleAndAdd</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#set">set</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#setArray">setArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#sqrDist">sqrDist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#sqrLen">sqrLen</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#squaredDistance">squaredDistance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#squaredLength">squaredLength</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#sub">sub</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#subtract">subtract</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#transformMat4">transformMat4</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#transformQuat">transformQuat</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.add">add</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.copy">copy</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.dist">dist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.distance">distance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.div">div</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.divide">divide</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.dot">dot</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.len">len</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.lerp">lerp</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.max">max</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.min">min</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.mul">mul</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.multiply">multiply</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.negate">negate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.normalize">normalize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.random">random</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.scaleAndAdd">scaleAndAdd</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.set">set</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.sqrDist">sqrDist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.sqrLen">sqrLen</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.squaredDistance">squaredDistance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.squaredLength">squaredLength</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.sub">sub</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.subtract">subtract</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.transformMat4">transformMat4</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.math.Vector4.html#.transformQuat">transformQuat</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Mesh.html">Mesh</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Node.html">Node</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#add">add</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#childAt">childAt</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#children">children</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#decomposeLocalTransform">decomposeLocalTransform</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#decomposeWorldTransform">decomposeWorldTransform</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#getChildByName">getChildByName</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#getDescendantByName">getDescendantByName</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#getParent">getParent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#getPath">getPath</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#getScene">getScene</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#getWorldPosition">getWorldPosition</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#isAncestor">isAncestor</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#isRenderable">isRenderable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#isSkinnedMesh">isSkinnedMesh</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#lookAt">lookAt</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#queryNode">queryNode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#remove">remove</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#removeAll">removeAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#rotateAround">rotateAround</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#setLocalTransform">setLocalTransform</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#setName">setName</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#setWorldTransform">setWorldTransform</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#traverse">traverse</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#update">update</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#updateLocalTransform">updateLocalTransform</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Node.html#updateWorldTransform">updateWorldTransform</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.particle.Emitter.html">Emitter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.Emitter.html#.constant">constant</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.Emitter.html#.random1D">random1D</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.Emitter.html#.random2D">random2D</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.Emitter.html#.random3D">random3D</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.Emitter.html#.vector">vector</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.Emitter.html#emit">emit</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.Emitter.html#kill">kill</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.particle.Field.html">Field</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.Field.html#applyTo">applyTo</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.particle.ForceField.html">ForceField</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.particle.Particle.html">Particle</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.Particle.html#update">update</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.particle.ParticleRenderable.html">ParticleRenderable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.ParticleRenderable.html#addEmitter">addEmitter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.ParticleRenderable.html#addField">addField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.ParticleRenderable.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.ParticleRenderable.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.ParticleRenderable.html#isFinished">isFinished</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.ParticleRenderable.html#removeEmitter">removeEmitter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.ParticleRenderable.html#removeField">removeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.ParticleRenderable.html#reset">reset</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.particle.ParticleRenderable.html#updateParticles">updateParticles</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.picking.PixelPicking.html">PixelPicking</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.picking.PixelPicking.html#pick">pick</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.picking.PixelPicking.html#setPrecision">setPrecision</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.picking.PixelPicking.html#update">update</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.picking.RayPicking.html">RayPicking</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.picking.RayPicking.html#pick">pick</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.picking.RayPicking.html#pickAll">pickAll</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.picking.RayPicking-Intersection.html">Intersection</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.plugin.FirstPersonControl.html">FirstPersonControl</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.plugin.FirstPersonControl.html#disable">disable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.plugin.FirstPersonControl.html#enable">enable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.plugin.FirstPersonControl.html#update">update</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.plugin.OrbitControl.html">OrbitControl</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.plugin.OrbitControl.html#disable">disable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.plugin.OrbitControl.html#enable">enable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.plugin.OrbitControl.html#update">update</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.plugin.Skybox.html">Skybox</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.plugin.Skybox.html#attachScene">attachScene</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.plugin.Skybox.html#detachScene">detachScene</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.plugin.Skydome.html">Skydome</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.plugin.Skydome.html#attachScene">attachScene</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.plugin.Skydome.html#detachScene">detachScene</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.plugin.Sprite.html">Sprite</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.prePass.EnvironmentMap.html">EnvironmentMap</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.prePass.ShadowMap.html">ShadowMap</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.prePass.ShadowMap.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.prePass.ShadowMap.html#render">render</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.prePass.ShadowMap.html#renderDebug">renderDebug</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Renderable.html">Renderable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderable.html#afterRender">afterRender</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderable.html#beforeRender">beforeRender</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderable.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderable.html#isRenderable">isRenderable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderable.html#render">render</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Renderer.html">Renderer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#disposeFrameBuffer">disposeFrameBuffer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#disposeGeometry">disposeGeometry</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#disposeNode">disposeNode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#disposeScene">disposeScene</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#disposeShader">disposeShader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#disposeTexture">disposeTexture</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#getDevicePixelRatio">getDevicePixelRatio</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#getGLExtension">getGLExtension</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#getGLParameter">getGLParameter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#getHeight">getHeight</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#getViewportAspect">getViewportAspect</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#getWidth">getWidth</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#ifRenderObject">ifRenderObject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#render">render</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#renderQueue">renderQueue</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#resize">resize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#restoreClear">restoreClear</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#restoreViewport">restoreViewport</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#saveClear">saveClear</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#saveViewport">saveViewport</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#screenToNDC">screenToNDC</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#setDevicePixelRatio">setDevicePixelRatio</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Renderer.html#setViewport">setViewport</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Scene.html">Scene</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Scene.html#addToScene">addToScene</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Scene.html#cloneNode">cloneNode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Scene.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Scene.html#getNode">getNode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Scene.html#isShaderLightNumberChanged">isShaderLightNumberChanged</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Scene.html#removeFromScene">removeFromScene</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Scene.html#setShaderLightNumber">setShaderLightNumber</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Scene.html#update">update</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Shader.html">Shader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#.Shader%255B'import'%255D">Shader['import']</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#.source">source</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#bind">bind</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#define">define</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#dirty">dirty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#disableTexture">disableTexture</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#disableTexturesAll">disableTexturesAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#enableTexture">enableTexture</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#enableTexturesAll">enableTexturesAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#getDefine">getDefine</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#getEnabledTextures">getEnabledTextures</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#isDefined">isDefined</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#isEqual">isEqual</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#isTextureEnabled">isTextureEnabled</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#setFragment">setFragment</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#setVertex">setVertex</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Shader.html#undefine">undefine</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Skeleton.html">Skeleton</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Skeleton.html#addClip">addClip</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Skeleton.html#getClip">getClip</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Skeleton.html#getClipNumber">getClipNumber</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Skeleton.html#removeClip">removeClip</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Skeleton.html#removeClipsAll">removeClipsAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Skeleton.html#setPose">setPose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Skeleton.html#updateJointMatrices">updateJointMatrices</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.StandardMaterial.html">StandardMaterial</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.StaticGeometry.html">StaticGeometry</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Texture_.html">Texture</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Texture_.html#dirty">dirty</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Texture_.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Texture_.html#isPowerOfTwo">isPowerOfTwo</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Texture_.html#isRenderable">isRenderable</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.Texture2D.html">Texture2D</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.Texture2D.html#generateMipmap">generateMipmap</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="qtek.TextureCube.html">TextureCube</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.TextureCube.html#generateMipmap">generateMipmap</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-echarts_animation_Animator.html">echarts/animation/Animator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-echarts_animation_Animator.html#~isArraySame">isArraySame</a></span></li><li class="nav-heading">Namespaces</li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.html">qtek</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.animation.html">animation</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.animation.easing.html">easing</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.backIn">backIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.backInOut">backInOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.backOut">backOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.bounceIn">bounceIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.bounceInOut">bounceInOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.bounceOut">bounceOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.circularIn">circularIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.circularInOut">circularInOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.circularOut">circularOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.cubicIn">cubicIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.cubicInOut">cubicInOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.cubicOut">cubicOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.elasticIn">elasticIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.elasticInOut">elasticInOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.elasticOut">elasticOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.exponentialIn">exponentialIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.exponentialInOut">exponentialInOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.exponentialOut">exponentialOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.linear">linear</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.quadraticIn">quadraticIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.quadraticInOut">quadraticInOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.quadraticOut">quadraticOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.quarticIn">quarticIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.quarticInOut">quarticInOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.quarticOut">quarticOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.quinticIn">quinticIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.quinticInOut">quinticInOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.quinticOut">quinticOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.sinusoidalIn">sinusoidalIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.sinusoidalInOut">sinusoidalInOut</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.animation.easing.html#.sinusoidalOut">sinusoidalOut</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.async.html">async</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.camera.html">camera</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.compositor.html">compositor</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.core.html">core</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.core.glenum.html">glenum</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.core.glinfo.html">glinfo</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.glinfo.html#.this.getExtension">this.getExtension</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.core.util.html">util</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.util.html#.clone">clone</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.util.html#.defaults">defaults</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.util.html#.defaultsWithPropList">defaultsWithPropList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.util.html#.each">each</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.util.html#.extend">extend</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.util.html#.extendWithPropList">extendWithPropList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.util.html#.genGUID">genGUID</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.util.html#.isArray">isArray</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.util.html#.isArrayLike">isArrayLike</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.util.html#.isObject">isObject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.util.html#.relative2absolute">relative2absolute</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.geometry.html">geometry</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.helper.html">helper</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.light_.html">light</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.loader.html">loader</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.math.html">math</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.particleSystem.html">particleSystem</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.plugin.html">plugin</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.prePass.html">prePass</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.shader_.html">shader</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.shader_.html#.library">library</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.shader_.html#.library#.createLibrary">createLibrary</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.shader_.html#.library#.template">template</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.texture.html">texture</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.util.html">util</a></span></li><li class="nav-heading"><span class="nav-item-type type-namespace">N</span><span class="nav-item-name"><a href="qtek.util.mesh.html">mesh</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.util.mesh.html#.merge">merge</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.util.mesh.html#.splitByJoints">splitByJoints</a></span></li><li class="nav-heading">Mixins</li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="qtek.core.mixin.extend.html">extend</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.mixin.extend.html#.derive">derive</a></span></li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="qtek.core.mixin.notifier.html">notifier</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.mixin.notifier.html#.after">after</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.mixin.notifier.html#.before">before</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.mixin.notifier.html#.error">error</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.mixin.notifier.html#.has">has</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.mixin.notifier.html#.off">off</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.mixin.notifier.html#.on">on</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.mixin.notifier.html#.once">once</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.mixin.notifier.html#.success">success</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="qtek.core.mixin.notifier.html#.trigger">trigger</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#_array">_array</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#_center">_center</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#_dirty">_dirty</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#_mode">_mode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#animateTo">animateTo</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#autoRotateAfterStill">autoRotateAfterStill</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#autoRotateDirection">autoRotateDirection</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#autoRotateSpeed">autoRotateSpeed</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#coefficients">coefficients</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#cubemap">cubemap</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#damping">damping</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#dispose">dispose</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#domElement">domElement</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#GestureMgr">GestureMgr</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getAlpha">getAlpha</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getBeta">getBeta</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getCamera">getCamera</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getCenter">getCenter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getDistance">getDistance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getGBuffer">getGBuffer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getParameter">getParameter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getTargetFrameBuffer">getTargetFrameBuffer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#getTargetTexture">getTargetTexture</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#init">init</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#maxAlpha">maxAlpha</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#maxBeta">maxBeta</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#maxDistance">maxDistance</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#minAlpha">minAlpha</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#minBeta">minBeta</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#minDistance">minDistance</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#panSensitivity">panSensitivity</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#pointShape">pointShape</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#position">position</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#prefilter">prefilter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#render">render</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#resize">resize</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#rotateSensitivity">rotateSensitivity</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#rotation">rotation</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#scale">scale</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#setAlpha">setAlpha</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#setBeta">setBeta</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#setCenter">setCenter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#setDistance">setDistance</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#ShaderLibrary">ShaderLibrary</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#stopAllAnimation">stopAllAnimation</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#target">target</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#update">update</a></span></li><li class="nav-item"><span class="nav-item-type type-member">M</span><span class="nav-item-name"><a href="global.html#zoomSensitivity">zoomSensitivity</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Shader.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Mainly do the parse and compile of shader string
+ * Support shader code chunk import and export
+ * Support shader semantics
+ * http://www.nvidia.com/object/using_sas.html
+ * https://github.com/KhronosGroup/collada2json/issues/45
+ *
+ * TODO: Use etpl or other string template engine
+ */
+import Base from './core/Base';
+import util from './core/util';
+import Cache from './core/Cache';
+import vendor from './core/vendor';
+import glMatrix from './dep/glmatrix';
+var mat2 = glMatrix.mat2;
+var mat3 = glMatrix.mat3;
+var mat4 = glMatrix.mat4;
+
+var uniformRegex = /uniform\s+(bool|float|int|vec2|vec3|vec4|ivec2|ivec3|ivec4|mat2|mat3|mat4|sampler2D|samplerCube)\s+([\w\,]+)?(\[.*?\])?\s*(:\s*([\S\s]+?))?;/g;
+var attributeRegex = /attribute\s+(float|int|vec2|vec3|vec4)\s+(\w*)\s*(:\s*(\w+))?;/g;
+var defineRegex = /#define\s+(\w+)?(\s+[\w-.]+)?\s*;?\s*\n/g;
+var loopRegex = /for\s*?\(int\s*?_idx_\s*\=\s*([\w-]+)\;\s*_idx_\s*&lt;\s*([\w-]+);\s*_idx_\s*\+\+\s*\)\s*\{\{([\s\S]+?)(?=\}\})\}\}/g;
+
+var uniformTypeMap = {
+    'bool': '1i',
+    'int': '1i',
+    'sampler2D': 't',
+    'samplerCube': 't',
+    'float': '1f',
+    'vec2': '2f',
+    'vec3': '3f',
+    'vec4': '4f',
+    'ivec2': '2i',
+    'ivec3': '3i',
+    'ivec4': '4i',
+    'mat2': 'm2',
+    'mat3': 'm3',
+    'mat4': 'm4'
+};
+
+var uniformValueConstructor = {
+    'bool': function () {return true;},
+    'int': function () {return 0;},
+    'float': function () {return 0;},
+    'sampler2D': function () {return null;},
+    'samplerCube': function () {return null;},
+
+    'vec2': function () {return [0, 0];},
+    'vec3': function () {return [0, 0, 0];},
+    'vec4': function () {return [0, 0, 0, 0];},
+
+    'ivec2': function () {return [0, 0];},
+    'ivec3': function () {return [0, 0, 0];},
+    'ivec4': function () {return [0, 0, 0, 0];},
+
+    'mat2': function () {return mat2.create();},
+    'mat3': function () {return mat3.create();},
+    'mat4': function () {return mat4.create();},
+
+    'array': function () {return [];}
+};
+
+var attribSemantics = [
+    'POSITION',
+    'NORMAL',
+    'BINORMAL',
+    'TANGENT',
+    'TEXCOORD',
+    'TEXCOORD_0',
+    'TEXCOORD_1',
+    'COLOR',
+    // Skinning
+    // https://github.com/KhronosGroup/glTF/blob/master/specification/README.md#semantics
+    'JOINT',
+    'WEIGHT'
+];
+var uniformSemantics = [
+    'SKIN_MATRIX',
+    // Information about viewport
+    'VIEWPORT_SIZE',
+    'VIEWPORT',
+    'DEVICEPIXELRATIO',
+    // Window size for window relative coordinate
+    // https://www.opengl.org/sdk/docs/man/html/gl_FragCoord.xhtml
+    'WINDOW_SIZE',
+    // Infomation about camera
+    'NEAR',
+    'FAR',
+    // Time
+    'TIME'
+];
+var matrixSemantics = [
+    'WORLD',
+    'VIEW',
+    'PROJECTION',
+    'WORLDVIEW',
+    'VIEWPROJECTION',
+    'WORLDVIEWPROJECTION',
+    'WORLDINVERSE',
+    'VIEWINVERSE',
+    'PROJECTIONINVERSE',
+    'WORLDVIEWINVERSE',
+    'VIEWPROJECTIONINVERSE',
+    'WORLDVIEWPROJECTIONINVERSE',
+    'WORLDTRANSPOSE',
+    'VIEWTRANSPOSE',
+    'PROJECTIONTRANSPOSE',
+    'WORLDVIEWTRANSPOSE',
+    'VIEWPROJECTIONTRANSPOSE',
+    'WORLDVIEWPROJECTIONTRANSPOSE',
+    'WORLDINVERSETRANSPOSE',
+    'VIEWINVERSETRANSPOSE',
+    'PROJECTIONINVERSETRANSPOSE',
+    'WORLDVIEWINVERSETRANSPOSE',
+    'VIEWPROJECTIONINVERSETRANSPOSE',
+    'WORLDVIEWPROJECTIONINVERSETRANSPOSE'
+];
+
+// Enable attribute operation is global to all programs
+// Here saved the list of all enabled attribute index
+// http://www.mjbshaw.com/2013/03/webgl-fixing-invalidoperation.html
+var enabledAttributeList = {};
+
+var SHADER_STATE_TO_ENABLE = 1;
+var SHADER_STATE_KEEP_ENABLE = 2;
+var SHADER_STATE_PENDING = 3;
+
+/**
+ * @constructor
+ * @extends qtek.core.Base
+ * @alias qtek.Shader
+ * @example
+ * // Create a phong shader
+ * var shader = new qtek.Shader({
+ *     vertex: qtek.Shader.source('qtek.phong.vertex'),
+ *     fragment: qtek.Shader.source('qtek.phong.fragment')
+ * });
+ * // Enable diffuse texture
+ * shader.enableTexture('diffuseMap');
+ * // Use alpha channel in diffuse texture
+ * shader.define('fragment', 'DIFFUSEMAP_ALPHA_ALPHA');
+ */
+var Shader = Base.extend(function () {
+    return /** @lends qtek.Shader# */ {
+        /**
+         * Vertex shader code
+         * @type {string}
+         */
+        vertex: '',
+
+        /**
+         * Fragment shader code
+         * @type {string}
+         */
+        fragment: '',
+
+
+        // FIXME mediump is toooooo low for depth on mobile
+        precision: 'highp',
+
+        // Properties follow will be generated by the program
+        attribSemantics: {},
+        matrixSemantics: {},
+        uniformSemantics: {},
+        matrixSemanticKeys: [],
+
+        uniformTemplates: {},
+        attributeTemplates: {},
+
+        /**
+         * Custom defined values in the vertex shader
+         * @type {Object}
+         */
+        vertexDefines: {},
+        /**
+         * Custom defined values in the vertex shader
+         * @type {Object}
+         */
+        fragmentDefines: {},
+
+        /**
+         * Enabled extensions
+         * @type {Array.&lt;string>}
+         */
+        extensions: [
+            'OES_standard_derivatives',
+            'EXT_shader_texture_lod'
+        ],
+
+        /**
+         * Used light group. default is all zero
+         */
+        lightGroup: 0,
+
+        // Defines the each type light number in the scene
+        // AMBIENT_LIGHT
+        // AMBIENT_SH_LIGHT
+        // AMBIENT_CUBEMAP_LIGHT
+        // POINT_LIGHT
+        // SPOT_LIGHT
+        // AREA_LIGHT
+        lightNumber: {},
+
+        _textureSlot: 0,
+
+        _attacheMaterialNumber: 0,
+
+        _uniformList: [],
+        // {
+        //  enabled: true
+        //  shaderType: "vertex",
+        // }
+        _textureStatus: {},
+
+        _vertexProcessed: '',
+        _fragmentProcessed: '',
+
+        _currentLocationsMap: {}
+    };
+}, function () {
+
+    this._cache = new Cache();
+
+    // All context use same code
+    this._codeDirty = true;
+
+    this._updateShaderString();
+},
+/** @lends qtek.Shader.prototype */
+{
+    /**
+     * If code is equal with given shader.
+     * @param {qtek.Shader}
+     * @return {boolean}
+     */
+    isEqual: function (otherShader) {
+        if (!otherShader) {
+            return false;
+        }
+        if (this === otherShader) {
+            // Still needs update and rebind if dirty.
+            return !this._codeDirty;
+        }
+        if (otherShader._codeDirty) {
+            otherShader._updateShaderString();
+        }
+        if (this._codeDirty) {
+            this._updateShaderString();
+        }
+        return !(otherShader._vertexProcessed !== this._vertexProcessed
+            || otherShader._fragmentProcessed !== this._fragmentProcessed);
+    },
+    /**
+     * Set vertex shader code
+     * @param {string} str
+     */
+    setVertex: function (str) {
+        this.vertex = str;
+        this._updateShaderString();
+        this.dirty();
+    },
+
+    /**
+     * Set fragment shader code
+     * @param {string} str
+     */
+    setFragment: function (str) {
+        this.fragment = str;
+        this._updateShaderString();
+        this.dirty();
+    },
+
+    /**
+     * Bind shader program
+     * Return true or error msg if error happened
+     * @param {qtek.Renderer} renderer
+     */
+    bind: function (renderer) {
+        var cache = this._cache;
+        var _gl = renderer.gl;
+        cache.use(renderer.__GUID__, getCacheSchema);
+
+        this._currentLocationsMap = cache.get('locations');
+
+        // Reset slot
+        this._textureSlot = 0;
+
+        if (this._codeDirty) {
+            // PENDING
+            // var availableExts = [];
+            // var extensions = this.extensions;
+            // for (var i = 0; i &lt; extensions.length; i++) {
+            //     if (glInfo.getExtension(_gl, extensions[i])) {
+            //         availableExts.push(extensions[i]);
+            //     }
+            // }
+            this._updateShaderString();
+        }
+
+        if (cache.isDirty('program')) {
+            var errMsg = this._buildProgram(_gl, this._vertexProcessed, this._fragmentProcessed);
+            cache.fresh('program');
+
+            if (errMsg) {
+                return errMsg;
+            }
+        }
+
+        _gl.useProgram(cache.get('program'));
+    },
+
+    /**
+     * Mark dirty and update program in next frame
+     */
+    dirty: function () {
+        var cache = this._cache;
+        this._codeDirty = true;
+        cache.dirtyAll('program');
+        for (var i = 0; i &lt; cache._caches.length; i++) {
+            if (cache._caches[i]) {
+                var context = cache._caches[i];
+                context['locations'] = {};
+                context['attriblocations'] = {};
+            }
+        }
+    },
+
+    _updateShaderString: function (exts) {
+
+        if (this.vertex !== this._vertexPrev ||
+            this.fragment !== this._fragmentPrev
+        ) {
+
+            this._parseImport();
+
+            this.attribSemantics = {};
+            this.matrixSemantics = {};
+            this._textureStatus = {};
+
+            this._parseUniforms();
+            this._parseAttributes();
+            this._parseDefines();
+
+            this._vertexPrev = this.vertex;
+            this._fragmentPrev = this.fragment;
+        }
+
+        this._addDefineExtensionAndPrecision(exts);
+
+        this._vertexProcessed = this._unrollLoop(this._vertexProcessed, this.vertexDefines);
+        this._fragmentProcessed = this._unrollLoop(this._fragmentProcessed, this.fragmentDefines);
+
+        this._codeDirty = false;
+    },
+
+    /**
+     * Add a #define macro in shader code
+     * @param  {string} shaderType Can be vertex, fragment or both
+     * @param  {string} symbol
+     * @param  {number} [val]
+     */
+    define: function (shaderType, symbol, val) {
+        var vertexDefines = this.vertexDefines;
+        var fragmentDefines = this.fragmentDefines;
+        if (shaderType !== 'vertex' &amp;&amp; shaderType !== 'fragment' &amp;&amp; shaderType !== 'both'
+            &amp;&amp; arguments.length &lt; 3
+        ) {
+            // shaderType default to be 'both'
+            val = symbol;
+            symbol = shaderType;
+            shaderType = 'both';
+        }
+        val = val != null ? val : null;
+        if (shaderType === 'vertex' || shaderType === 'both') {
+            if (vertexDefines[symbol] !== val) {
+                vertexDefines[symbol] = val;
+                // Mark as dirty
+                this.dirty();
+            }
+        }
+        if (shaderType === 'fragment' || shaderType === 'both') {
+            if (fragmentDefines[symbol] !== val) {
+                fragmentDefines[symbol] = val;
+                if (shaderType !== 'both') {
+                    this.dirty();
+                }
+            }
+        }
+    },
+
+    /**
+     * Remove a #define macro in shader code
+     * @param  {string} shaderType Can be vertex, fragment or both
+     * @param  {string} symbol
+     */
+    undefine: function (shaderType, symbol) {
+        if (shaderType !== 'vertex' &amp;&amp; shaderType !== 'fragment' &amp;&amp; shaderType !== 'both'
+            &amp;&amp; arguments.length &lt; 2
+        ) {
+            // shaderType default to be 'both'
+            symbol = shaderType;
+            shaderType = 'both';
+        }
+        if (shaderType === 'vertex' || shaderType === 'both') {
+            if (this.isDefined('vertex', symbol)) {
+                delete this.vertexDefines[symbol];
+                // Mark as dirty
+                this.dirty();
+            }
+        }
+        if (shaderType === 'fragment' || shaderType === 'both') {
+            if (this.isDefined('fragment', symbol)) {
+                delete this.fragmentDefines[symbol];
+                if (shaderType !== 'both') {
+                    this.dirty();
+                }
+            }
+        }
+    },
+
+    /**
+     * If macro is defined in shader.
+     * @param  {string} shaderType Can be vertex, fragment or both
+     * @param  {string} symbol
+     */
+    isDefined: function (shaderType, symbol) {
+        switch (shaderType) {
+            case 'vertex':
+                return this.vertexDefines[symbol] !== undefined;
+            case 'fragment':
+                return this.fragmentDefines[symbol] !== undefined;
+        }
+    },
+    /**
+     * Get macro value defined in shader.
+     * @param  {string} shaderType Can be vertex, fragment or both
+     * @param  {string} symbol
+     */
+    getDefine: function (shaderType, symbol) {
+        switch(shaderType) {
+            case 'vertex':
+                return this.vertexDefines[symbol];
+            case 'fragment':
+                return this.fragmentDefines[symbol];
+        }
+    },
+    /**
+     * Enable a texture, actually it will add a #define macro in the shader code
+     * For example, if texture symbol is diffuseMap, it will add a line `#define DIFFUSEMAP_ENABLED` in the shader code
+     * @param  {string} symbol
+     */
+    enableTexture: function (symbol) {
+        if (Array.isArray(symbol)) {
+            for (var i = 0; i &lt; symbol.length; i++) {
+                this.enableTexture(symbol[i]);
+            }
+            return;
+        }
+
+        var status = this._textureStatus[symbol];
+        if (status) {
+            var isEnabled = status.enabled;
+            if (!isEnabled) {
+                status.enabled = true;
+                this.dirty();
+            }
+        }
+    },
+    /**
+     * Enable all textures used in the shader
+     */
+    enableTexturesAll: function () {
+        var textureStatus = this._textureStatus;
+        for (var symbol in textureStatus) {
+            textureStatus[symbol].enabled = true;
+        }
+
+        this.dirty();
+    },
+    /**
+     * Disable a texture, it remove a #define macro in the shader
+     * @param  {string} symbol
+     */
+    disableTexture: function (symbol) {
+        if (Array.isArray(symbol)) {
+            for (var i = 0; i &lt; symbol.length; i++) {
+                this.disableTexture(symbol[i]);
+            }
+            return;
+        }
+
+        var status = this._textureStatus[symbol];
+        if (status) {
+            var isDisabled = ! status.enabled;
+            if (!isDisabled) {
+                status.enabled = false;
+                this.dirty();
+            }
+        }
+    },
+    /**
+     * Disable all textures used in the shader
+     */
+    disableTexturesAll: function () {
+        var textureStatus = this._textureStatus;
+        for (var symbol in textureStatus) {
+            textureStatus[symbol].enabled = false;
+        }
+
+        this.dirty();
+    },
+    /**
+     * If texture of given type is enabled.
+     * @param  {string}  symbol
+     * @return {boolean}
+     */
+    isTextureEnabled: function (symbol) {
+        var textureStatus = this._textureStatus;
+        return !!textureStatus[symbol]
+            &amp;&amp; textureStatus[symbol].enabled;
+    },
+
+    /**
+     * Get all enabled textures
+     * @return {string[]}
+     */
+    getEnabledTextures: function () {
+        var enabledTextures = [];
+        var textureStatus = this._textureStatus;
+        for (var symbol in textureStatus) {
+            if (textureStatus[symbol].enabled) {
+                enabledTextures.push(symbol);
+            }
+        }
+        return enabledTextures;
+    },
+
+    hasUniform: function (symbol) {
+        var location = this._currentLocationsMap[symbol];
+        return location !== null &amp;&amp; location !== undefined;
+    },
+
+    currentTextureSlot: function () {
+        return this._textureSlot;
+    },
+
+    resetTextureSlot: function (slot) {
+        this._textureSlot = slot || 0;
+    },
+
+    takeCurrentTextureSlot: function (_gl, texture) {
+        var textureSlot = this._textureSlot;
+
+        this.useTextureSlot(_gl, texture, textureSlot);
+
+        this._textureSlot++;
+
+        return textureSlot;
+    },
+
+    useTextureSlot: function (renderer, texture, slot) {
+        if (texture) {
+            renderer.gl.activeTexture(renderer.gl.TEXTURE0 + slot);
+            // Maybe texture is not loaded yet;
+            if (texture.isRenderable()) {
+                texture.bind(renderer);
+            }
+            else {
+                // Bind texture to null
+                texture.unbind(renderer);
+            }
+        }
+    },
+
+    setUniform: function (_gl, type, symbol, value) {
+        var locationMap = this._currentLocationsMap;
+        var location = locationMap[symbol];
+        // Uniform is not existed in the shader
+        if (location === null || location === undefined) {
+            return false;
+        }
+        switch (type) {
+            case 'm4':
+                // The matrix must be created by glmatrix and can pass it directly.
+                _gl.uniformMatrix4fv(location, false, value);
+                break;
+            case '2i':
+                _gl.uniform2i(location, value[0], value[1]);
+                break;
+            case '2f':
+                _gl.uniform2f(location, value[0], value[1]);
+                break;
+            case '3i':
+                _gl.uniform3i(location, value[0], value[1], value[2]);
+                break;
+            case '3f':
+                _gl.uniform3f(location, value[0], value[1], value[2]);
+                break;
+            case '4i':
+                _gl.uniform4i(location, value[0], value[1], value[2], value[3]);
+                break;
+            case '4f':
+                _gl.uniform4f(location, value[0], value[1], value[2], value[3]);
+                break;
+            case '1i':
+                _gl.uniform1i(location, value);
+                break;
+            case '1f':
+                _gl.uniform1f(location, value);
+                break;
+            case '1fv':
+                _gl.uniform1fv(location, value);
+                break;
+            case '1iv':
+                _gl.uniform1iv(location, value);
+                break;
+            case '2iv':
+                _gl.uniform2iv(location, value);
+                break;
+            case '2fv':
+                _gl.uniform2fv(location, value);
+                break;
+            case '3iv':
+                _gl.uniform3iv(location, value);
+                break;
+            case '3fv':
+                _gl.uniform3fv(location, value);
+                break;
+            case '4iv':
+                _gl.uniform4iv(location, value);
+                break;
+            case '4fv':
+                _gl.uniform4fv(location, value);
+                break;
+            case 'm2':
+            case 'm2v':
+                _gl.uniformMatrix2fv(location, false, value);
+                break;
+            case 'm3':
+            case 'm3v':
+                _gl.uniformMatrix3fv(location, false, value);
+                break;
+            case 'm4v':
+                // Raw value
+                if (Array.isArray(value)) {
+                    var array = new vendor.Float32Array(value.length * 16);
+                    var cursor = 0;
+                    for (var i = 0; i &lt; value.length; i++) {
+                        var item = value[i];
+                        for (var j = 0; j &lt; 16; j++) {
+                            array[cursor++] = item[j];
+                        }
+                    }
+                    _gl.uniformMatrix4fv(location, false, array);
+                }
+                else if (value instanceof vendor.Float32Array) {   // ArrayBufferView
+                    _gl.uniformMatrix4fv(location, false, value);
+                }
+                break;
+        }
+        return true;
+    },
+
+    setUniformOfSemantic: function (_gl, semantic, val) {
+        var semanticInfo = this.uniformSemantics[semantic];
+        if (semanticInfo) {
+            return this.setUniform(_gl, semanticInfo.type, semanticInfo.symbol, val);
+        }
+        return false;
+    },
+
+    // Used for creating VAO
+    // Enable the attributes passed in and disable the rest
+    // Example Usage:
+    // enableAttributes(renderer, ["position", "texcoords"])
+    enableAttributes: function (renderer, attribList, vao) {
+        var _gl = renderer.gl;
+        var program = this._cache.get('program');
+
+        var locationMap = this._cache.get('attriblocations');
+
+        var enabledAttributeListInContext;
+        if (vao) {
+            enabledAttributeListInContext = vao.__enabledAttributeList;
+        }
+        else {
+            enabledAttributeListInContext = enabledAttributeList[renderer.__GUID__];
+        }
+        if (! enabledAttributeListInContext) {
+            // In vertex array object context
+            // PENDING Each vao object needs to enable attributes again?
+            if (vao) {
+                enabledAttributeListInContext
+                    = vao.__enabledAttributeList
+                    = [];
+            }
+            else {
+                enabledAttributeListInContext
+                    = enabledAttributeList[renderer.__GUID__]
+                    = [];
+            }
+        }
+        var locationList = [];
+        for (var i = 0; i &lt; attribList.length; i++) {
+            var symbol = attribList[i];
+            if (!this.attributeTemplates[symbol]) {
+                locationList[i] = -1;
+                continue;
+            }
+            var location = locationMap[symbol];
+            if (location === undefined) {
+                location = _gl.getAttribLocation(program, symbol);
+                // Attrib location is a number from 0 to ...
+                if (location === -1) {
+                    locationList[i] = -1;
+                    continue;
+                }
+                locationMap[symbol] = location;
+            }
+            locationList[i] = location;
+
+            if (!enabledAttributeListInContext[location]) {
+                enabledAttributeListInContext[location] = SHADER_STATE_TO_ENABLE;
+            }
+            else {
+                enabledAttributeListInContext[location] = SHADER_STATE_KEEP_ENABLE;
+            }
+        }
+
+        for (var i = 0; i &lt; enabledAttributeListInContext.length; i++) {
+            switch(enabledAttributeListInContext[i]){
+                case SHADER_STATE_TO_ENABLE:
+                    _gl.enableVertexAttribArray(i);
+                    enabledAttributeListInContext[i] = SHADER_STATE_PENDING;
+                    break;
+                case SHADER_STATE_KEEP_ENABLE:
+                    enabledAttributeListInContext[i] = SHADER_STATE_PENDING;
+                    break;
+                // Expired
+                case SHADER_STATE_PENDING:
+                    _gl.disableVertexAttribArray(i);
+                    enabledAttributeListInContext[i] = 0;
+                    break;
+            }
+        }
+
+        return locationList;
+    },
+
+    _parseImport: function () {
+
+        this._vertexProcessedWithoutDefine = Shader.parseImport(this.vertex);
+        this._fragmentProcessedWithoutDefine = Shader.parseImport(this.fragment);
+
+    },
+
+    _addDefineExtensionAndPrecision: function (exts) {
+
+        exts = exts || this.extensions;
+        // Extension declaration must before all non-preprocessor codes
+        // TODO vertex ? extension enum ?
+        var extensionStr = [];
+        for (var i = 0; i &lt; exts.length; i++) {
+            extensionStr.push('#extension GL_' + exts[i] + ' : enable');
+        }
+
+        // Add defines
+        // VERTEX
+        var defineStr = this._getDefineStr(this.vertexDefines);
+        this._vertexProcessed = defineStr + '\n' + this._vertexProcessedWithoutDefine;
+
+        // FRAGMENT
+        defineStr = this._getDefineStr(this.fragmentDefines);
+        var code = defineStr + '\n' + this._fragmentProcessedWithoutDefine;
+
+        // Add precision
+        this._fragmentProcessed = extensionStr.join('\n') + '\n'
+            + ['precision', this.precision, 'float'].join(' ') + ';\n'
+            + ['precision', this.precision, 'int'].join(' ') + ';\n'
+            // depth texture may have precision problem on iOS device.
+            + ['precision', this.precision, 'sampler2D'].join(' ') + ';\n'
+            + code;
+    },
+
+    _getDefineStr: function (defines) {
+
+        var lightNumber = this.lightNumber;
+        var textureStatus = this._textureStatus;
+        var defineStr = [];
+        for (var lightType in lightNumber) {
+            var count = lightNumber[lightType];
+            if (count > 0) {
+                defineStr.push('#define ' + lightType.toUpperCase() + '_COUNT ' + count);
+            }
+        }
+        for (var symbol in textureStatus) {
+            var status = textureStatus[symbol];
+            if (status.enabled) {
+                defineStr.push('#define ' + symbol.toUpperCase() + '_ENABLED');
+            }
+        }
+        // Custom Defines
+        for (var symbol in defines) {
+            var value = defines[symbol];
+            if (value === null) {
+                defineStr.push('#define ' + symbol);
+            }
+            else{
+                defineStr.push('#define ' + symbol + ' ' + value.toString());
+            }
+        }
+        return defineStr.join('\n');
+    },
+
+    _unrollLoop: function (shaderStr, defines) {
+        // Loop unroll from three.js, https://github.com/mrdoob/three.js/blob/master/src/renderers/webgl/WebGLProgram.js#L175
+        // In some case like shadowMap in loop use 'i' to index value much slower.
+
+        // Loop use _idx_ and increased with _idx_++ will be unrolled
+        // Use {{ }} to match the pair so the if statement will not be affected
+        // Write like following
+        // for (int _idx_ = 0; _idx_ &lt; 4; _idx_++) {{
+        //     vec3 color = texture2D(textures[_idx_], uv).rgb;
+        // }}
+        function replace(match, start, end, snippet) {
+            var unroll = '';
+            // Try to treat as define
+            if (isNaN(start)) {
+                if (start in defines) {
+                    start = defines[start];
+                }
+                else {
+                    start = lightNumberDefines[start];
+                }
+            }
+            if (isNaN(end)) {
+                if (end in defines) {
+                    end = defines[end];
+                }
+                else {
+                    end = lightNumberDefines[end];
+                }
+            }
+            // TODO Error checking
+
+            for (var idx = parseInt(start); idx &lt; parseInt(end); idx++) {
+                // PENDING Add scope?
+                unroll += '{'
+                    + snippet
+                        .replace(/float\s*\(\s*_idx_\s*\)/g, idx.toFixed(1))
+                        .replace(/_idx_/g, idx)
+                + '}';
+            }
+
+            return unroll;
+        }
+
+        var lightNumberDefines = {};
+        for (var lightType in this.lightNumber) {
+            lightNumberDefines[lightType + '_COUNT'] = this.lightNumber[lightType];
+        }
+        return shaderStr.replace(loopRegex, replace);
+    },
+
+    _parseUniforms: function () {
+        var uniforms = {};
+        var self = this;
+        var shaderType = 'vertex';
+        this._uniformList = [];
+
+        this._vertexProcessedWithoutDefine = this._vertexProcessedWithoutDefine.replace(uniformRegex, _uniformParser);
+        shaderType = 'fragment';
+        this._fragmentProcessedWithoutDefine = this._fragmentProcessedWithoutDefine.replace(uniformRegex, _uniformParser);
+
+        self.matrixSemanticKeys = Object.keys(this.matrixSemantics);
+
+        function _uniformParser(str, type, symbol, isArray, semanticWrapper, semantic) {
+            if (type &amp;&amp; symbol) {
+                var uniformType = uniformTypeMap[type];
+                var isConfigurable = true;
+                var defaultValueFunc;
+                if (uniformType) {
+                    self._uniformList.push(symbol);
+                    if (type === 'sampler2D' || type === 'samplerCube') {
+                        // Texture is default disabled
+                        self._textureStatus[symbol] = {
+                            enabled: false,
+                            shaderType: shaderType
+                        };
+                    }
+                    if (isArray) {
+                        uniformType += 'v';
+                    }
+                    if (semantic) {
+                        // This case is only for SKIN_MATRIX
+                        // TODO
+                        if (attribSemantics.indexOf(semantic) >= 0) {
+                            self.attribSemantics[semantic] = {
+                                symbol: symbol,
+                                type: uniformType
+                            };
+                            isConfigurable = false;
+                        }
+                        else if (matrixSemantics.indexOf(semantic) >= 0) {
+                            var isTranspose = false;
+                            var semanticNoTranspose = semantic;
+                            if (semantic.match(/TRANSPOSE$/)) {
+                                isTranspose = true;
+                                semanticNoTranspose = semantic.slice(0, -9);
+                            }
+                            self.matrixSemantics[semantic] = {
+                                symbol: symbol,
+                                type: uniformType,
+                                isTranspose: isTranspose,
+                                semanticNoTranspose: semanticNoTranspose
+                            };
+                            isConfigurable = false;
+                        }
+                        else if (uniformSemantics.indexOf(semantic) >= 0) {
+                            self.uniformSemantics[semantic] = {
+                                symbol: symbol,
+                                type: uniformType
+                            };
+                            isConfigurable = false;
+                        }
+                        else {
+                            // The uniform is not configurable, which means it will not appear
+                            // in the material uniform properties
+                            if (semantic === 'unconfigurable') {
+                                isConfigurable = false;
+                            }
+                            else {
+                                // Uniform have a defalut value, like
+                                // uniform vec3 color: [1, 1, 1];
+                                defaultValueFunc = self._parseDefaultValue(type, semantic);
+                                if (!defaultValueFunc) {
+                                    throw new Error('Unkown semantic "' + semantic + '"');
+                                }
+                                else {
+                                    semantic = '';
+                                }
+                            }
+                        }
+                    }
+
+                    if (isConfigurable) {
+                        uniforms[symbol] = {
+                            type: uniformType,
+                            value: isArray ? uniformValueConstructor['array'] : (defaultValueFunc || uniformValueConstructor[type]),
+                            semantic: semantic || null
+                        };
+                    }
+                }
+                return ['uniform', type, symbol, isArray].join(' ') + ';\n';
+            }
+        }
+
+        this.uniformTemplates = uniforms;
+    },
+
+    _parseDefaultValue: function (type, str) {
+        var arrayRegex = /\[\s*(.*)\s*\]/;
+        if (type === 'vec2' || type === 'vec3' || type === 'vec4') {
+            var arrayStr = arrayRegex.exec(str)[1];
+            if (arrayStr) {
+                var arr = arrayStr.split(/\s*,\s*/);
+                return function () {
+                    return new vendor.Float32Array(arr);
+                };
+            }
+            else {
+                // Invalid value
+                return;
+            }
+        }
+        else if (type === 'bool') {
+            return function () {
+                return str.toLowerCase() === 'true' ? true : false;
+            };
+        }
+        else if (type === 'float') {
+            return function () {
+                return parseFloat(str);
+            };
+        }
+        else if (type === 'int') {
+            return function () {
+                return parseInt(str);
+            };
+        }
+    },
+
+    // Create a new uniform instance for material
+    createUniforms: function () {
+        var uniforms = {};
+
+        for (var symbol in this.uniformTemplates){
+            var uniformTpl = this.uniformTemplates[symbol];
+            uniforms[symbol] = {
+                type: uniformTpl.type,
+                value: uniformTpl.value()
+            };
+        }
+
+        return uniforms;
+    },
+
+    // Attached to material
+    attached: function () {
+        this._attacheMaterialNumber++;
+    },
+
+    // Detached to material
+    detached: function () {
+        this._attacheMaterialNumber--;
+    },
+
+    isAttachedToAny: function () {
+        return this._attacheMaterialNumber !== 0;
+    },
+
+    _parseAttributes: function () {
+        var attributes = {};
+        var self = this;
+        this._vertexProcessedWithoutDefine = this._vertexProcessedWithoutDefine.replace(
+            attributeRegex, _attributeParser
+        );
+
+        function _attributeParser(str, type, symbol, semanticWrapper, semantic) {
+            if (type &amp;&amp; symbol) {
+                var size = 1;
+                switch (type) {
+                    case 'vec4':
+                        size = 4;
+                        break;
+                    case 'vec3':
+                        size = 3;
+                        break;
+                    case 'vec2':
+                        size = 2;
+                        break;
+                    case 'float':
+                        size = 1;
+                        break;
+                }
+
+                attributes[symbol] = {
+                    // Can only be float
+                    type: 'float',
+                    size: size,
+                    semantic: semantic || null
+                };
+
+                if (semantic) {
+                    if (attribSemantics.indexOf(semantic) &lt; 0) {
+                        throw new Error('Unkown semantic "' + semantic + '"');
+                    }
+                    else {
+                        self.attribSemantics[semantic] = {
+                            symbol: symbol,
+                            type: type
+                        };
+                    }
+                }
+            }
+
+            return ['attribute', type, symbol].join(' ') + ';\n';
+        }
+
+        this.attributeTemplates = attributes;
+    },
+
+    _parseDefines: function () {
+        var self = this;
+        var shaderType = 'vertex';
+        this._vertexProcessedWithoutDefine = this._vertexProcessedWithoutDefine.replace(defineRegex, _defineParser);
+        shaderType = 'fragment';
+        this._fragmentProcessedWithoutDefine = this._fragmentProcessedWithoutDefine.replace(defineRegex, _defineParser);
+
+        function _defineParser(str, symbol, value) {
+            var defines = shaderType === 'vertex' ? self.vertexDefines : self.fragmentDefines;
+            if (!defines[symbol]) { // Haven't been defined by user
+                if (value == 'false') {
+                    defines[symbol] = false;
+                }
+                else if (value == 'true') {
+                    defines[symbol] = true;
+                }
+                else {
+                    defines[symbol] = value 
+                        // If can parse to float
+                        ? (isNaN(parseFloat(value)) ? value : parseFloat(value))
+                        : null;
+                }
+            }
+            return '';
+        }
+    },
+
+    // Return true or error msg if error happened
+    _buildProgram: function (_gl, vertexShaderString, fragmentShaderString) {
+        var cache = this._cache;
+        if (cache.get('program')) {
+            _gl.deleteProgram(cache.get('program'));
+        }
+        var program = _gl.createProgram();
+
+        var vertexShader = _gl.createShader(_gl.VERTEX_SHADER);
+        _gl.shaderSource(vertexShader, vertexShaderString);
+        _gl.compileShader(vertexShader);
+
+        var fragmentShader = _gl.createShader(_gl.FRAGMENT_SHADER);
+        _gl.shaderSource(fragmentShader, fragmentShaderString);
+        _gl.compileShader(fragmentShader);
+
+        var msg = checkShaderErrorMsg(_gl, vertexShader, vertexShaderString);
+        if (msg) {
+            return msg;
+        }
+        msg = checkShaderErrorMsg(_gl, fragmentShader, fragmentShaderString);
+        if (msg) {
+            return msg;
+        }
+
+        _gl.attachShader(program, vertexShader);
+        _gl.attachShader(program, fragmentShader);
+        // Force the position bind to location 0;
+        if (this.attribSemantics['POSITION']) {
+            _gl.bindAttribLocation(program, 0, this.attribSemantics['POSITION'].symbol);
+        }
+        else {
+            // Else choose an attribute and bind to location 0;
+            var keys = Object.keys(this.attributeTemplates);
+            _gl.bindAttribLocation(program, 0, keys[0]);
+        }
+
+        _gl.linkProgram(program);
+
+        if (!_gl.getProgramParameter(program, _gl.LINK_STATUS)) {
+            return 'Could not link program\n' + 'VALIDATE_STATUS: ' + _gl.getProgramParameter(program, _gl.VALIDATE_STATUS) + ', gl error [' + _gl.getError() + ']';
+        }
+
+        // Cache uniform locations
+        for (var i = 0; i &lt; this._uniformList.length; i++) {
+            var uniformSymbol = this._uniformList[i];
+            var locationMap = cache.get('locations');
+            locationMap[uniformSymbol] = _gl.getUniformLocation(program, uniformSymbol);
+        }
+
+        _gl.deleteShader(vertexShader);
+        _gl.deleteShader(fragmentShader);
+
+        cache.put('program', program);
+    },
+
+    /**
+     * Clone a new shader
+     * @return {qtek.Shader}
+     */
+    clone: function () {
+        var shader = new Shader({
+            vertex: this.vertex,
+            fragment: this.fragment,
+            vertexDefines: util.clone(this.vertexDefines),
+            fragmentDefines: util.clone(this.fragmentDefines)
+        });
+        for (var name in this._textureStatus) {
+            shader._textureStatus[name] = util.clone(this._textureStatus[name]);
+        }
+        return shader;
+    },
+    /**
+     * Dispose given context
+     * @param  {qtek.Renderer} renderer
+     */
+    dispose: function (renderer) {
+        var cache = this._cache;
+
+        cache.use(renderer.__GUID__);
+        var program = cache.get('program');
+        if (program) {
+            renderer.gl.deleteProgram(program);
+        }
+        cache.deleteContext(renderer.__GUID__);
+
+        this._locations = {};
+    }
+});
+
+function getCacheSchema() {
+    return {
+        locations: {},
+        attriblocations: {}
+    };
+}
+
+// Return true or error msg if error happened
+function checkShaderErrorMsg(_gl, shader, shaderString) {
+    if (!_gl.getShaderParameter(shader, _gl.COMPILE_STATUS)) {
+        return [_gl.getShaderInfoLog(shader), addLineNumbers(shaderString)].join('\n');
+    }
+}
+
+// some util functions
+function addLineNumbers(string) {
+    var chunks = string.split('\n');
+    for (var i = 0, il = chunks.length; i &lt; il; i ++) {
+        // Chrome reports shader errors on lines
+        // starting counting from 1
+        chunks[i] = (i + 1) + ': ' + chunks[i];
+    }
+    return chunks.join('\n');
+}
+
+var importRegex = /(@import)\s*([0-9a-zA-Z_\-\.]*)/g;
+Shader.parseImport = function (shaderStr) {
+    shaderStr = shaderStr.replace(importRegex, function (str, importSymbol, importName) {
+        var str = Shader.source(importName);
+        if (str) {
+            // Recursively parse
+            return Shader.parseImport(str);
+        }
+        else {
+            console.error('Shader chunk "' + importName + '" not existed in library');
+            return '';
+        }
+    });
+    return shaderStr;
+};
+
+var exportRegex = /(@export)\s*([0-9a-zA-Z_\-\.]*)\s*\n([\s\S]*?)@end/g;
+
+/**
+ * Import shader source
+ * @param  {string} shaderStr
+ * @memberOf qtek.Shader
+ */
+Shader['import'] = function (shaderStr) {
+    shaderStr.replace(exportRegex, function (str, exportSymbol, exportName, code) {
+        var code = code.replace(/(^[\s\t\xa0\u3000]+)|([\u3000\xa0\s\t]+\x24)/g, '');
+        if (code) {
+            var parts = exportName.split('.');
+            var obj = Shader.codes;
+            var i = 0;
+            var key;
+            while (i &lt; parts.length - 1) {
+                key = parts[i++];
+                if (!obj[key]) {
+                    obj[key] = {};
+                }
+                obj = obj[key];
+            }
+            key = parts[i];
+            obj[key] = code;
+        }
+        return code;
+    });
+};
+
+/**
+ * Library to store all the loaded shader codes
+ * @type {Object}
+ * @readOnly
+ * @memberOf qtek.Shader
+ */
+Shader.codes = {};
+
+/**
+ * Get shader source
+ * @param  {string} name
+ * @return {string}
+ */
+Shader.source = function (name) {
+    var parts = name.split('.');
+    var obj = Shader.codes;
+    var i = 0;
+    while (obj &amp;&amp; i &lt; parts.length) {
+        var key = parts[i++];
+        obj = obj[key];
+    }
+    if (typeof obj !== 'string') {
+        // FIXME Use default instead
+        console.error('Shader "' + name + '" not existed in library');
+        return '';
+    }
+    return obj;
+};
+
+export default Shader;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Nov 15 2017 15:30:05 GMT+0800 (CST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
