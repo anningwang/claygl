@@ -5,16 +5,16 @@ var nativeForEach = ArrayProto.forEach;
 
 /**
  * Util functions
- * @namespace qtek.core.util
+ * @namespace clay.core.util
  */
 var util = {
 
     /**
      * Generate GUID
      * @return {number}
-     * @memberOf qtek.core.util
+     * @memberOf clay.core.util
      */
-    genGUID: function() {
+    genGUID: function () {
         return ++guid;
     },
     /**
@@ -22,9 +22,9 @@ var util = {
      * @param  {string} path
      * @param  {string} basePath
      * @return {string}
-     * @memberOf qtek.core.util
+     * @memberOf clay.core.util
      */
-    relative2absolute: function(path, basePath) {
+    relative2absolute: function (path, basePath) {
         if (!basePath || path.match(/^\//)) {
             return path;
         }
@@ -47,9 +47,9 @@ var util = {
      * @param  {Object} target
      * @param  {Object} source
      * @return {Object}
-     * @memberOf qtek.core.util
+     * @memberOf clay.core.util
      */
-    extend: function(target, source) {
+    extend: function (target, source) {
         if (source) {
             for (var name in source) {
                 if (source.hasOwnProperty(name)) {
@@ -65,9 +65,9 @@ var util = {
      * @param  {Object} target
      * @param  {Object} source
      * @return {Object}
-     * @memberOf qtek.core.util
+     * @memberOf clay.core.util
      */
-    defaults: function(target, source) {
+    defaults: function (target, source) {
         if (source) {
             for (var propName in source) {
                 if (target[propName] === undefined) {
@@ -83,9 +83,9 @@ var util = {
      * @param  {Object} source
      * @param  {Array.<string>} propList
      * @return {Object}
-     * @memberOf qtek.core.util
+     * @memberOf clay.core.util
      */
-    extendWithPropList: function(target, source, propList) {
+    extendWithPropList: function (target, source, propList) {
         if (source) {
             for (var i = 0; i < propList.length; i++) {
                 var propName = propList[i];
@@ -100,9 +100,9 @@ var util = {
      * @param  {Object} source
      * @param  {Array.<string>} propList
      * @return {Object}
-     * @memberOf qtek.core.util
+     * @memberOf clay.core.util
      */
-    defaultsWithPropList: function(target, source, propList) {
+    defaultsWithPropList: function (target, source, propList) {
         if (source) {
             for (var i = 0; i < propList.length; i++) {
                 var propName = propList[i];
@@ -117,19 +117,21 @@ var util = {
      * @param  {Object|Array} obj
      * @param  {Function} iterator
      * @param  {Object} [context]
-     * @memberOf qtek.core.util
+     * @memberOf clay.core.util
      */
-    each: function(obj, iterator, context) {
+    each: function (obj, iterator, context) {
         if (!(obj && iterator)) {
             return;
         }
         if (obj.forEach && obj.forEach === nativeForEach) {
             obj.forEach(iterator, context);
-        } else if (obj.length === + obj.length) {
+        }
+        else if (obj.length === + obj.length) {
             for (var i = 0, len = obj.length; i < len; i++) {
                 iterator.call(context, obj[i], i, obj);
             }
-        } else {
+        }
+        else {
             for (var key in obj) {
                 if (obj.hasOwnProperty(key)) {
                     iterator.call(context, obj[key], key, obj);
@@ -139,12 +141,12 @@ var util = {
     },
 
     /**
-     * Is object ?
+     * Is object
      * @param  {}  obj
      * @return {boolean}
-     * @memberOf qtek.core.util
+     * @memberOf clay.core.util
      */
-    isObject: function(obj) {
+    isObject: function (obj) {
         return obj === Object(obj);
     },
 
@@ -152,9 +154,9 @@ var util = {
      * Is array ?
      * @param  {}  obj
      * @return {boolean}
-     * @memberOf qtek.core.util
+     * @memberOf clay.core.util
      */
-    isArray: function(obj) {
+    isArray: function (obj) {
         return Array.isArray(obj);
     },
 
@@ -162,12 +164,13 @@ var util = {
      * Is array like, which have a length property
      * @param  {}  obj
      * @return {boolean}
-     * @memberOf qtek.core.util
+     * @memberOf clay.core.util
      */
-    isArrayLike: function(obj) {
+    isArrayLike: function (obj) {
         if (!obj) {
             return false;
-        } else {
+        }
+        else {
             return obj.length === + obj.length;
         }
     },
@@ -175,20 +178,23 @@ var util = {
     /**
      * @param  {} obj
      * @return {}
-     * @memberOf qtek.core.util
+     * @memberOf clay.core.util
      */
-    clone: function(obj) {
+    clone: function (obj) {
         if (!util.isObject(obj)) {
             return obj;
-        } else if (util.isArray(obj)) {
+        }
+        else if (util.isArray(obj)) {
             return obj.slice();
-        } else if (util.isArrayLike(obj)) { // is typed array
+        }
+        else if (util.isArrayLike(obj)) { // is typed array
             var ret = new obj.constructor(obj.length);
             for (var i = 0; i < obj.length; i++) {
                 ret[i] = obj[i];
             }
             return ret;
-        } else {
+        }
+        else {
             return util.extend({}, obj);
         }
     }

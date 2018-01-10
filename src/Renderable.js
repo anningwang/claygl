@@ -27,19 +27,19 @@ function VertexArrayObject(
 }
 /**
  * @constructor
- * @alias qtek.Renderable
- * @extends qtek.Node
+ * @alias clay.Renderable
+ * @extends clay.Node
  */
 var Renderable = Node.extend(
-/** @lends qtek.Renderable# */
+/** @lends clay.Renderable# */
 {
     /**
-     * @type {qtek.Material}
+     * @type {clay.Material}
      */
     material: null,
 
     /**
-     * @type {qtek.Geometry}
+     * @type {clay.Geometry}
      */
     geometry: null,
 
@@ -55,9 +55,15 @@ var Renderable = Node.extend(
     this._drawCache = {};
     this._renderInfo = new RenderInfo();
 },
-/** @lends qtek.Renderable.prototype */
+/** @lends clay.Renderable.prototype */
 {
 
+    __program: null,
+
+    /**
+     * Group of received light.
+     */
+    lightGroup: 0,
     /**
      * Render order, Nodes with smaller value renders before nodes with larger values.
      * @type {Number}
@@ -77,9 +83,9 @@ var Renderable = Node.extend(
     /**
      * Specify which side of polygon will be culled.
      * Possible values:
-     *  + {@link qtek.Renderable.BACK}
-     *  + {@link qtek.Renderable.FRONT}
-     *  + {@link qtek.Renderable.FRONT_AND_BACK}
+     *  + {@link clay.Renderable.BACK}
+     *  + {@link clay.Renderable.FRONT}
+     *  + {@link clay.Renderable.FRONT_AND_BACK}
      * @see https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/cullFace
      * @type {number}
      */
@@ -87,15 +93,15 @@ var Renderable = Node.extend(
     /**
      * Specify which side is front face.
      * Possible values:
-     *  + {@link qtek.Renderable.CW}
-     *  + {@link qtek.Renderable.CCW}
+     *  + {@link clay.Renderable.CW}
+     *  + {@link clay.Renderable.CCW}
      * @see https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/frontFace
      * @type {number}
      */
     frontFace: glenum.CCW,
 
     /**
-     * If enable software frustum culling 
+     * If enable software frustum culling
      * @type {boolean}
      */
     frustumCulling: true,
@@ -120,13 +126,13 @@ var Renderable = Node.extend(
      * @type {boolean}
      */
     ignoreGBuffer: false,
-    
+
     /**
      * @return {boolean}
      */
     isRenderable: function() {
         // TODO Shader ?
-        return this.geometry && this.material && !this.invisible
+        return this.geometry && this.material && this.material.shader && !this.invisible
             && this.geometry.vertexCount > 0;
     },
 
@@ -152,14 +158,15 @@ var Renderable = Node.extend(
     },
 
     /**
-     * @param  {qtek.Renderer} renderer
-     * @param  {qtek.Shader} [shader] May use shader of other material if shader code are same
+     * @param  {clay.Renderer} renderer
+     * @param  {clay.Material} [material]
      * @return {Object}
      */
-    render: function (renderer, shader) {
+    render: function (renderer, material, program) {
         var _gl = renderer.gl;
+        material = material || this.material;
         // May use shader of other material if shader code are same
-        var shader = shader || this.material.shader;
+        var shader = material.shader;
         var geometry = this.geometry;
 
         var glDrawMode = this.mode;
@@ -183,20 +190,20 @@ var Renderable = Node.extend(
         // Draw each chunk
         var drawHashChanged = false;
         // Hash with shader id in case previous material has less attributes than next material
-        currentDrawID = renderer.__GUID__ + '-' + geometry.__GUID__ + '-' + shader.__GUID__;
+        currentDrawID = renderer.__uid__ + '-' + geometry.__uid__ + '-' + program.__uid__;
 
         if (currentDrawID !== prevDrawID) {
             drawHashChanged = true;
         }
         else {
             // The cache will be invalid in the following cases
-            // 1. Geometry is splitted to multiple chunks
-            // 2. VAO is enabled and is binded to null after render
-            // 3. Geometry needs update
+            // 1. VAO is enabled and is binded to null after render
+            // 2. Geometry needs update
             if (
-                ((nVertex > 0xffff && !uintExt) && isUseIndices)
-                || (vaoExt && isStatic)
-                || geometry._cache.isDirty()
+                // TODO Optimize
+                (vaoExt && isStatic)
+                // PENDING
+                || geometry._cache.isDirty('any')
             ) {
                 drawHashChanged = true;
             }
@@ -238,13 +245,13 @@ var Renderable = Node.extend(
                         var semantic = attributeBufferInfo.semantic;
                         var symbol;
                         if (semantic) {
-                            var semanticInfo = shader.attribSemantics[semantic];
+                            var semanticInfo = shader.attributeSemantics[semantic];
                             symbol = semanticInfo && semanticInfo.symbol;
                         }
                         else {
                             symbol = name;
                         }
-                        if (symbol && shader.attributeTemplates[symbol]) {
+                        if (symbol && program.attributes[symbol]) {
                             availableAttributes.push(attributeBufferInfo);
                             availableAttributeSymbols.push(symbol);
                         }
@@ -284,7 +291,7 @@ var Renderable = Node.extend(
                 var indicesBuffer = vao.indicesBuffer;
 
                 if (needsBindAttributes) {
-                    var locationList = shader.enableAttributes(renderer, vao.availableAttributeSymbols, (vaoExt && isStatic && vao.vao));
+                    var locationList = program.enableAttributes(renderer, vao.availableAttributeSymbols, (vaoExt && isStatic && vao.vao));
                     // Setting attributes;
                     for (var a = 0; a < availableAttributes.length; a++) {
                         var location = locationList[a];
@@ -354,8 +361,8 @@ var Renderable = Node.extend(
 
     /**
      * Clone a new renderable
-     * @method
-     * @return {qtek.Renderable}
+     * @function
+     * @return {clay.Renderable}
      */
     clone: (function() {
         var properties = [

@@ -12,13 +12,13 @@ var mathMin = Math.min;
 var mathMax = Math.max;
 /**
  * @constructor
- * @alias qtek.math.Frustum
+ * @alias clay.math.Frustum
  */
 var Frustum = function() {
 
     /**
      * Eight planes to enclose the frustum
-     * @type {qtek.math.Plane[]}
+     * @type {clay.math.Plane[]}
      */
     this.planes = [];
 
@@ -28,7 +28,7 @@ var Frustum = function() {
 
     /**
      * Bounding box of frustum
-     * @type {qtek.math.BoundingBox}
+     * @type {clay.math.BoundingBox}
      */
     this.boundingBox = new BoundingBox();
 
@@ -47,39 +47,39 @@ Frustum.prototype = {
     // http://web.archive.org/web/20120531231005/http://crazyjoke.free.fr/doc/3D/plane%20extraction.pdf
     /**
      * Set frustum from a projection matrix
-     * @param {qtek.math.Matrix4} projectionMatrix
+     * @param {clay.math.Matrix4} projectionMatrix
      */
     setFromProjection: function(projectionMatrix) {
 
         var planes = this.planes;
-        var m = projectionMatrix._array;
+        var m = projectionMatrix.array;
         var m0 = m[0], m1 = m[1], m2 = m[2], m3 = m[3];
         var m4 = m[4], m5 = m[5], m6 = m[6], m7 = m[7];
         var m8 = m[8], m9 = m[9], m10 = m[10], m11 = m[11];
         var m12 = m[12], m13 = m[13], m14 = m[14], m15 = m[15];
 
         // Update planes
-        vec3Set(planes[0].normal._array, m3 - m0, m7 - m4, m11 - m8);
+        vec3Set(planes[0].normal.array, m3 - m0, m7 - m4, m11 - m8);
         planes[0].distance = -(m15 - m12);
         planes[0].normalize();
 
-        vec3Set(planes[1].normal._array, m3 + m0, m7 + m4, m11 + m8);
+        vec3Set(planes[1].normal.array, m3 + m0, m7 + m4, m11 + m8);
         planes[1].distance = -(m15 + m12);
         planes[1].normalize();
 
-        vec3Set(planes[2].normal._array, m3 + m1, m7 + m5, m11 + m9);
+        vec3Set(planes[2].normal.array, m3 + m1, m7 + m5, m11 + m9);
         planes[2].distance = -(m15 + m13);
         planes[2].normalize();
 
-        vec3Set(planes[3].normal._array, m3 - m1, m7 - m5, m11 - m9);
+        vec3Set(planes[3].normal.array, m3 - m1, m7 - m5, m11 - m9);
         planes[3].distance = -(m15 - m13);
         planes[3].normalize();
 
-        vec3Set(planes[4].normal._array, m3 - m2, m7 - m6, m11 - m10);
+        vec3Set(planes[4].normal.array, m3 - m2, m7 - m6, m11 - m10);
         planes[4].distance = -(m15 - m14);
         planes[4].normalize();
 
-        vec3Set(planes[5].normal._array, m3 + m2, m7 + m6, m11 + m10);
+        vec3Set(planes[5].normal.array, m3 + m2, m7 + m6, m11 + m10);
         planes[5].distance = -(m15 + m14);
         planes[5].normalize();
 
@@ -121,8 +121,8 @@ Frustum.prototype = {
             boundingBox.min.set(Math.min(left, right), Math.min(bottom, top), Math.min(far, near));
             boundingBox.max.set(Math.max(right, left), Math.max(top, bottom), Math.max(near, far));
 
-            var min = boundingBox.min._array;
-            var max = boundingBox.max._array;
+            var min = boundingBox.min.array;
+            var max = boundingBox.max.array;
             var vertices = this.vertices;
             //--- min z
             // min x
@@ -141,10 +141,10 @@ Frustum.prototype = {
 
     /**
      * Apply a affine transform matrix and set to the given bounding box
-     * @method
-     * @param {qtek.math.BoundingBox}
-     * @param {qtek.math.Matrix4}
-     * @return {qtek.math.BoundingBox}
+     * @function
+     * @param {clay.math.BoundingBox}
+     * @param {clay.math.Matrix4}
+     * @return {clay.math.BoundingBox}
      */
     getTransformedBoundingBox: (function() {
 
@@ -153,11 +153,11 @@ Frustum.prototype = {
         return function(bbox, matrix) {
             var vertices = this.vertices;
 
-            var m4 = matrix._array;
+            var m4 = matrix.array;
             var min = bbox.min;
             var max = bbox.max;
-            var minArr = min._array;
-            var maxArr = max._array;
+            var minArr = min.array;
+            var maxArr = max.array;
             var v = vertices[0];
             vec3TranformMat4(tmpVec3, v, m4);
             vec3Copy(minArr, tmpVec3);

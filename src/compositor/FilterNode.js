@@ -10,13 +10,13 @@ import Node from './Node';
 /**
  * Filter node
  *
- * @constructor qtek.compositor.FilterNode
- * @extends qtek.compositor.Node
+ * @constructor clay.compositor.FilterNode
+ * @extends clay.compositor.Node
  *
  * @example
-    var node = new qtek.compositor.Node({
+    var node = new clay.compositor.Node({
         name: 'fxaa',
-        shader: qtek.Shader.source('qtek.compositor.fxaa'),
+        shader: clay.Shader.source('clay.compositor.fxaa'),
         inputs: {
             texture: {
                     node: 'scene',
@@ -26,9 +26,9 @@ import Node from './Node';
         // Multiple outputs is preserved for MRT support in WebGL2.0
         outputs: {
             color: {
-                attachment: qtek.FrameBuffer.COLOR_ATTACHMENT0
+                attachment: clay.FrameBuffer.COLOR_ATTACHMENT0
                 parameters: {
-                    format: qtek.Texture.RGBA,
+                    format: clay.Texture.RGBA,
                     width: 512,
                     height: 512
                 },
@@ -42,7 +42,7 @@ import Node from './Node';
     *
     */
 var FilterNode = Node.extend(function () {
-    return /** @lends qtek.compositor.Node# */ {
+    return /** @lends clay.compositor.Node# */ {
         /**
          * @type {string}
          */
@@ -86,7 +86,7 @@ var FilterNode = Node.extend(function () {
         outputLinks: {},
 
         /**
-         * @type {qtek.compositor.Pass}
+         * @type {clay.compositor.Pass}
          */
         pass: null,
 
@@ -111,10 +111,10 @@ var FilterNode = Node.extend(function () {
     });
     this.pass = pass;
 },
-/** @lends qtek.compositor.Node.prototype */
+/** @lends clay.compositor.Node.prototype */
 {
     /**
-     * @param  {qtek.Renderer} renderer
+     * @param  {clay.Renderer} renderer
      */
     render: function (renderer, frameBuffer) {
         this.trigger('beforerender', renderer);
@@ -248,30 +248,30 @@ var FilterNode = Node.extend(function () {
             this.setParameter(name, obj[name]);
         }
     },
+    // /**
+    //  * Set shader code
+    //  * @param {string} shaderStr
+    //  */
+    // setShader: function (shaderStr) {
+    //     var material = this.pass.material;
+    //     material.shader.setFragment(shaderStr);
+    //     material.attachShader(material.shader, true);
+    // },
     /**
-     * Set shader code
-     * @param {string} shaderStr
-     */
-    setShader: function (shaderStr) {
-        var material = this.pass.material;
-        material.shader.setFragment(shaderStr);
-        material.attachShader(material.shader, true);
-    },
-    /**
-     * Proxy of pass.material.shader.define('fragment', xxx);
+     * Proxy of pass.material.define('fragment', xxx);
      * @param  {string} symbol
      * @param  {number} [val]
      */
-    shaderDefine: function (symbol, val) {
-        this.pass.material.shader.define('fragment', symbol, val);
+    define: function (symbol, val) {
+        this.pass.material.define('fragment', symbol, val);
     },
 
     /**
-     * Proxy of pass.material.shader.undefine('fragment', xxx)
+     * Proxy of pass.material.undefine('fragment', xxx)
      * @param  {string} symbol
      */
-    shaderUndefine: function (symbol) {
-        this.pass.material.shader.undefine('fragment', symbol);
+    undefine: function (symbol) {
+        this.pass.material.undefine('fragment', symbol);
     },
 
     removeReference: function (outputName) {
@@ -292,72 +292,11 @@ var FilterNode = Node.extend(function () {
         }
     },
 
-    link: function (inputPinName, fromNode, fromPinName) {
-
-        // The relationship from output pin to input pin is one-on-multiple
-        this.inputLinks[inputPinName] = {
-            node: fromNode,
-            pin: fromPinName
-        };
-        if (!fromNode.outputLinks[fromPinName]) {
-            fromNode.outputLinks[fromPinName] = [];
-        }
-        fromNode.outputLinks[ fromPinName ].push({
-            node: this,
-            pin: inputPinName
-        });
-
-        // Enabled the pin texture in shader
-        var shader = this.pass.material.shader;
-        shader.enableTexture(inputPinName);
-    },
-
     clear: function () {
         Node.prototype.clear.call(this);
 
-        var shader = this.pass.material.shader;
         // Default disable all texture
-        shader.disableTexturesAll();
-    },
-
-    updateReference: function (outputName) {
-        if (!this._rendering) {
-            this._rendering = true;
-            for (var inputName in this.inputLinks) {
-                var link = this.inputLinks[inputName];
-                link.node.updateReference(link.pin);
-            }
-            this._rendering = false;
-        }
-        if (outputName) {
-            this._outputReferences[outputName] ++;
-        }
-    },
-
-    beforeFrame: function () {
-        this._rendered = false;
-
-        for (var name in this.outputLinks) {
-            this._outputReferences[name] = 0;
-        }
-    },
-
-    afterFrame: function () {
-        // Put back all the textures to pool
-        for (var name in this.outputLinks) {
-            if (this._outputReferences[name] > 0) {
-                var outputInfo = this.outputs[name];
-                if (outputInfo.keepLastFrame) {
-                    if (this._prevOutputTextures[name]) {
-                        this._compositor.releaseTexture(this._prevOutputTextures[name]);
-                    }
-                    this._prevOutputTextures[name] = this._outputTextures[name];
-                }
-                else {
-                    this._compositor.releaseTexture(this._outputTextures[name]);
-                }
-            }
-        }
+        this.pass.material.disableTexturesAll();
     }
 });
 

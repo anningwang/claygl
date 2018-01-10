@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <script src="../dist/qtek.js"></script>
+        <script src="../dist/claygl.js"></script>
 
         <style>
             body{
@@ -97,8 +97,8 @@
             var crossPosArr = pixelToPositionArray(crossPixels);
             var checkPosArr = pixelToPositionArray(checkPixels);
 
-            var larger = checkPosArr.length < crossPosArr.length ? crossPosArr : checkPosArr;
-            var smaller = larger == crossPosArr ? checkPosArr : crossPosArr;
+            var larger = checkPosArr.length < crossPosArr.length ? crossPosArr: checkPosArr;
+            var smaller = larger == crossPosArr ? checkPosArr: crossPosArr;
 
             for (var i = smaller.length; i < larger.length; i++) {
                 var random = smaller[Math.round(Math.random() * (smaller.length - 1))];
@@ -116,39 +116,39 @@
             //----------------------------------
             // Prepare scene
             //----------------------------------
-            var Shader = qtek.Shader;
+            var Shader = clay.Shader;
 
-            var renderer = new qtek.Renderer({
-                canvas : document.getElementById('main')
+            var renderer = new clay.Renderer({
+                canvas: document.getElementById('main')
             });
-            var shadowMapPass = new qtek.prePass.ShadowMap({
-                // softShadow : qtek.prePass.VSM
+            var shadowMapPass = new clay.prePass.ShadowMap({
+                // softShadow: clay.prePass.VSM
             });
 
             renderer.resize(window.innerWidth, window.innerHeight);
-            var scene = new qtek.Scene();
-            var camera = new qtek.camera.Perspective({
+            var scene = new clay.Scene();
+            var camera = new clay.camera.Perspective({
                 aspect: renderer.getViewportAspect()
             });
             camera.position.set(0, 0, 40);
 
-            var shader = qtek.shader.library.get('qtek.standard');
+            var shader = clay.shader.library.get('clay.standard');
 
-            var cubeMat = new qtek.Material({
-                shader : shader
+            var cubeMat = new clay.Material({
+                shader: shader
             });
 
-            var root = new qtek.Node();
+            var root = new clay.Node();
             scene.add(root);
 
             var cubeList = [];
 
-            var gltfLoader = new qtek.loader.GLTF();
-            var cubeGeo = new qtek.geometry.Cube();
+            var gltfLoader = new clay.loader.GLTF();
+            var cubeGeo = new clay.geometry.Cube();
 
             for (var i = 0; i < positionArr.length; i++) {
                 var position = positionArr[i];
-                var mesh = new qtek.Mesh({
+                var mesh = new clay.Mesh({
                     material: cubeMat,
                     geometry: cubeGeo
                 });
@@ -163,8 +163,8 @@
                 cubeList.push(mesh);
             }
 
-            var light = new qtek.light.Directional({
-                shadowResolution : 1024,
+            var light = new clay.light.Directional({
+                shadowResolution: 1024,
                 shadowBias: 0.005,
                 intensity: 0.7
             });
@@ -172,14 +172,14 @@
             light.lookAt(scene.position);
             scene.add(light);
 
-            scene.add(new qtek.light.Ambient({
+            scene.add(new clay.light.Ambient({
                 intensity: 0.3
             }));
 
-            var animation = new qtek.animation.Animation();
-            animation.start();
+            var timeline =  new clay.animation.Timeline();
+            timeline.start();
 
-            animation.on('frame', function(deltaTime) {
+            timeline.on('frame', function(deltaTime) {
 
                 var start = new Date().getTime();
                 shadowMapPass.render(renderer, scene, camera);
@@ -198,8 +198,8 @@
                 for (var i = 0; i < cubeList.length; i++) {
                     cubeList[i].material.set('color', color);
                     var pos = positionArr[i];
-                    qtek.math.Quaternion.rotateY(cubeList[i].rotation, cubeList[i].rotation, deltaTime / 500);
-                    qtek.math.Vector3.set(cubeList[i].position, pos[0], pos[1], pos[2]);
+                    clay.math.Quaternion.rotateY(cubeList[i].rotation, cubeList[i].rotation, deltaTime / 500);
+                    clay.math.Vector3.set(cubeList[i].position, pos[0], pos[1], pos[2]);
                 }
             });
 
@@ -210,15 +210,15 @@
             });
 
             var obj = {
-                position : positionArr
+                position: positionArr
             }
 
             var current = crossPosArr;
             setInterval(function() {
-                var another = current == crossPosArr ? checkPosArr : crossPosArr;
+                var another = current == crossPosArr ? checkPosArr: crossPosArr;
                 animation.animate(obj)
                 .when(1000, {
-                    position : another
+                    position: another
                 }).start("CubicInOut");
                 current = another;
             }, 4000);

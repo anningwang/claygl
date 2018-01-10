@@ -8,21 +8,21 @@ var vec3Set = vec3.set;
 /**
  * Axis aligned bounding box
  * @constructor
- * @alias qtek.math.BoundingBox
- * @param {qtek.math.Vector3} [min]
- * @param {qtek.math.Vector3} [max]
+ * @alias clay.math.BoundingBox
+ * @param {clay.math.Vector3} [min]
+ * @param {clay.math.Vector3} [max]
  */
 var BoundingBox = function (min, max) {
 
     /**
      * Minimum coords of bounding box
-     * @type {qtek.math.Vector3}
+     * @type {clay.math.Vector3}
      */
     this.min = min || new Vector3(Infinity, Infinity, Infinity);
 
     /**
      * Maximum coords of bounding box
-     * @type {qtek.math.Vector3}
+     * @type {clay.math.Vector3}
      */
     this.max = max || new Vector3(-Infinity, -Infinity, -Infinity);
 };
@@ -38,8 +38,8 @@ BoundingBox.prototype = {
         if (vertices.length > 0) {
             var min = this.min;
             var max = this.max;
-            var minArr = min._array;
-            var maxArr = max._array;
+            var minArr = min.array;
+            var maxArr = max.array;
             vec3Copy(minArr, vertices[0]);
             vec3Copy(maxArr, vertices[0]);
             for (var i = 1; i < vertices.length; i++) {
@@ -60,13 +60,13 @@ BoundingBox.prototype = {
 
     /**
      * Union operation with another bounding box
-     * @param  {qtek.math.BoundingBox} bbox
+     * @param  {clay.math.BoundingBox} bbox
      */
     union: function (bbox) {
         var min = this.min;
         var max = this.max;
-        vec3.min(min._array, min._array, bbox.min._array);
-        vec3.max(max._array, max._array, bbox.max._array);
+        vec3.min(min.array, min.array, bbox.min.array);
+        vec3.max(max.array, max.array, bbox.max.array);
         min._dirty = true;
         max._dirty = true;
         return this;
@@ -74,13 +74,13 @@ BoundingBox.prototype = {
 
     /**
      * Intersection operation with another bounding box
-     * @param  {qtek.math.BoundingBox} bbox
+     * @param  {clay.math.BoundingBox} bbox
      */
     intersection: function (bbox) {
         var min = this.min;
         var max = this.max;
-        vec3.max(min._array, min._array, bbox.min._array);
-        vec3.min(max._array, max._array, bbox.max._array);
+        vec3.max(min.array, min.array, bbox.min.array);
+        vec3.min(max.array, max.array, bbox.max.array);
         min._dirty = true;
         max._dirty = true;
         return this;
@@ -88,15 +88,15 @@ BoundingBox.prototype = {
 
     /**
      * If intersect with another bounding box
-     * @param  {qtek.math.BoundingBox} bbox
+     * @param  {clay.math.BoundingBox} bbox
      * @return {boolean}
      */
     intersectBoundingBox: function (bbox) {
-        var _min = this.min._array;
-        var _max = this.max._array;
+        var _min = this.min.array;
+        var _max = this.max.array;
 
-        var _min2 = bbox.min._array;
-        var _max2 = bbox.max._array;
+        var _min2 = bbox.min.array;
+        var _max2 = bbox.max.array;
 
         return ! (_min[0] > _max2[0] || _min[1] > _max2[1] || _min[2] > _max2[2]
             || _max[0] < _min2[0] || _max[1] < _min2[1] || _max[2] < _min2[2]);
@@ -104,16 +104,16 @@ BoundingBox.prototype = {
 
     /**
      * If contain another bounding box entirely
-     * @param  {qtek.math.BoundingBox} bbox
+     * @param  {clay.math.BoundingBox} bbox
      * @return {boolean}
      */
     containBoundingBox: function (bbox) {
 
-        var _min = this.min._array;
-        var _max = this.max._array;
+        var _min = this.min.array;
+        var _max = this.max.array;
 
-        var _min2 = bbox.min._array;
-        var _max2 = bbox.max._array;
+        var _min2 = bbox.min.array;
+        var _max2 = bbox.max.array;
 
         return _min[0] <= _min2[0] && _min[1] <= _min2[1] && _min[2] <= _min2[2]
             && _max[0] >= _max2[0] && _max[1] >= _max2[1] && _max[2] >= _max2[2];
@@ -121,14 +121,14 @@ BoundingBox.prototype = {
 
     /**
      * If contain point entirely
-     * @param  {qtek.math.Vector3} point
+     * @param  {clay.math.Vector3} point
      * @return {boolean}
      */
     containPoint: function (p) {
-        var _min = this.min._array;
-        var _max = this.max._array;
+        var _min = this.min.array;
+        var _max = this.max.array;
 
-        var _p = p._array;
+        var _p = p.array;
 
         return _min[0] <= _p[0] && _min[1] <= _p[1] && _min[2] <= _p[2]
             && _max[0] >= _p[0] && _max[1] >= _p[1] && _max[2] >= _p[2];
@@ -138,15 +138,15 @@ BoundingBox.prototype = {
      * If bounding box is finite
      */
     isFinite: function () {
-        var _min = this.min._array;
-        var _max = this.max._array;
+        var _min = this.min.array;
+        var _max = this.max.array;
         return isFinite(_min[0]) && isFinite(_min[1]) && isFinite(_min[2])
             && isFinite(_max[0]) && isFinite(_max[1]) && isFinite(_max[2]);
     },
 
     /**
      * Apply an affine transform matrix to the bounding box
-     * @param  {qtek.math.Matrix4} matrix
+     * @param  {clay.math.Matrix4} matrix
      */
     applyTransform: (function () {
         // http://dev.theomader.com/transform-bounding-boxes/
@@ -158,10 +158,10 @@ BoundingBox.prototype = {
         var zb = vec3.create();
 
         return function (matrix) {
-            var min = this.min._array;
-            var max = this.max._array;
+            var min = this.min.array;
+            var max = this.max.array;
 
-            var m = matrix._array;
+            var m = matrix.array;
 
             xa[0] = m[0] * min[0]; xa[1] = m[1] * min[0]; xa[2] = m[2] * min[0];
             xb[0] = m[0] * max[0]; xb[1] = m[1] * max[0]; xb[2] = m[2] * max[0];
@@ -189,13 +189,13 @@ BoundingBox.prototype = {
 
     /**
      * Apply a projection matrix to the bounding box
-     * @param  {qtek.math.Matrix4} matrix
+     * @param  {clay.math.Matrix4} matrix
      */
     applyProjection: function (matrix) {
-        var min = this.min._array;
-        var max = this.max._array;
+        var min = this.min.array;
+        var max = this.max.array;
 
-        var m = matrix._array;
+        var m = matrix.array;
         // min in min z
         var v10 = min[0];
         var v11 = min[1];
@@ -252,8 +252,8 @@ BoundingBox.prototype = {
              */
             this.vertices = vertices;
         }
-        var min = this.min._array;
-        var max = this.max._array;
+        var min = this.min.array;
+        var max = this.max.array;
         //--- min z
         // min x
         vec3Set(vertices[0], min[0], min[1], min[2]);
@@ -272,13 +272,13 @@ BoundingBox.prototype = {
     },
     /**
      * Copy values from another bounding box
-     * @param  {qtek.math.BoundingBox} bbox
+     * @param  {clay.math.BoundingBox} bbox
      */
     copy: function (bbox) {
         var min = this.min;
         var max = this.max;
-        vec3Copy(min._array, bbox.min._array);
-        vec3Copy(max._array, bbox.max._array);
+        vec3Copy(min.array, bbox.min.array);
+        vec3Copy(max.array, bbox.max.array);
         min._dirty = true;
         max._dirty = true;
         return this;
@@ -286,7 +286,7 @@ BoundingBox.prototype = {
 
     /**
      * Clone a new bounding box
-     * @return {qtek.math.BoundingBox}
+     * @return {clay.math.BoundingBox}
      */
     clone: function () {
         var boundingBox = new BoundingBox();

@@ -1,16 +1,14 @@
 // TODO Resources like shader, texture, geometry reference management
 // Trace and find out which shader, texture, geometry can be destroyed
-//
-// TODO prez skinning
 import Base from './core/Base';
 import GLInfo from './core/GLInfo';
 import glenum from './core/glenum';
 import vendor from './core/vendor';
 import BoundingBox from './math/BoundingBox';
 import Matrix4 from './math/Matrix4';
-import shaderLibrary from './shader/library';
 import Material from './Material';
 import Vector2 from './math/Vector2';
+import ProgramManager from './gpu/ProgramManager';
 
 // Light header
 import Shader from './Shader';
@@ -28,11 +26,17 @@ var mat4Create = mat4.create;
 
 var errorShader = {};
 
+function defaultGetMaterial(renderable) {
+    return renderable.material;
+}
+
+function noop() {}
+
 /**
- * @constructor qtek.Renderer
+ * @constructor clay.Renderer
  */
 var Renderer = Base.extend(function () {
-    return /** @lends qtek.Renderer# */ {
+    return /** @lends clay.Renderer# */ {
 
         /**
          * @type {HTMLCanvasElement}
@@ -168,8 +172,11 @@ var Renderer = Base.extend(function () {
     catch (e) {
         throw 'Error creating WebGL Context ' + e;
     }
+
+    // Init managers
+    this._programMgr = new ProgramManager(this);
 },
-/** @lends qtek.Renderer.prototype. **/
+/** @lends clay.Renderer.prototype. **/
 {
     /**
      * Resize the canvas
@@ -346,21 +353,16 @@ var Renderer = Base.extend(function () {
         this._sceneRendering = scene;
     },
 
-    // Hook before and after render each object
-    beforeRenderObject: function () {},
-    afterRenderObject: function () {},
     /**
      * Render the scene in camera to the screen or binded offline framebuffer
-     * @param  {qtek.Scene}       scene
-     * @param  {qtek.Camera}      camera
+     * @param  {clay.Scene}       scene
+     * @param  {clay.Camera}      camera
      * @param  {boolean}     [notUpdateScene] If not call the scene.update methods in the rendering, default true
      * @param  {boolean}     [preZ]           If use preZ optimization, default false
      * @return {IRenderInfo}
      */
     render: function(scene, camera, notUpdateScene, preZ) {
         var _gl = this.gl;
-
-        this._sceneRendering = scene;
 
         var clearColor = this.clearColor;
 
@@ -394,60 +396,67 @@ var Renderer = Base.extend(function () {
         if (!notUpdateScene) {
             scene.update(false);
         }
+        camera = camera || scene.getMainCamera();
+        if (!camera) {
+            console.error('Can\'t find camera in the scene.');
+            return;
+        }
         // Update if camera not mounted on the scene
         if (!camera.getScene()) {
             camera.update(true);
         }
 
-        var opaqueQueue = scene.opaqueQueue;
-        var transparentQueue = scene.transparentQueue;
-        var sceneMaterial = scene.material;
-
-        // StandardMaterial needs updateShader method so shader can be created on demand.
-        for (var i = 0; i < opaqueQueue.length; i++) {
-            var material = opaqueQueue[i].material;
-            material.updateShader && material.updateShader(this);
-        }
-        // StandardMaterial needs updateShader method so shader can be created on demand.
-        for (var i = 0; i < transparentQueue.length; i++) {
-            var material = transparentQueue[i].material;
-            material.updateShader && material.updateShader(this);
-        }
-        scene.trigger('beforerender', this, scene, camera);
-        // Sort render queue
-        // Calculate the object depth
-        if (transparentQueue.length > 0) {
-            var worldViewMat = mat4Create();
-            var posViewSpace = vec3.create();
-            for (var i = 0; i < transparentQueue.length; i++) {
-                var node = transparentQueue[i];
-                mat4.multiplyAffine(worldViewMat, camera.viewMatrix._array, node.worldTransform._array);
-                vec3.transformMat4(posViewSpace, node.position._array, worldViewMat);
-                node.__depth = posViewSpace[2];
-            }
-        }
-        opaqueQueue.sort(this.opaqueSortFunc);
-        transparentQueue.sort(this.transparentSortFunc);
-
-        // Render Opaque queue
-        scene.trigger('beforerender:opaque', this, opaqueQueue);
+        this._sceneRendering = scene;
 
         // Reset the scene bounding box;
         scene.viewBoundingBoxLastFrame.min.set(Infinity, Infinity, Infinity);
         scene.viewBoundingBoxLastFrame.max.set(-Infinity, -Infinity, -Infinity);
 
-        _gl.disable(_gl.BLEND);
-        _gl.enable(_gl.DEPTH_TEST);
-        var opaqueRenderInfo = this.renderQueue(opaqueQueue, camera, sceneMaterial, preZ);
+        var opaqueList = this.cullRenderList(scene.opaqueList, scene, camera);
+        var transparentList = this.cullRenderList(scene.transparentList, scene, camera);
+        var sceneMaterial = scene.material;
 
-        scene.trigger('afterrender:opaque', this, opaqueQueue, opaqueRenderInfo);
-        scene.trigger('beforerender:transparent', this, transparentQueue);
+        scene.trigger('beforerender', this, scene, camera);
 
-        // Render Transparent Queue
-        _gl.enable(_gl.BLEND);
-        var transparentRenderInfo = this.renderQueue(transparentQueue, camera, sceneMaterial);
+        // Render pre z
+        if (preZ) {
+            this.renderPreZ(opaqueList, scene, camera);
+            _gl.depthFunc(_gl.LEQUAL);
+        }
+        else {
+            _gl.depthFunc(_gl.LESS);
+        }
 
-        scene.trigger('afterrender:transparent', this, transparentQueue, transparentRenderInfo);
+        // Update the depth of transparent list.
+        var worldViewMat = mat4Create();
+        var posViewSpace = vec3.create();
+        for (var i = 0; i < transparentList.length; i++) {
+            var renderable = transparentList[i];
+            mat4.multiplyAffine(worldViewMat, camera.viewMatrix.array, renderable.worldTransform.array);
+            vec3.transformMat4(posViewSpace, renderable.position.array, worldViewMat);
+            renderable.__depth = posViewSpace[2];
+        }
+
+        // Render opaque list
+        scene.trigger('beforerender:opaque', this, opaqueList);
+        var opaqueRenderInfo = this.renderPass(opaqueList, camera, {
+            getMaterial: function (renderable) {
+                return sceneMaterial || renderable.material;
+            },
+            sortCompare: this.opaqueSortCompare
+        });
+
+        scene.trigger('afterrender:opaque', this, opaqueList, opaqueRenderInfo);
+        scene.trigger('beforerender:transparent', this, transparentList);
+
+        var transparentRenderInfo = this.renderPass(transparentList, camera, {
+            getMaterial: function (renderable) {
+                return sceneMaterial || renderable.material;
+            },
+            sortCompare: this.transparentSortCompare
+        });
+
+        scene.trigger('afterrender:transparent', this, transparentList, transparentRenderInfo);
         var renderInfo = {};
         for (var name in opaqueRenderInfo) {
             renderInfo[name] = opaqueRenderInfo[name] + transparentRenderInfo[name];
@@ -460,36 +469,112 @@ var Renderer = Base.extend(function () {
         return renderInfo;
     },
 
-    resetRenderStatus: function () {
-        this._currentShader = null;
+    getProgram: function (renderable, renderMaterial, scene) {
+        renderMaterial = renderMaterial || renderable.material;
+        return this._programMgr.getProgram(renderable, renderMaterial, scene);
+    },
+
+    validateProgram: function (program) {
+        if (program.__error) {
+            var errorMsg = program.__error;
+            if (errorShader[program.__uid__]) {
+                return;
+            }
+            errorShader[program.__uid__] = true;
+
+            if (this.throwError) {
+                throw new Error(errorMsg);
+            }
+            else {
+                this.trigger('error', errorMsg);
+            }
+        }
+
+    },
+
+    updatePrograms: function (list, scene, passConfig) {
+        var getMaterial = (passConfig && passConfig.getMaterial) || defaultGetMaterial;
+        scene = scene || null;
+        for (var i = 0; i < list.length; i++) {
+            var renderable = list[i];
+            var renderMaterial = getMaterial.call(this, renderable);
+            if (i > 0) {
+                var prevRenderable = list[i - 1];
+                var prevJointsLen = prevRenderable.joints ? prevRenderable.joints.length : 0;
+                var jointsLen = renderable.joints.length ? renderable.joints.length : 0;
+                // Keep program not change if joints, material, lightGroup are same of two renderables.
+                if (jointsLen === prevJointsLen
+                    && renderable.material === prevRenderable.material
+                    && renderable.lightGroup === prevRenderable.lightGroup
+                ) {
+                    renderable.__program = prevRenderable.__program;
+                    continue;
+                }
+            }
+
+            var program = this._programMgr.getProgram(renderable, renderMaterial, scene);
+
+            this.validateProgram(program);
+
+            renderable.__program = program;
+        }
     },
 
     /**
-     * Callback during rendering process to determine if render given renderable.
-     * @param {qtek.Renderable} given renderable.
-     * @return {boolean}
+     * Do frustum culling on render list
      */
-    ifRenderObject: function (obj) {
-        return true;
+    cullRenderList: function (list, scene, camera) {
+        var culledRenderList = [];
+        for (var i = 0; i < list.length; i++) {
+            var renderable = list[i];
+
+            var worldM = renderable.isSkinnedMesh() ? matrices.IDENTITY : renderable.worldTransform.array;
+            var geometry = renderable.geometry;
+
+            mat4.multiplyAffine(matrices.WORLDVIEW, camera.viewMatrix.array , worldM);
+            if (geometry.boundingBox) {
+                if (this.isFrustumCulled(
+                    renderable, scene, camera, matrices.WORLDVIEW, camera.projectionMatrix.array
+                )) {
+                    continue;
+                }
+            }
+
+            culledRenderList.push(renderable);
+        }
+
+        return culledRenderList;
     },
 
     /**
      * Render a single renderable list in camera in sequence
-     * @param  {qtek.Renderable[]} queue       List of all renderables.
-     *                                         Best to be sorted by Renderer.opaqueSortFunc or Renderer.transparentSortFunc
-     * @param  {qtek.Camera}       camera
-     * @param  {qtek.Material}     [globalMaterial] globalMaterial will override the material of each renderable
-     * @param  {boolean}           [preZ]           If use preZ optimization, default false
+     * @param {clay.Renderable[]} list List of all renderables.
+     * @param {clay.Camera} camera
+     * @param {Object} [passConfig]
+     * @param {Function} [passConfig.getMaterial] Get renderable material.
+     * @param {Function} [passConfig.beforeRender] Before render each renderable.
+     * @param {Function} [passConfig.afterRender] After render each renderable
+     * @param {Function} [passConfig.ifRender] If render the renderable.
+     * @param {Function} [passConfig.sortCompare] Sort compare function.
      * @return {IRenderInfo}
      */
-    renderQueue: function(queue, camera, globalMaterial, preZ) {
+    renderPass: function(list, camera, passConfig) {
         var renderInfo = {
             triangleCount: 0,
             vertexCount: 0,
             drawCallCount: 0,
-            meshCount: queue.length,
+            meshCount: list.length,
             renderedMeshCount: 0
         };
+        passConfig = passConfig || {};
+        passConfig.getMaterial = passConfig.getMaterial || defaultGetMaterial;
+        passConfig.beforeRender = passConfig.beforeRender || noop;
+        passConfig.afterRender = passConfig.afterRender || noop;
+
+        this.updatePrograms(list, this._sceneRendering, passConfig);
+        if (passConfig.sortCompare) {
+            list.sort(passConfig.sortCompare);
+        }
 
         // Some common builtin uniforms
         var viewport = this.viewport;
@@ -509,10 +594,10 @@ var Renderer = Base.extend(function () {
         var time = Date.now();
 
         // Calculate view and projection matrix
-        mat4.copy(matrices.VIEW, camera.viewMatrix._array);
-        mat4.copy(matrices.PROJECTION, camera.projectionMatrix._array);
-        mat4.multiply(matrices.VIEWPROJECTION, camera.projectionMatrix._array, matrices.VIEW);
-        mat4.copy(matrices.VIEWINVERSE, camera.worldTransform._array);
+        mat4.copy(matrices.VIEW, camera.viewMatrix.array);
+        mat4.copy(matrices.PROJECTION, camera.projectionMatrix.array);
+        mat4.multiply(matrices.VIEWPROJECTION, camera.projectionMatrix.array, matrices.VIEW);
+        mat4.copy(matrices.VIEWINVERSE, camera.worldTransform.array);
         mat4.invert(matrices.PROJECTIONINVERSE, matrices.PROJECTION);
         mat4.invert(matrices.VIEWPROJECTIONINVERSE, matrices.VIEWPROJECTION);
 
@@ -520,44 +605,25 @@ var Renderer = Base.extend(function () {
         var scene = this._sceneRendering;
 
         var prevMaterial;
-        var prevShader;
-
-        var culledRenderQueue;
-        if (preZ) {
-            culledRenderQueue = this._renderPreZ(queue, scene, camera);
-        }
-        else {
-            culledRenderQueue = queue;
-            _gl.depthFunc(_gl.LESS);
-        }
+        var prevProgram;
 
         // Status
         var depthTest, depthMask;
         var culling, cullFace, frontFace;
+        var transparent;
 
-        for (var i = 0; i < culledRenderQueue.length; i++) {
-            var renderable = culledRenderQueue[i];
-            if (!this.ifRenderObject(renderable)) {
+        for (var i = 0; i < list.length; i++) {
+            var renderable = list[i];
+            if (passConfig.ifRender && !passConfig.ifRender(renderable)) {
                 continue;
             }
 
-            var geometry = renderable.geometry;
-
             // Skinned mesh will transformed to joint space. Ignore the mesh transform
-            var worldM = renderable.isSkinnedMesh() ? matrices.IDENTITY : renderable.worldTransform._array;
-            // All matrices ralated to world matrix will be updated on demand;
-            mat4.multiplyAffine(matrices.WORLDVIEW, matrices.VIEW , worldM);
-            // TODO Skinned mesh may have wrong bounding box.
-            if (geometry.boundingBox && !preZ) {
-                if (this.isFrustumCulled(
-                    renderable, scene, camera, matrices.WORLDVIEW, matrices.PROJECTION
-                )) {
-                    continue;
-                }
-            }
+            var worldM = renderable.isSkinnedMesh() ? matrices.IDENTITY : renderable.worldTransform.array;
 
-            var material = globalMaterial || renderable.material;
+            var material = passConfig.getMaterial.call(this, renderable);
 
+            var program = renderable.__program;
             var shader = material.shader;
 
             mat4.copy(matrices.WORLD, worldM);
@@ -575,85 +641,66 @@ var Renderer = Base.extend(function () {
                 mat4.invert(matrices.WORLDVIEWPROJECTIONINVERSE, matrices.WORLDVIEWPROJECTION);
             }
 
-            // FIXME Optimize for compositing.
-            // var prevShader = this._sceneRendering ? null : this._currentShader;
-            // var prevShader = null;
-
             // Before render hook
             renderable.beforeRender(this);
-            this.beforeRenderObject(renderable, prevMaterial, prevShader);
+            passConfig.beforeRender.call(this, renderable, material, prevMaterial);
 
-            var shaderChanged = !shader.isEqual(prevShader);
-            if (shaderChanged) {
+            var programChanged = program !== prevProgram;
+            if (programChanged) {
                 // Set lights number
-                if (scene && scene.isShaderLightNumberChanged(shader)) {
-                    scene.setShaderLightNumber(shader);
-                }
-                var errMsg = shader.bind(this);
-                if (errMsg) {
-
-                    if (errorShader[shader.__GUID__]) {
-                        continue;
-                    }
-                    errorShader[shader.__GUID__] = true;
-
-                    if (this.throwError) {
-                        throw new Error(errMsg);
-                    }
-                    else {
-                        this.trigger('error', errMsg);
-                    }
-                }
+                program.bind(this);
                 // Set some common uniforms
-                shader.setUniformOfSemantic(_gl, 'VIEWPORT', viewportUniform);
-                shader.setUniformOfSemantic(_gl, 'WINDOW_SIZE', windowSizeUniform);
-                shader.setUniformOfSemantic(_gl, 'NEAR', camera.near);
-                shader.setUniformOfSemantic(_gl, 'FAR', camera.far);
-                shader.setUniformOfSemantic(_gl, 'DEVICEPIXELRATIO', vDpr);
-                shader.setUniformOfSemantic(_gl, 'TIME', time);
+                program.setUniformOfSemantic(_gl, 'VIEWPORT', viewportUniform);
+                program.setUniformOfSemantic(_gl, 'WINDOW_SIZE', windowSizeUniform);
+                program.setUniformOfSemantic(_gl, 'NEAR', camera.near);
+                program.setUniformOfSemantic(_gl, 'FAR', camera.far);
+                program.setUniformOfSemantic(_gl, 'DEVICEPIXELRATIO', vDpr);
+                program.setUniformOfSemantic(_gl, 'TIME', time);
                 // DEPRECATED
-                shader.setUniformOfSemantic(_gl, 'VIEWPORT_SIZE', viewportSizeUniform);
+                program.setUniformOfSemantic(_gl, 'VIEWPORT_SIZE', viewportSizeUniform);
 
                 // Set lights uniforms
                 // TODO needs optimized
                 if (scene) {
-                    scene.setLightUniforms(shader, this);
+                    scene.setLightUniforms(program, renderable.lightGroup, this);
                 }
-
-                // Save current used shader in the renderer
-                // ALWAYS USE RENDERER TO DRAW THE MESH
-                // this._currentShader = shader;
             }
             else {
-                shader = prevShader;
+                program = prevProgram;
             }
 
-            if (prevMaterial !== material) {
-                if (!preZ) {
-                    if (material.depthTest !== depthTest) {
-                        material.depthTest ?
-                            _gl.enable(_gl.DEPTH_TEST) :
-                            _gl.disable(_gl.DEPTH_TEST);
-                        depthTest = material.depthTest;
-                    }
-                    if (material.depthMask !== depthMask) {
-                        _gl.depthMask(material.depthMask);
-                        depthMask = material.depthMask;
-                    }
+            // Program changes also needs reset the materials.
+            if (prevMaterial !== material || programChanged) {
+                if (material.depthTest !== depthTest) {
+                    material.depthTest
+                        ? _gl.enable(_gl.DEPTH_TEST)
+                        : _gl.disable(_gl.DEPTH_TEST);
+                    depthTest = material.depthTest;
                 }
-                material.bind(this, shader, prevMaterial, prevShader);
-                prevMaterial = material;
-
+                if (material.depthMask !== depthMask) {
+                    _gl.depthMask(material.depthMask);
+                    depthMask = material.depthMask;
+                }
+                if (material.transparent !== transparent) {
+                    material.transparent
+                        ? _gl.enable(_gl.BLEND)
+                        : _gl.disable(_gl.BLEND);
+                    transparent = material.transparent;
+                }
                 // TODO cache blending
                 if (material.transparent) {
                     if (material.blend) {
                         material.blend(_gl);
                     }
-                    else {    // Default blend function
+                    else {
+                        // Default blend function
                         _gl.blendEquationSeparate(_gl.FUNC_ADD, _gl.FUNC_ADD);
                         _gl.blendFuncSeparate(_gl.SRC_ALPHA, _gl.ONE_MINUS_SRC_ALPHA, _gl.ONE, _gl.ONE_MINUS_SRC_ALPHA);
                     }
                 }
+
+                material.bind(this, program, prevMaterial, prevProgram);
+                prevMaterial = material;
             }
 
             var matrixSemanticKeys = shader.matrixSemanticKeys;
@@ -665,7 +712,7 @@ var Renderer = Base.extend(function () {
                     var matrixNoTranspose = matrices[semanticInfo.semanticNoTranspose];
                     mat4.transpose(matrix, matrixNoTranspose);
                 }
-                shader.setUniform(_gl, semanticInfo.type, semanticInfo.symbol, matrix);
+                program.setUniform(_gl, semanticInfo.type, semanticInfo.symbol, matrix);
             }
 
             if (renderable.cullFace !== cullFace) {
@@ -681,7 +728,7 @@ var Renderer = Base.extend(function () {
                 culling ? _gl.enable(_gl.CULL_FACE) : _gl.disable(_gl.CULL_FACE);
             }
 
-            var objectRenderInfo = renderable.render(this, shader);
+            var objectRenderInfo = renderable.render(this, material, program);
 
             if (objectRenderInfo) {
                 renderInfo.triangleCount += objectRenderInfo.triangleCount;
@@ -691,84 +738,43 @@ var Renderer = Base.extend(function () {
             }
 
             // After render hook
-            this.afterRenderObject(renderable, objectRenderInfo);
+            passConfig.afterRender.call(this, renderable, objectRenderInfo);
             renderable.afterRender(this, objectRenderInfo);
 
-            prevShader = shader;
+            prevProgram = program;
+        }
+
+        // Remove programs incase it's not updated in the other passes.
+        for (var i = 0; i < list.length; i++) {
+            list[i].__program = null;
         }
 
         return renderInfo;
     },
 
-    _renderPreZ: function (queue, scene, camera) {
+    renderPreZ: function (list, scene, camera) {
         var _gl = this.gl;
         var preZPassMaterial = this._prezMaterial || new Material({
-            shader: new Shader({
-                vertex: Shader.source('qtek.prez.vertex'),
-                fragment: Shader.source('qtek.prez.fragment')
-            })
+            shader: new Shader(Shader.source('clay.prez.vertex'), Shader.source('clay.prez.fragment'))
         });
         this._prezMaterial = preZPassMaterial;
-        var preZPassShader = preZPassMaterial.shader;
 
-        var culledRenderQueue = [];
-        // Status
-        var culling, cullFace, frontFace;
-
-        preZPassShader.bind(this);
         _gl.colorMask(false, false, false, false);
         _gl.depthMask(true);
-        _gl.enable(_gl.DEPTH_TEST);
-        for (var i = 0; i < queue.length; i++) {
-            var renderable = queue[i];
-            // PENDING
-            if (!this.ifRenderObject(renderable)) {
-                continue;
-            }
 
-            var worldM = renderable.isSkinnedMesh() ? matrices.IDENTITY : renderable.worldTransform._array;
-            var geometry = renderable.geometry;
+        // Status
+        this.renderPass(list, camera, {
+            ifRender: function (renderable) {
+                return !renderable.ignorePreZ;
+            },
+            getMaterial: function () {
+                return preZPassMaterial;
+            },
+            sort: this.opaqueSortCompare
+        });
 
-            mat4.multiplyAffine(matrices.WORLDVIEW, matrices.VIEW , worldM);
-
-            if (geometry.boundingBox) {
-                if (this.isFrustumCulled(
-                    renderable, scene, camera, matrices.WORLDVIEW, matrices.PROJECTION
-                )) {
-                    continue;
-                }
-            }
-            culledRenderQueue.push(renderable);
-            if (renderable.skeleton || renderable.ignorePreZ) {  // FIXME  skinned mesh and custom vertex shader material.
-                continue;
-            }
-
-            mat4.multiply(matrices.WORLDVIEWPROJECTION, matrices.VIEWPROJECTION , worldM);
-
-            if (renderable.cullFace !== cullFace) {
-                cullFace = renderable.cullFace;
-                _gl.cullFace(cullFace);
-            }
-            if (renderable.frontFace !== frontFace) {
-                frontFace = renderable.frontFace;
-                _gl.frontFace(frontFace);
-            }
-            if (renderable.culling !== culling) {
-                culling = renderable.culling;
-                culling ? _gl.enable(_gl.CULL_FACE) : _gl.disable(_gl.CULL_FACE);
-            }
-
-            var semanticInfo = preZPassShader.matrixSemantics.WORLDVIEWPROJECTION;
-            preZPassShader.setUniform(_gl, semanticInfo.type, semanticInfo.symbol, matrices.WORLDVIEWPROJECTION);
-
-            // PENDING If invoke beforeRender hook
-            renderable.render(this, preZPassMaterial.shader);
-        }
-        _gl.depthFunc(_gl.LEQUAL);
         _gl.colorMask(true, true, true, true);
         _gl.depthMask(true);
-
-        return culledRenderQueue;
     },
 
     /**
@@ -776,8 +782,8 @@ var Renderer = Base.extend(function () {
      *
      * Object can be a renderable or a light
      *
-     * @param {qtek.Node} Scene object
-     * @param {qtek.Camera} camera
+     * @param {clay.Node} Scene object
+     * @param {clay.Camera} camera
      * @param {Array.<number>} worldViewMat represented with array
      * @param {Array.<number>} projectionMat represented with array
      */
@@ -789,7 +795,7 @@ var Renderer = Base.extend(function () {
         return function (object, scene, camera, worldViewMat, projectionMat) {
             // Bounding box can be a property of object(like light) or renderable.geometry
             var geoBBox = object.boundingBox || object.geometry.boundingBox;
-            cullingMatrix._array = worldViewMat;
+            cullingMatrix.array = worldViewMat;
             cullingBoundingBox.copy(geoBBox);
             cullingBoundingBox.applyTransform(cullingMatrix);
 
@@ -807,19 +813,19 @@ var Renderer = Base.extend(function () {
                     return true;
                 }
 
-                cullingMatrix._array = projectionMat;
+                cullingMatrix.array = projectionMat;
                 if (
-                    cullingBoundingBox.max._array[2] > 0 &&
-                    cullingBoundingBox.min._array[2] < 0
+                    cullingBoundingBox.max.array[2] > 0 &&
+                    cullingBoundingBox.min.array[2] < 0
                 ) {
                     // Clip in the near plane
-                    cullingBoundingBox.max._array[2] = -1e-20;
+                    cullingBoundingBox.max.array[2] = -1e-20;
                 }
 
                 cullingBoundingBox.applyProjection(cullingMatrix);
 
-                var min = cullingBoundingBox.min._array;
-                var max = cullingBoundingBox.max._array;
+                var min = cullingBoundingBox.min.array;
+                var max = cullingBoundingBox.max.array;
 
                 if (
                     max[0] < -1 || min[0] > 1
@@ -836,7 +842,7 @@ var Renderer = Base.extend(function () {
 
     /**
      * Dispose given scene, including all geometris, textures and shaders in the scene
-     * @param {qtek.Scene} scene
+     * @param {clay.Scene} scene
      */
     disposeScene: function(scene) {
         this.disposeNode(scene, true, true);
@@ -845,12 +851,11 @@ var Renderer = Base.extend(function () {
 
     /**
      * Dispose given node, including all geometries, textures and shaders attached on it or its descendant
-     * @param {qtek.Node} node
+     * @param {clay.Node} node
      * @param {boolean} [disposeGeometry=false] If dispose the geometries used in the descendant mesh
      * @param {boolean} [disposeTexture=false] If dispose the textures used in the descendant mesh
      */
     disposeNode: function(root, disposeGeometry, disposeTexture) {
-        var materials = {};
         // Dettached from parent
         if (root.getParent()) {
             root.getParent().remove(root);
@@ -859,31 +864,16 @@ var Renderer = Base.extend(function () {
             if (node.geometry && disposeGeometry) {
                 node.geometry.dispose(this);
             }
-            if (node.material) {
-                materials[node.material.__GUID__] = node.material;
-            }
             // Particle system and AmbientCubemap light need to dispose
             if (node.dispose) {
                 node.dispose(this);
             }
         }, this);
-        for (var guid in materials) {
-            var mat = materials[guid];
-            mat.dispose(this, disposeTexture);
-        }
-    },
-
-    /**
-     * Dispose given shader
-     * @param {qtek.Shader} shader
-     */
-    disposeShader: function(shader) {
-        shader.dispose(this);
     },
 
     /**
      * Dispose given geometry
-     * @param {qtek.Geometry} geometry
+     * @param {clay.Geometry} geometry
      */
     disposeGeometry: function(geometry) {
         geometry.dispose(this);
@@ -891,7 +881,7 @@ var Renderer = Base.extend(function () {
 
     /**
      * Dispose given texture
-     * @param {qtek.Texture} texture
+     * @param {clay.Texture} texture
      */
     disposeTexture: function(texture) {
         texture.dispose(this);
@@ -899,7 +889,7 @@ var Renderer = Base.extend(function () {
 
     /**
      * Dispose given frame buffer
-     * @param {qtek.FrameBuffer} frameBuffer
+     * @param {clay.FrameBuffer} frameBuffer
      */
     disposeFrameBuffer: function(frameBuffer) {
         frameBuffer.dispose(this);
@@ -917,8 +907,8 @@ var Renderer = Base.extend(function () {
      *
      * @param  {number}       x
      * @param  {number}       y
-     * @param  {qtek.math.Vector2} [out]
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector2} [out]
+     * @return {clay.math.Vector2}
      */
     screenToNDC: function(x, y, out) {
         if (!out) {
@@ -928,7 +918,7 @@ var Renderer = Base.extend(function () {
         y = this._height - y;
 
         var viewport = this.viewport;
-        var arr = out._array;
+        var arr = out.array;
         arr[0] = (x - viewport.x) / viewport.width;
         arr[0] = arr[0] * 2 - 1;
         arr[1] = (y - viewport.y) / viewport.height;
@@ -940,44 +930,50 @@ var Renderer = Base.extend(function () {
 
 /**
  * Opaque renderables compare function
- * @param  {qtek.Renderable} x
- * @param  {qtek.Renderable} y
+ * @param  {clay.Renderable} x
+ * @param  {clay.Renderable} y
  * @return {boolean}
  * @static
  */
-Renderer.opaqueSortFunc = Renderer.prototype.opaqueSortFunc = function(x, y) {
-    // Priority renderOrder -> shader -> material -> geometry
+Renderer.opaqueSortCompare = Renderer.prototype.opaqueSortCompare = function(x, y) {
+    // Priority renderOrder -> program -> material -> geometry
     if (x.renderOrder === y.renderOrder) {
-        if (x.material.shader === y.material.shader) {
+        if (x.__program === y.__program) {
             if (x.material === y.material) {
-                return x.geometry.__GUID__ - y.geometry.__GUID__;
+                return x.geometry.__uid__ - y.geometry.__uid__;
             }
-            return x.material.__GUID__ - y.material.__GUID__;
+            return x.material.__uid__ - y.material.__uid__;
         }
-        return x.material.shader.__GUID__ - y.material.shader.__GUID__;
+        if (x.__program  && y.__program) {
+            return x.__program.__uid__ - y.__program.__uid__;
+        }
+        return 0;
     }
     return x.renderOrder - y.renderOrder;
 };
 
 /**
  * Transparent renderables compare function
- * @param  {qtek.Renderable} a
- * @param  {qtek.Renderable} b
+ * @param  {clay.Renderable} a
+ * @param  {clay.Renderable} b
  * @return {boolean}
  * @static
  */
-Renderer.transparentSortFunc = Renderer.prototype.transparentSortFunc = function(x, y) {
-    // Priority renderOrder -> depth -> shader -> material -> geometry
+Renderer.transparentSortCompare = Renderer.prototype.transparentSortCompare = function(x, y) {
+    // Priority renderOrder -> depth -> program -> material -> geometry
 
     if (x.renderOrder === y.renderOrder) {
         if (x.__depth === y.__depth) {
-            if (x.material.shader === y.material.shader) {
+            if (x.__program === y.__program) {
                 if (x.material === y.material) {
-                    return x.geometry.__GUID__ - y.geometry.__GUID__;
+                    return x.geometry.__uid__ - y.geometry.__uid__;
                 }
-                return x.material.__GUID__ - y.material.__GUID__;
+                return x.material.__uid__ - y.material.__uid__;
             }
-            return x.material.shader.__GUID__ - y.material.shader.__GUID__;
+            if (x.__program  && y.__program) {
+                return x.__program.__uid__ - y.__program.__uid__;
+            }
+            return 0;
         }
         // Depth is negative
         // So farther object has smaller depth value
@@ -989,7 +985,7 @@ Renderer.transparentSortFunc = Renderer.prototype.transparentSortFunc = function
 // Temporary variables
 var matrices = {
     IDENTITY: mat4Create(),
-    
+
     WORLD: mat4Create(),
     VIEW: mat4Create(),
     PROJECTION: mat4Create(),
@@ -1019,17 +1015,17 @@ var matrices = {
 };
 
 /**
- * @name qtek.Renderer.COLOR_BUFFER_BIT
+ * @name clay.Renderer.COLOR_BUFFER_BIT
  * @type {number}
  */
 Renderer.COLOR_BUFFER_BIT = glenum.COLOR_BUFFER_BIT;
 /**
- * @name qtek.Renderer.DEPTH_BUFFER_BIT
+ * @name clay.Renderer.DEPTH_BUFFER_BIT
  * @type {number}
  */
 Renderer.DEPTH_BUFFER_BIT = glenum.DEPTH_BUFFER_BIT;
 /**
- * @name qtek.Renderer.STENCIL_BUFFER_BIT
+ * @name clay.Renderer.STENCIL_BUFFER_BIT
  * @type {number}
  */
 Renderer.STENCIL_BUFFER_BIT = glenum.STENCIL_BUFFER_BIT;

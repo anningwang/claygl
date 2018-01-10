@@ -9,11 +9,11 @@ var mat4 = glMatrix.mat4;
 var nameId = 0;
 
 /**
- * @constructor qtek.Node
- * @extends qtek.core.Base
+ * @constructor clay.Node
+ * @extends clay.core.Base
  */
 var Node = Base.extend(
-/** @lends qtek.Node# */
+/** @lends clay.Node# */
 {
     /**
      * Scene node name
@@ -23,32 +23,32 @@ var Node = Base.extend(
 
     /**
      * Position relative to its parent node. aka translation.
-     * @type {qtek.math.Vector3}
+     * @type {clay.math.Vector3}
      */
     position: null,
 
     /**
      * Rotation relative to its parent node. Represented by a quaternion
-     * @type {qtek.math.Quaternion}
+     * @type {clay.math.Quaternion}
      */
     rotation: null,
 
     /**
      * Scale relative to its parent node
-     * @type {qtek.math.Vector3}
+     * @type {clay.math.Vector3}
      */
     scale: null,
 
     /**
      * Affine transform matrix relative to its root scene.
-     * @type {qtek.math.Matrix4}
+     * @type {clay.math.Matrix4}
      */
     worldTransform: null,
 
     /**
      * Affine transform matrix relative to its parent node.
      * Composited with position, rotation and scale.
-     * @type {qtek.math.Matrix4}
+     * @type {clay.math.Matrix4}
      */
     localTransform: null,
 
@@ -60,13 +60,13 @@ var Node = Base.extend(
 
     /**
      * Parent of current scene node
-     * @type {?qtek.Node}
+     * @type {?clay.Node}
      * @private
      */
     _parent: null,
     /**
      * The root scene mounted. Null if it is a isolated node
-     * @type {?qtek.Scene}
+     * @type {?clay.Scene}
      * @private
      */
     _scene: null,
@@ -81,7 +81,7 @@ var Node = Base.extend(
      */
     _inIterating: false,
 
-    // Depth for transparent queue sorting
+    // Depth for transparent list sorting
     __depth: 0
 
 }, function () {
@@ -106,11 +106,11 @@ var Node = Base.extend(
     this._children = [];
 
 },
-/**@lends qtek.Node.prototype. */
+/**@lends clay.Node.prototype. */
 {
 
     /**
-     * @type {?qtek.math.Vector3}
+     * @type {?clay.math.Vector3}
      * @instance
      */
     target: null,
@@ -152,7 +152,7 @@ var Node = Base.extend(
 
     /**
      * Add a child node
-     * @param {qtek.Node} node
+     * @param {clay.Node} node
      */
     add: function (node) {
         if (this._inIterating) {
@@ -179,7 +179,7 @@ var Node = Base.extend(
 
     /**
      * Remove the given child scene node
-     * @param {qtek.Node} node
+     * @param {clay.Node} node
      */
     remove: function (node) {
         if (this._inIterating) {
@@ -218,7 +218,7 @@ var Node = Base.extend(
 
     /**
      * Get the scene mounted
-     * @return {qtek.Scene}
+     * @return {clay.Scene}
      */
     getScene: function () {
         return this._scene;
@@ -226,7 +226,7 @@ var Node = Base.extend(
 
     /**
      * Get parent node
-     * @return {qtek.Scene}
+     * @return {clay.Scene}
      */
     getParent: function () {
         return this._parent;
@@ -244,7 +244,7 @@ var Node = Base.extend(
 
     /**
      * Return true if it is ancestor of the given scene node
-     * @param {qtek.Node} node
+     * @param {clay.Node} node
      */
     isAncestor: function (node) {
         var parent = node._parent;
@@ -259,7 +259,7 @@ var Node = Base.extend(
 
     /**
      * Get a new created array of all children nodes
-     * @return {qtek.Node[]}
+     * @return {clay.Node[]}
      */
     children: function () {
         return this._children.slice();
@@ -268,7 +268,7 @@ var Node = Base.extend(
     /**
      * Get child scene node at given index.
      * @param {number} idx
-     * @return {qtek.Node}
+     * @return {clay.Node}
      */
     childAt: function (idx) {
         return this._children[idx];
@@ -277,7 +277,7 @@ var Node = Base.extend(
     /**
      * Get first child with the given name
      * @param {string} name
-     * @return {qtek.Node}
+     * @return {clay.Node}
      */
     getChildByName: function (name) {
         var children = this._children;
@@ -291,7 +291,7 @@ var Node = Base.extend(
     /**
      * Get first descendant have the given name
      * @param {string} name
-     * @return {qtek.Node}
+     * @return {clay.Node}
      */
     getDescendantByName: function (name) {
         var children = this._children;
@@ -311,7 +311,7 @@ var Node = Base.extend(
     /**
      * Query descendant node by path
      * @param {string} path
-     * @return {qtek.Node}
+     * @return {clay.Node}
      * @example
      *  node.queryNode('root/parent/child');
      */
@@ -349,7 +349,7 @@ var Node = Base.extend(
 
     /**
      * Get query path, relative to rootNode(default is scene)
-     * @param {qtek.Node} [rootNode]
+     * @param {clay.Node} [rootNode]
      * @return {string}
      */
     getPath: function (rootNode) {
@@ -410,10 +410,10 @@ var Node = Base.extend(
 
     /**
      * Set the local transform and decompose to SRT
-     * @param {qtek.math.Matrix4} matrix
+     * @param {clay.math.Matrix4} matrix
      */
     setLocalTransform: function (matrix) {
-        mat4.copy(this.localTransform._array, matrix._array);
+        mat4.copy(this.localTransform.array, matrix.array);
         this.decomposeLocalTransform();
     },
 
@@ -427,16 +427,16 @@ var Node = Base.extend(
 
     /**
      * Set the world transform and decompose to SRT
-     * @param {qtek.math.Matrix4} matrix
+     * @param {clay.math.Matrix4} matrix
      */
     setWorldTransform: function (matrix) {
-        mat4.copy(this.worldTransform._array, matrix._array);
+        mat4.copy(this.worldTransform.array, matrix.array);
         this.decomposeWorldTransform();
     },
 
     /**
      * Decompose the world transform to SRT
-     * @method
+     * @function
      */
     decomposeWorldTransform: (function () {
 
@@ -447,10 +447,10 @@ var Node = Base.extend(
             var worldTransform = this.worldTransform;
             // Assume world transform is updated
             if (this._parent) {
-                mat4.invert(tmp, this._parent.worldTransform._array);
-                mat4.multiply(localTransform._array, tmp, worldTransform._array);
+                mat4.invert(tmp, this._parent.worldTransform.array);
+                mat4.multiply(localTransform.array, tmp, worldTransform.array);
             } else {
-                mat4.copy(localTransform._array, worldTransform._array);
+                mat4.copy(localTransform.array, worldTransform.array);
             }
             var scale = !keepScale ? this.scale: null;
             localTransform.decomposeMatrix(scale, this.rotation, this.position);
@@ -473,12 +473,12 @@ var Node = Base.extend(
         var scale = this.scale;
 
         if (this.transformNeedsUpdate()) {
-            var m = this.localTransform._array;
+            var m = this.localTransform.array;
 
             // Transform order, scale->rotation->position
-            mat4.fromRotationTranslation(m, rotation._array, position._array);
+            mat4.fromRotationTranslation(m, rotation.array, position.array);
 
-            mat4.scale(m, m, scale._array);
+            mat4.scale(m, m, scale.array);
 
             rotation._dirty = false;
             scale._dirty = false;
@@ -493,12 +493,12 @@ var Node = Base.extend(
      * @private
      */
     _updateWorldTransformTopDown: function () {
-        var localTransform = this.localTransform._array;
-        var worldTransform = this.worldTransform._array;
+        var localTransform = this.localTransform.array;
+        var worldTransform = this.worldTransform.array;
         if (this._parent) {
             mat4.multiplyAffine(
                 worldTransform,
-                this._parent.worldTransform._array,
+                this._parent.worldTransform.array,
                 localTransform
             );
         }
@@ -549,8 +549,8 @@ var Node = Base.extend(
     /**
      * Get bounding box of node
      * @param  {Function} [filter]
-     * @param  {qtek.math.BoundingBox} [out]
-     * @return {qtek.math.BoundingBox}
+     * @param  {clay.math.BoundingBox} [out]
+     * @return {clay.math.BoundingBox}
      */
     // TODO Skinning
     getBoundingBox: (function () {
@@ -563,7 +563,7 @@ var Node = Base.extend(
         return function (filter, out) {
             out = out || new BoundingBox();
             filter = filter || defaultFilter;
-            
+
             if (this._parent) {
                 Matrix4.invert(invWorldTransform, this._parent.worldTransform);
             }
@@ -579,24 +579,24 @@ var Node = Base.extend(
                     out.union(tmpBBox);
                 }
             }, this, defaultFilter);
-            
+
             return out;
         };
     })(),
 
     /**
      * Get world position, extracted from world transform
-     * @param  {qtek.math.Vector3} [out]
-     * @return {qtek.math.Vector3}
+     * @param  {clay.math.Vector3} [out]
+     * @return {clay.math.Vector3}
      */
     getWorldPosition: function (out) {
         // PENDING
         if (this.transformNeedsUpdate()) {
             this.updateWorldTransform();
         }
-        var m = this.worldTransform._array;
+        var m = this.worldTransform.array;
         if (out) {
-            var arr = out._array;
+            var arr = out.array;
             arr[0] = m[12];
             arr[1] = m[13];
             arr[2] = m[14];
@@ -628,11 +628,11 @@ var Node = Base.extend(
 
     /**
      * Rotate the node around a axis by angle degrees, axis passes through point
-     * @param {qtek.math.Vector3} point Center point
-     * @param {qtek.math.Vector3} axis  Center axis
+     * @param {clay.math.Vector3} point Center point
+     * @param {clay.math.Vector3} axis  Center axis
      * @param {number}       angle Rotation angle
      * @see http://docs.unity3d.com/Documentation/ScriptReference/Transform.RotateAround.html
-     * @method
+     * @function
      */
     rotateAround: (function () {
         var v = new Vector3();
@@ -659,10 +659,10 @@ var Node = Base.extend(
     })(),
 
     /**
-     * @param {qtek.math.Vector3} target
-     * @param {qtek.math.Vector3} [up]
+     * @param {clay.math.Vector3} target
+     * @param {clay.math.Vector3} [up]
      * @see http://www.opengl.org/sdk/docs/man2/xhtml/gluLookAt.xml
-     * @method
+     * @function
      */
     lookAt: (function () {
         var m = new Matrix4();

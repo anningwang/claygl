@@ -17,11 +17,11 @@ var mesh = new Mesh({
 var camera = new OrthoCamera();
 
 /**
- * @constructor qtek.compositor.Pass
- * @extends qtek.core.Base
+ * @constructor clay.compositor.Pass
+ * @extends clay.core.Base
  */
 var Pass = Base.extend(function () {
-    return /** @lends qtek.compositor.Pass# */ {
+    return /** @lends clay.compositor.Pass# */ {
         /**
          * Fragment shader string
          * @type {string}
@@ -35,7 +35,7 @@ var Pass = Base.extend(function () {
         outputs : null,
 
         /**
-         * @type {qtek.Material}
+         * @type {clay.Material}
          */
         material : null,
 
@@ -56,29 +56,23 @@ var Pass = Base.extend(function () {
     };
 }, function() {
 
-    var shader = new Shader({
-        vertex : Shader.source('qtek.compositor.vertex'),
-        fragment : this.fragment
-    });
+    var shader = new Shader(Shader.source('clay.compositor.vertex'), this.fragment);
     var material = new Material({
-        shader : shader
+        shader: shader
     });
-    shader.enableTexturesAll();
+    material.enableTexturesAll();
 
     this.material = material;
 
 },
-/** @lends qtek.compositor.Pass.prototype */
+/** @lends clay.compositor.Pass.prototype */
 {
     /**
      * @param {string} name
      * @param {} value
      */
     setUniform : function(name, value) {
-        var uniform = this.material.uniforms[name];
-        if (uniform) {
-            uniform.value = value;
-        }
+        this.material.setUniform(name, value);
     },
     /**
      * @param  {string} name
@@ -91,7 +85,7 @@ var Pass = Base.extend(function () {
         }
     },
     /**
-     * @param  {qtek.Texture} texture
+     * @param  {clay.Texture} texture
      * @param  {number} attachment
      */
     attachOutput : function(texture, attachment) {
@@ -102,7 +96,7 @@ var Pass = Base.extend(function () {
         this.outputs[attachment] = texture;
     },
     /**
-     * @param  {qtek.Texture} texture
+     * @param  {clay.Texture} texture
      */
     detachOutput : function(texture) {
         for (var attachment in this.outputs) {
@@ -132,8 +126,8 @@ var Pass = Base.extend(function () {
         frameBuffer.unbind(renderer);
     },
     /**
-     * @param  {qtek.Renderer} renderer
-     * @param  {qtek.FrameBuffer} [frameBuffer]
+     * @param  {clay.Renderer} renderer
+     * @param  {clay.FrameBuffer} [frameBuffer]
      */
     render : function(renderer, frameBuffer) {
 
@@ -198,15 +192,13 @@ var Pass = Base.extend(function () {
      */
     renderQuad: function (renderer) {
         mesh.material = this.material;
-        renderer.renderQueue([mesh], camera);
+        renderer.renderPass([mesh], camera);
     },
 
     /**
-     * @param  {qtek.Renderer} renderer
+     * @param  {clay.Renderer} renderer
      */
-    dispose: function (renderer) {
-        this.material.dispose(renderer);
-    }
+    dispose: function (renderer) {}
 });
 
 export default Pass;

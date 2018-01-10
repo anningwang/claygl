@@ -4,8 +4,8 @@ import glMatrix from '../dep/glmatrix';
 var vec3 =  glMatrix.vec3;
 
 /**
- * @constructor qtek.particle.ForceField
- * @extends qtek.particle.Field
+ * @constructor clay.particle.ForceField
+ * @extends clay.particle.Field
  */
 var ForceField = Field.extend(function() {
     return {
@@ -14,7 +14,7 @@ var ForceField = Field.extend(function() {
 }, {
     applyTo: function(velocity, position, weight, deltaTime) {
         if (weight > 0) {
-            vec3.scaleAndAdd(velocity._array, velocity._array, this.force._array, deltaTime / weight);
+            vec3.scaleAndAdd(velocity.array, velocity.array, this.force.array, deltaTime / weight);
         }
     }
 });

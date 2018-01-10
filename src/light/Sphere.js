@@ -1,11 +1,11 @@
 import Light from '../Light';
 
 /**
- * @constructor qtek.light.Sphere
- * @extends {qtek.Light}
+ * @constructor clay.light.Sphere
+ * @extends {clay.Light}
  */
 var SphereLight = Light.extend(
-/** @lends qtek.light.Sphere# */
+/** @lends clay.light.Sphere# */
 {
     /**
      * @type {number}
@@ -24,7 +24,7 @@ var SphereLight = Light.extend(
         sphereLightPosition: {
             type: '3f',
             value: function(instance) {
-                return instance.getWorldPosition()._array;
+                return instance.getWorldPosition().array;
             }
         },
         sphereLightRange: {

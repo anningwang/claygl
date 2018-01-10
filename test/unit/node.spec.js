@@ -1,20 +1,20 @@
 const assert = require('assert');
-const qtek = require('../../dist/qtek');
+const clay = require('../../dist/claygl');
 const helper = require('../common/helper');
 
 function getBBoxArr(bbox) {
-    return [bbox.min._array, bbox.max._array];
+    return [bbox.min.array, bbox.max.array];
 }
 
 describe('Scene.Spec', function () {
 
     it('get bounding box', function () {
 
-        const rootNode = new qtek.Node();
-        const middleNode = new qtek.Node();
-        
-        const mesh = new qtek.Mesh({
-            geometry: new qtek.geometry.Cube(),
+        const rootNode = new clay.Node();
+        const middleNode = new clay.Node();
+
+        const mesh = new clay.Mesh({
+            geometry: new clay.geometry.Cube(),
             material: helper.createBuiltinMaterial()
         });
         rootNode.add(middleNode);

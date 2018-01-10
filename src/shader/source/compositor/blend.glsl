@@ -1,4 +1,6 @@
-@export qtek.compositor.blend
+@export clay.compositor.blend
+
+#define SHADER_NAME blend
 // Blend at most 6 textures
 #ifdef TEXTURE1_ENABLED
 uniform sampler2D texture1;
@@ -27,7 +29,7 @@ uniform float weight6 : 1.0;
 
 varying vec2 v_Texcoord;
 
-@import qtek.util.rgbm
+@import clay.util.rgbm
 
 void main()
 {

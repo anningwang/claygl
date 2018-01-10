@@ -432,7 +432,7 @@ def ConvertToPBRMaterial(pMaterial):
 
     if (lShading == 'unknown'):
         lib_materials.append(lGLTFMaterial)
-        return lMaterialIdx
+        return lMaterialIdx, 1, 1, 0, 0
 
     lGLTFMaterial['emissiveFactor'] = list(pMaterial.Emissive.Get())
 
@@ -1218,6 +1218,70 @@ def GetNodeIdx(pNode):
         return -1
     return _nodeIdxMap[lId]
 
+
+def FindFileInDir(pFileName, pDir):
+    for root, dirs, files in os.walk(pDir):
+        for file in files:
+            if file == pFileName:
+                return os.path.join(root, file)
+
+def CorrectImagesPaths(pFilePath):
+    lFileFullPath = os.path.join(os.getcwd(), pFilePath)
+    lFileDir = os.path.dirname(lFileFullPath)
+    for lGLTFImage in lib_images:
+        lUri = lGLTFImage['uri']
+        lUri = lUri.replace(r'[\\\/]+', os.path.sep)
+        lUri = FindFileInDir(os.path.basename(lUri), lFileDir)
+        if lUri:
+            lRelUri = os.path.relpath(lUri, lFileDir)
+            if not lRelUri == lGLTFImage['uri']:
+                print('Changed texture file path from "' + lGLTFImage['uri'] + '" to "' + lRelUri + '"')
+            lGLTFImage['uri'] = lRelUri
+        else:
+            print("Can\'t find texture file in the folder, path: " + lGLTFImage['uri'])
+
+
+def EmbedImagesToBinary(pBuffer, pFilePath):
+    lFileFullPath = os.path.join(os.getcwd(), pFilePath)
+    lFileDir = os.path.dirname(lFileFullPath)
+    for lGLTFImage in lib_images:
+        lUri = lGLTFImage['uri']
+        lImgBytes = None
+
+        if not os.path.isfile(lUri):
+            lUri = lUri.replace(r'[\\\/]+', os.path.sep)
+            lUri = FindFileInDir(os.path.basename(lUri), lFileDir)
+        try:
+            f = open(lUri, 'rb')
+            lImgBytes = f.read()
+        except:
+            print("Can\'t find texture file in the folder, path: " + lGLTFImage['uri'])
+
+        if not lImgBytes:
+            continue
+
+        lBufferViewIdx = len(lib_buffer_views)
+
+        lGLTFImage['bufferView'] = lBufferViewIdx
+        del lGLTFImage['uri']
+
+        lBufferView = {
+            'buffer': 0,
+            'byteLength': len(lImgBytes),
+            'byteOffset': len(pBuffer)
+            # TODO Mime type
+        }
+
+        lib_buffer_views.append(lBufferView)
+
+        pBuffer.extend(lImgBytes)
+        # 4-byte-aligned
+        lAlignedLen = (len(lImgBytes) + 3) & ~3
+        for i in range(lAlignedLen - len(lImgBytes)):
+            pBuffer.extend(b' ')
+
+    return pBuffer
+
 # FIXME
 # http://help.autodesk.com/view/FBX/2017/ENU/?guid=__cpp_ref_fbxtime_8h_html
 TIME_INFINITY = FbxTime(0x7fffffffffffffff)
@@ -1230,7 +1294,8 @@ def Convert(
     startTime = 0,
     duration = 1000,
     poseTime = TIME_INFINITY,
-    beautify = False
+    beautify = False,
+    binary = False
 ):
     ignoreScene = 'scene' in excluded
     ignoreAnimation = 'animation' in excluded
@@ -1269,17 +1334,26 @@ def Convert(
 
         CreateBufferViews(0, lBin)
 
-        lBufferName = lBasename + '.bin'
-        lib_buffers.append({'byteLength' : len(lBin), 'uri' : os.path.basename(lBufferName)})
+        if binary:
+            lBin = EmbedImagesToBinary(lBin, filePath)
+        else:
+            CorrectImagesPaths(filePath)
 
-        out = open(lBasename + ".bin", 'wb')
-        out.write(lBin)
-        out.close()
+        lBufferName = lBasename + '.bin'
+        if binary:
+            lib_buffers.append({
+                'byteLength' : len(lBin)
+            })
+        else:
+            lib_buffers.append({
+                'byteLength' : len(lBin),
+                'uri' : os.path.basename(lBufferName)
+            })
 
         #Output json
-        lOutput = {
+        lJSON = {
             'asset': {
-                'generator': 'qtek fbx2gltf',
+                'generator': 'ClayGL - fbx2gltf',
                 'version': '2.0'
             },
             'accessors' : lib_accessors,
@@ -1290,32 +1364,61 @@ def Convert(
             'meshes' : lib_meshes,
         }
         if len(lib_cameras) > 0:
-            lOutput['cameras'] = lib_cameras
+            lJSON['cameras'] = lib_cameras
         if len(lib_skins) > 0:
-            lOutput['skins'] = lib_skins
+            lJSON['skins'] = lib_skins
         if len(lib_materials) > 0:
-            lOutput['materials'] = lib_materials
+            lJSON['materials'] = lib_materials
         if len(lib_images) > 0:
-            lOutput['images'] = lib_images
+            lJSON['images'] = lib_images
         if len(lib_samplers) > 0:
-            lOutput['samplers'] = lib_samplers
+            lJSON['samplers'] = lib_samplers
         if len(lib_textures) > 0:
-            lOutput['textures'] = lib_textures
+            lJSON['textures'] = lib_textures
         if len(lib_animations) > 0:
-            lOutput['animations'] = lib_animations
+            lJSON['animations'] = lib_animations
         #Default scene
         if not ignoreScene:
-            lOutput['scene'] = lSceneIdx
+            lJSON['scene'] = lSceneIdx
 
-        out = open(ouptutFile, 'w')
-        indent = None
-        seperator = ':'
+        if binary:
+            lOutFile = open(ouptutFile, 'wb')
+            lJSONStr = json.dumps(lJSON, sort_keys = True, separators=(',', ':'))
+            lJSONBinary = bytearray(lJSONStr.encode(encoding='UTF-8'))
+            # 4-byte-aligned
+            lAlignedLen = (len(lJSONBinary) + 3) & ~3
+            for i in range(lAlignedLen - len(lJSONBinary)):
+                lJSONBinary.extend(b' ')
 
-        if beautify:
-            indent = 2
-            seperator = ': '
-        out.write(json.dumps(lOutput, indent = indent, sort_keys = True, separators=(',', seperator)))
-        out.close()
+            lOut = bytearray()
+            lSize = 12 + 8 + len(lJSONBinary) + 8 + len(lBin)
+            # Magic number
+            lOut.extend(struct.pack('<I', 0x46546C67))
+            lOut.extend(struct.pack('<I', 2))
+            lOut.extend(struct.pack('<I', lSize))
+            lOut.extend(struct.pack('<I', len(lJSONBinary)))
+            lOut.extend(struct.pack('<I', 0x4E4F534A))
+            lOut += lJSONBinary
+            lOut.extend(struct.pack('<I', len(lBin)))
+            lOut.extend(struct.pack('<I', 0x004E4942))
+            lOut += lBin
+            lOutFile.write(lOut)
+            lOutFile.close()
+
+        else:
+            lOutFile = open(ouptutFile, 'w')
+            lBinFile = open(lBasename + ".bin", 'wb')
+            lBinFile.write(lBin)
+            lBinFile.close()
+
+            indent = None
+            seperator = ':'
+
+            if beautify:
+                indent = 2
+                seperator = ': '
+            lOutFile.write(json.dumps(lJSON, indent = indent, sort_keys = True, separators=(',', seperator)))
+            lOutFile.close()
 
 if __name__ == "__main__":
 
@@ -1326,7 +1429,8 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--framerate', default=20, type=float, help="Animation frame per second")
     parser.add_argument('-p', '--pose', default=0, type=float, help="Start pose time")
     parser.add_argument('-q', '--quantize', action='store_true', help="Quantize accessors with WEB3D_quantized_attributes extension")
-    parser.add_argument('-b', '--beautify', action="store_true", help="Beautify json output.")
+    parser.add_argument('-b', '--binary', action="store_true", help="Export glTF-binary")
+    parser.add_argument('--beautify', action="store_true", help="Beautify json output.")
 
     parser.add_argument('--noflipv', action="store_true", help="If not flip v in texcoord.")
     parser.add_argument('file')
@@ -1343,7 +1447,10 @@ if __name__ == "__main__":
 
     if not args.output:
         lBasename, lExt = os.path.splitext(args.file)
-        args.output = lBasename + '.gltf'
+        if args.binary:
+            args.output = lBasename + '.glb'
+        else:
+            args.output = lBasename + '.gltf'
 
     # PENDING Not use INFINITY poseTime or some joint transform without animation maybe not right.
     lPoseTime = FbxTime()
@@ -1362,5 +1469,6 @@ if __name__ == "__main__":
         lStartTime,
         lDuration,
         lPoseTime,
-        args.beautify
+        args.beautify,
+        args.binary
     )

@@ -2,8 +2,8 @@ import Geometry from '../Geometry';
 import BoundingBox from '../math/BoundingBox';
 
 /**
- * @constructor qtek.geometry.Sphere
- * @extends qtek.Geometry
+ * @constructor clay.geometry.Sphere
+ * @extends clay.Geometry
  * @param {Object} [opt]
  * @param {number} [widthSegments]
  * @param {number} [heightSegments]
@@ -14,13 +14,13 @@ import BoundingBox from '../math/BoundingBox';
  * @param {number} [radius]
  */
 var Sphere = Geometry.extend(
-/** @lends qtek.geometry.Sphere# */
+/** @lends clay.geometry.Sphere# */
 {
     dynamic: false,
     /**
      * @type {number}
      */
-    widthSegments: 20,
+    widthSegments: 40,
     /**
      * @type {number}
      */
@@ -52,7 +52,7 @@ var Sphere = Geometry.extend(
 }, function() {
     this.build();
 },
-/** @lends qtek.geometry.Sphere.prototype */
+/** @lends clay.geometry.Sphere.prototype */
 {
     /**
      * Build sphere geometry

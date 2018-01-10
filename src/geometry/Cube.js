@@ -8,8 +8,8 @@ import vendor from '../core/vendor';
 var planeMatrix = new Matrix4();
 
 /**
- * @constructor qtek.geometry.Cube
- * @extends qtek.Geometry
+ * @constructor clay.geometry.Cube
+ * @extends clay.Geometry
  * @param {Object} [opt]
  * @param {number} [opt.widthSegments]
  * @param {number} [opt.heightSegments]
@@ -17,7 +17,7 @@ var planeMatrix = new Matrix4();
  * @param {boolean} [opt.inside]
  */
 var Cube = Geometry.extend(
-/**@lends qtek.geometry.Cube# */
+/**@lends clay.geometry.Cube# */
 {
     dynamic: false,
     /**
@@ -39,7 +39,7 @@ var Cube = Geometry.extend(
 }, function() {
     this.build();
 },
-/** @lends qtek.geometry.Cube.prototype */
+/** @lends clay.geometry.Cube.prototype */
 {
     /**
      * Build cube geometry
@@ -83,8 +83,9 @@ var Cube = Geometry.extend(
                     this.attributes[attrName].value[i + attrSize * vertexOffset] = value;
                 }
             }
+            var len = plane.indices.length;
             for (var i = 0; i < plane.indices.length; i++) {
-                this.indices[i + faceOffset] = vertexOffset + plane.indices[i];
+                this.indices[i + faceOffset] = vertexOffset + plane.indices[this.inside ? (len - i - 1) : i];
             }
             faceOffset += plane.indices.length;
             vertexOffset += plane.vertexCount;

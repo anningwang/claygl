@@ -3,15 +3,15 @@ import glenum from './core/glenum';
 import Texture2D from './Texture2D';
 
 /**
- * @constructor qtek.Mesh
- * @extends qtek.Renderable
+ * @constructor clay.Mesh
+ * @extends clay.Renderable
  */
 var Mesh = Renderable.extend(
-/** @lends qtek.Mesh# */
+/** @lends clay.Mesh# */
 {
     /**
      * Used when it is a skinned mesh
-     * @type {qtek.Skeleton}
+     * @type {clay.Skeleton}
      */
     skeleton: null,
     /**
@@ -33,53 +33,52 @@ var Mesh = Renderable.extend(
 }, {
 
     isSkinnedMesh: function () {
-        return !!(this.skeleton && this.material.shader.isDefined('vertex', 'SKINNING'));
+        return !!(this.skeleton && this.joints && this.joints.length > 0);
     },
 
-    render: function (renderer, shader) {
+    render: function (renderer, shader, program) {
         var _gl = renderer.gl;
-        shader = shader || this.material.shader;
         // Set pose matrices of skinned mesh
         if (this.skeleton) {
             // TODO Multiple mesh share same skeleton
             this.skeleton.update();
 
-            var skinMatricesArray = this.skeleton.getSubSkinMatrices(this.__GUID__, this.joints);
+            var skinMatricesArray = this.skeleton.getSubSkinMatrices(this.__uid__, this.joints);
 
-            if (this.useSkinMatricesTexture) {
-                var size;
-                var numJoints = this.joints.length;
-                if (numJoints > 256) {
-                    size = 64;
-                }
-                else if (numJoints > 64) {
-                    size = 32;
-                }
-                else if (numJoints > 16) {
-                    size = 16;
-                }
-                else {
-                    size = 8;
-                }
+            // if (this.useSkinMatricesTexture) {
+            //     var size;
+            //     var numJoints = this.joints.length;
+            //     if (numJoints > 256) {
+            //         size = 64;
+            //     }
+            //     else if (numJoints > 64) {
+            //         size = 32;
+            //     }
+            //     else if (numJoints > 16) {
+            //         size = 16;
+            //     }
+            //     else {
+            //         size = 8;
+            //     }
 
-                var texture = this.getSkinMatricesTexture();
-                texture.width = size;
-                texture.height = size;
+            //     var texture = this.getSkinMatricesTexture();
+            //     texture.width = size;
+            //     texture.height = size;
 
-                if (!texture.pixels || texture.pixels.length !== size * size * 4) {
-                    texture.pixels = new Float32Array(size * size * 4);
-                }
-                texture.pixels.set(skinMatricesArray);
-                texture.dirty();
+            //     if (!texture.pixels || texture.pixels.length !== size * size * 4) {
+            //         texture.pixels = new Float32Array(size * size * 4);
+            //     }
+            //     texture.pixels.set(skinMatricesArray);
+            //     texture.dirty();
 
-                shader.setUniform(_gl, '1f', 'skinMatricesTextureSize', size);
-            }
-            else {
-                shader.setUniformOfSemantic(_gl, 'SKIN_MATRIX', skinMatricesArray);
-            }
+            //     shader.setUniform(_gl, '1f', 'skinMatricesTextureSize', size);
+            // }
+            // else {
+            program.setUniformOfSemantic(_gl, 'SKIN_MATRIX', skinMatricesArray);
+            // }
         }
 
-        return Renderable.prototype.render.call(this, renderer, shader);
+        return Renderable.prototype.render.call(this, renderer, shader, program);
     },
 
     getSkinMatricesTexture: function () {

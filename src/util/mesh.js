@@ -9,17 +9,17 @@ var mat4 = glMatrix.mat4;
 var vec3 = glMatrix.vec3;
 
 /**
- * @namespace qtek.util.mesh
+ * @namespace clay.util.mesh
  */
 var meshUtil = {
     /**
      * Merge multiple meshes to one.
      * Note that these meshes must have the same material
      *
-     * @param {Array.<qtek.Mesh>} meshes
+     * @param {Array.<clay.Mesh>} meshes
      * @param {boolean} applyWorldTransform
-     * @return qtek.Mesh
-     * @memberOf qtek.util.mesh
+     * @return clay.Mesh
+     * @memberOf clay.util.mesh
      */
     merge: function (meshes, applyWorldTransform) {
 
@@ -82,7 +82,7 @@ var meshUtil = {
 
             var nVertex = currentGeo.vertexCount;
 
-            var matrix = applyWorldTransform ? mesh.worldTransform._array : mesh.localTransform._array;
+            var matrix = applyWorldTransform ? mesh.worldTransform.array : mesh.localTransform.array;
             mat4.invert(inverseTransposeMatrix, matrix);
             mat4.transpose(inverseTransposeMatrix, inverseTransposeMatrix);
 
@@ -129,22 +129,19 @@ var meshUtil = {
 
     /**
      * Split mesh into sub meshes, each mesh will have maxJointNumber joints.
-     * @param {qtek.Mesh} mesh
+     * @param {clay.Mesh} mesh
      * @param {number} maxJointNumber
      * @param {boolean} inPlace
-     * @param {qtek.shader.library} [shaderLib]
-     * @param {string} [shaderType]
-     * @return {qtek.Node}
+     * @return {clay.Node}
      *
-     * @memberOf qtek.util.mesh
+     * @memberOf clay.util.mesh
      */
 
     // FIXME, Have issues on some models
-    splitByJoints: function (mesh, maxJointNumber, inPlace, shaderLib, shaderType) {
+    splitByJoints: function (mesh, maxJointNumber, inPlace) {
         var geometry = mesh.geometry;
         var skeleton = mesh.skeleton;
         var material = mesh.material;
-        var shader = material.shader;
         var joints = mesh.joints;
         if (!geometry || !skeleton || !joints.length) {
             return;
@@ -153,7 +150,6 @@ var meshUtil = {
             return mesh;
         }
 
-        var shaders = {};
 
         var indices = geometry.indices;
 
@@ -242,34 +238,6 @@ var meshUtil = {
             var subJointNumber = bucket.joints.length;
 
             var subMat = material.clone();
-            if (material instanceof StandardMaterial) {
-                subMat.jointCount = subJointNumber;
-            }
-            else {
-                var subShader;
-                if (shaderLib && shaderType) {
-                    var vertexDefines = {};
-                    for (var name in shader.vertexDefines) {
-                        vertexDefines[name] = shader.vertexDefines[name];
-                    }
-                    vertexDefines.JOINT_COUNT = subJointNumber;
-                    subShader = shaderLib.get(shaderType, {
-                        textures: shader.getEnabledTextures(),
-                        vertexDefines: vertexDefines,
-                        fragmentDefines: shader.fragmentDefines,
-                        precision: shader.precision
-                    });
-                }
-                else {
-                    subShader = shaders[subJointNumber];
-                    if (!subShader) {
-                        subShader = shader.clone();
-                        subShader.define('vertex', 'JOINT_COUNT', subJointNumber);
-                        shaders[subJointNumber] = subShader;
-                    }
-                }
-                subMat.attachShader(subShader, true);
-            }
             subMat.name = [material.name, b].join('-');
 
             var subGeo = new Geometry();

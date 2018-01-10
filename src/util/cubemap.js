@@ -22,17 +22,17 @@ var cubemapUtil = {};
 var targets = ['px', 'nx', 'py', 'ny', 'pz', 'nz'];
 
 /**
- * @name qtek.util.cubemap.prefilterEnvironmentMap
- * @param  {qtek.Renderer} renderer
- * @param  {qtek.Texture} envMap
+ * @name clay.util.cubemap.prefilterEnvironmentMap
+ * @param  {clay.Renderer} renderer
+ * @param  {clay.Texture} envMap
  * @param  {Object} [textureOpts]
  * @param  {number} [textureOpts.width=64]
  * @param  {number} [textureOpts.height=64]
  * @param  {number} [textureOpts.type]
  * @param  {boolean} [textureOpts.encodeRGBM=false]
  * @param  {boolean} [textureOpts.decodeRGBM=false]
- * @param  {qtek.Texture2D} [normalDistribution]
- * @param  {qtek.Texture2D} [brdfLookup]
+ * @param  {clay.Texture2D} [normalDistribution]
+ * @param  {clay.Texture2D} [brdfLookup]
  */
 cubemapUtil.prefilterEnvironmentMap = function (
     renderer, envMap, textureOpts, normalDistribution, brdfLookup
@@ -68,14 +68,14 @@ cubemapUtil.prefilterEnvironmentMap = function (
 
     var prefilterMaterial = new Material({
         shader: new Shader({
-            vertex: Shader.source('qtek.skybox.vertex'),
+            vertex: Shader.source('clay.skybox.vertex'),
             fragment: prefilterFragCode
         })
     });
     prefilterMaterial.set('normalDistribution', normalDistribution);
 
-    textureOpts.encodeRGBM && prefilterMaterial.shader.define('fragment', 'RGBM_ENCODE');
-    textureOpts.decodeRGBM && prefilterMaterial.shader.define('fragment', 'RGBM_DECODE');
+    textureOpts.encodeRGBM && prefilterMaterial.define('fragment', 'RGBM_ENCODE');
+    textureOpts.decodeRGBM && prefilterMaterial.define('fragment', 'RGBM_DECODE');
 
     var dummyScene = new Scene();
     var skyEnv;

@@ -35,11 +35,11 @@ Shader['import'](shadowmapEssl);
 /**
  * Pass rendering shadow map.
  *
- * @constructor qtek.prePass.ShadowMap
- * @extends qtek.core.Base
+ * @constructor clay.prePass.ShadowMap
+ * @extends clay.core.Base
  * @example
- *     var shadowMapPass = new qtek.prePass.ShadowMap({
- *         softShadow: qtek.prePass.ShadowMap.VSM
+ *     var shadowMapPass = new clay.prePass.ShadowMap({
+ *         softShadow: clay.prePass.ShadowMap.VSM
  *     });
  *     ...
  *     animation.on('frame', function (frameTime) {
@@ -48,10 +48,10 @@ Shader['import'](shadowmapEssl);
  *     });
  */
 var ShadowMapPass = Base.extend(function () {
-    return /** @lends qtek.prePass.ShadowMap# */ {
+    return /** @lends clay.prePass.ShadowMap# */ {
         /**
          * Soft shadow technique.
-         * Can be {@link qtek.prePass.ShadowMap.PCF} or {@link qtek.prePass.ShadowMap.VSM}
+         * Can be {@link clay.prePass.ShadowMap.PCF} or {@link clay.prePass.ShadowMap.VSM}
          * @type {number}
          */
         softShadow: ShadowMapPass.PCF,
@@ -88,9 +88,7 @@ var ShadowMapPass = Base.extend(function () {
             'SPOT_LIGHT': 0
         },
 
-        _meshMaterials: {},
         _depthMaterials: {},
-        _depthShaders: {},
         _distanceMaterials: {},
 
         _opaqueCasters: [],
@@ -98,16 +96,17 @@ var ShadowMapPass = Base.extend(function () {
         _lightsCastShadow: [],
 
         _lightCameras: {},
+        _lightMaterials: {},
 
         _texturePool: new TexturePool()
     };
 }, function () {
     // Gaussian filter pass for VSM
     this._gaussianPassH = new Pass({
-        fragment: Shader.source('qtek.compositor.gaussian_blur')
+        fragment: Shader.source('clay.compositor.gaussian_blur')
     });
     this._gaussianPassV = new Pass({
-        fragment: Shader.source('qtek.compositor.gaussian_blur')
+        fragment: Shader.source('clay.compositor.gaussian_blur')
     });
     this._gaussianPassH.setUniform('blurSize', this.shadowBlur);
     this._gaussianPassH.setUniform('blurDir', 0.0);
@@ -115,18 +114,21 @@ var ShadowMapPass = Base.extend(function () {
     this._gaussianPassV.setUniform('blurDir', 1.0);
 
     this._outputDepthPass = new Pass({
-        fragment: Shader.source('qtek.sm.debug_depth')
+        fragment: Shader.source('clay.sm.debug_depth')
     });
 }, {
     /**
      * Render scene to shadow textures
-     * @param  {qtek.Renderer} renderer
-     * @param  {qtek.Scene} scene
-     * @param  {qtek.Camera} sceneCamera
+     * @param  {clay.Renderer} renderer
+     * @param  {clay.Scene} scene
+     * @param  {clay.Camera} sceneCamera
      * @param  {boolean} [notUpdateScene=false]
-     * @memberOf qtek.prePass.ShadowMap.prototype
+     * @memberOf clay.prePass.ShadowMap.prototype
      */
     render: function (renderer, scene, sceneCamera, notUpdateScene) {
+        if (!sceneCamera) {
+            sceneCamera = scene.getMainCamera();
+        }
         this.trigger('beforerender', this, renderer, scene, sceneCamera);
         this._renderShadowPass(renderer, scene, sceneCamera, notUpdateScene);
         this.trigger('afterrender', this, renderer, scene, sceneCamera);
@@ -134,9 +136,9 @@ var ShadowMapPass = Base.extend(function () {
 
     /**
      * Debug rendering of shadow textures
-     * @param  {qtek.Renderer} renderer
+     * @param  {clay.Renderer} renderer
      * @param  {number} size
-     * @memberOf qtek.prePass.ShadowMap.prototype
+     * @memberOf clay.prePass.ShadowMap.prototype
      */
     renderDebug: function (renderer, size) {
         renderer.saveClear();
@@ -145,10 +147,10 @@ var ShadowMapPass = Base.extend(function () {
         var width = size || viewport.width / 4;
         var height = width;
         if (this.softShadow === ShadowMapPass.VSM) {
-            this._outputDepthPass.material.shader.define('fragment', 'USE_VSM');
+            this._outputDepthPass.material.define('fragment', 'USE_VSM');
         }
         else {
-            this._outputDepthPass.material.shader.undefine('fragment', 'USE_VSM');
+            this._outputDepthPass.material.undefine('fragment', 'USE_VSM');
         }
         for (var name in this._textures) {
             var texture = this._textures[name];
@@ -159,130 +161,6 @@ var ShadowMapPass = Base.extend(function () {
         }
         renderer.setViewport(viewport);
         renderer.restoreClear();
-    },
-
-    _bindDepthMaterial: function (casters, bias, slopeScale) {
-        for (var i = 0; i < casters.length; i++) {
-            var mesh = casters[i];
-            var isShadowTransparent = mesh.material.shadowTransparentMap instanceof Texture2D;
-            var transparentMap = mesh.material.shadowTransparentMap;
-            var nJoints = mesh.joints && mesh.joints.length;
-            var matHashKey;
-            var shaderHashKey;
-            if (isShadowTransparent) {
-                matHashKey = nJoints + '-' + transparentMap.__GUID__;
-                shaderHashKey = nJoints + '-t';
-            }
-            else {
-                matHashKey = nJoints;
-                shaderHashKey = nJoints;
-            }
-            if (mesh.useSkinMatricesTexture) {
-                matHashKey += '-s';
-                shaderHashKey += '-s';
-            }
-            // Use custom shadow depth material
-            var depthMaterial = mesh.shadowDepthMaterial || this._depthMaterials[matHashKey];
-            var depthShader = mesh.shadowDepthMaterial ? mesh.shadowDepthMaterial.shader : this._depthShaders[shaderHashKey];
-
-            if (mesh.material !== depthMaterial) {  // Not binded yet
-                if (!depthShader) {
-                    depthShader = new Shader({
-                        vertex: Shader.source('qtek.sm.depth.vertex'),
-                        fragment: Shader.source('qtek.sm.depth.fragment'),
-                        precision: this.precision
-                    });
-                    if (nJoints > 0) {
-                        depthShader.define('vertex', 'SKINNING');
-                        depthShader.define('vertex', 'JOINT_COUNT', nJoints);
-                    }
-                    if (isShadowTransparent) {
-                        depthShader.define('both', 'SHADOW_TRANSPARENT');
-                    }
-                    if (mesh.useSkinMatricesTexture) {
-                        depthShader.define('vertex', 'USE_SKIN_MATRICES_TEXTURE');
-                    }
-                    this._depthShaders[shaderHashKey] = depthShader;
-                }
-                if (!depthMaterial) {
-                    // Skinned mesh
-                    depthMaterial = new Material({
-                        shader: depthShader
-                    });
-                    this._depthMaterials[matHashKey] = depthMaterial;
-                }
-
-                mesh.material = depthMaterial;
-
-                if (this.softShadow === ShadowMapPass.VSM) {
-                    depthShader.define('fragment', 'USE_VSM');
-                }
-                else {
-                    depthShader.undefine('fragment', 'USE_VSM');
-                }
-
-                depthMaterial.setUniform('bias', bias);
-                depthMaterial.setUniform('slopeScale', slopeScale);
-                if (isShadowTransparent) {
-                    depthMaterial.set('shadowTransparentMap', transparentMap);
-                }
-            }
-        }
-    },
-
-    _bindDistanceMaterial: function (casters, light) {
-        var lightPosition = light.getWorldPosition()._array;
-        for (var i = 0; i < casters.length; i++) {
-            var mesh = casters[i];
-            var nJoints = mesh.joints && mesh.joints.length;
-            var distanceMaterial = this._distanceMaterials[nJoints];
-            if (mesh.material !== distanceMaterial) {
-                if (!distanceMaterial) {
-                    // Skinned mesh
-                    distanceMaterial = new Material({
-                        shader: new Shader({
-                            vertex: Shader.source('qtek.sm.distance.vertex'),
-                            fragment: Shader.source('qtek.sm.distance.fragment'),
-                            precision: this.precision
-                        })
-                    });
-                    if (nJoints > 0) {
-                        distanceMaterial.shader.define('vertex', 'SKINNING');
-                        distanceMaterial.shader.define('vertex', 'JOINT_COUNT', nJoints);
-                    }
-                    this._distanceMaterials[nJoints] = distanceMaterial;
-                }
-                mesh.material = distanceMaterial;
-
-                if (this.softShadow === ShadowMapPass.VSM) {
-                    distanceMaterial.shader.define('fragment', 'USE_VSM');
-                }
-                else {
-                    distanceMaterial.shader.undefine('fragment', 'USE_VSM');
-                }
-            }
-
-            distanceMaterial.set('lightPosition', lightPosition);
-            distanceMaterial.set('range', light.range);
-        }
-    },
-
-    saveMaterial: function (casters) {
-        for (var i = 0; i < casters.length; i++) {
-            var mesh = casters[i];
-            this._meshMaterials[mesh.__GUID__] = mesh.material;
-        }
-    },
-
-    restoreMaterial: function (casters) {
-        for (var i = 0; i < casters.length; i++) {
-            var mesh = casters[i];
-            var material = this._meshMaterials[mesh.__GUID__];
-            // In case restoreMaterial when no shadowMap is rendered
-            if (material) {
-                mesh.material = material;
-            }
-        }
     },
 
     _updateCasterAndReceiver: function (renderer, mesh) {
@@ -302,31 +180,30 @@ var ShadowMapPass = Base.extend(function () {
         if (!mesh.material.shader && mesh.material.updateShader) {
             mesh.material.updateShader(renderer);
         }
-        var shader = mesh.material.shader;
         if (this.softShadow === ShadowMapPass.VSM) {
-            shader.define('fragment', 'USE_VSM');
-            shader.undefine('fragment', 'PCF_KERNEL_SIZE');
+            mesh.material.define('fragment', 'USE_VSM');
+            mesh.material.undefine('fragment', 'PCF_KERNEL_SIZE');
         }
         else {
-            shader.undefine('fragment', 'USE_VSM');
+            mesh.material.undefine('fragment', 'USE_VSM');
             var kernelPCF = this.kernelPCF;
             if (kernelPCF && kernelPCF.length) {
-                shader.define('fragment', 'PCF_KERNEL_SIZE', kernelPCF.length / 2);
+                mesh.material.define('fragment', 'PCF_KERNEL_SIZE', kernelPCF.length / 2);
             }
             else {
-                shader.undefine('fragment', 'PCF_KERNEL_SIZE');
+                mesh.material.undefine('fragment', 'PCF_KERNEL_SIZE');
             }
         }
     },
 
     _update: function (renderer, scene) {
-        for (var i = 0; i < scene.opaqueQueue.length; i++) {
-            this._updateCasterAndReceiver(renderer, scene.opaqueQueue[i]);
+        for (var i = 0; i < scene.opaqueList.length; i++) {
+            this._updateCasterAndReceiver(renderer, scene.opaqueList[i]);
         }
-        for (var i = 0; i < scene.transparentQueue.length; i++) {
+        for (var i = 0; i < scene.transparentList.length; i++) {
             // TODO Transparent object receive shadow will be very slow
             // in stealth demo, still not find the reason
-            this._updateCasterAndReceiver(renderer, scene.transparentQueue[i]);
+            this._updateCasterAndReceiver(renderer, scene.transparentList[i]);
         }
         for (var i = 0; i < scene.lights.length; i++) {
             var light = scene.lights[i];
@@ -351,7 +228,7 @@ var ShadowMapPass = Base.extend(function () {
             scene.update();
         }
         if (sceneCamera) {
-            sceneCamera.update();   
+            sceneCamera.update();
         }
 
         this._update(renderer, scene);
@@ -380,8 +257,6 @@ var ShadowMapPass = Base.extend(function () {
         var shadowCascadeClips = [];
         var pointLightShadowMaps = [];
 
-        this.saveMaterial(this._opaqueCasters);
-
         var dirLightHasCascade;
         // Create textures for shadow map
         for (var i = 0; i < this._lightsCastShadow.length; i++) {
@@ -389,16 +264,15 @@ var ShadowMapPass = Base.extend(function () {
             if (light instanceof DirectionalLight) {
 
                 if (dirLightHasCascade) {
-                    console.warn('Only one dire light supported with shadow cascade');
+                    console.warn('Only one direectional light supported with shadow cascade');
+                    continue;
+                }
+                if (light.shadowCascade > 4) {
+                    console.warn('Support at most 4 cascade');
                     continue;
                 }
                 if (light.shadowCascade > 1) {
-                    dirLightHasCascade = light;
-
-                    if (light.shadowCascade > 4) {
-                        console.warn('Support at most 4 cascade');
-                        continue;
-                    }
+                    dirLightHasCascade = light.shadowCascade;
                 }
 
                 this.renderDirectionalLightShadow(
@@ -415,6 +289,7 @@ var ShadowMapPass = Base.extend(function () {
             else if (light instanceof SpotLight) {
                 this.renderSpotLightShadow(
                     renderer,
+                    scene,
                     light,
                     this._opaqueCasters,
                     spotLightMatrices,
@@ -424,6 +299,7 @@ var ShadowMapPass = Base.extend(function () {
             else if (light instanceof PointLight) {
                 this.renderPointLightShadow(
                     renderer,
+                    scene,
                     light,
                     this._opaqueCasters,
                     pointLightShadowMaps
@@ -432,79 +308,70 @@ var ShadowMapPass = Base.extend(function () {
 
             this._shadowMapNumber[light.type]++;
         }
-        this.restoreMaterial(this._opaqueCasters);
 
-        var shadowCascadeClipsNear = shadowCascadeClips.slice();
-        var shadowCascadeClipsFar = shadowCascadeClips.slice();
-        shadowCascadeClipsNear.pop();
-        shadowCascadeClipsFar.shift();
+        for (var lightType in this._shadowMapNumber) {
+            var number = this._shadowMapNumber[lightType];
+            var key = lightType + '_SHADOWMAP_COUNT';
+            for (var i = 0; i < this._receivers.length; i++) {
+                var mesh = this._receivers[i];
+                var material = mesh.material;
+                if (material.fragmentDefines[key] !== number) {
+                    if (number > 0) {
+                        material.define('fragment', key, number);
+                    }
+                    else if (material.isDefined('fragment', key)) {
+                        material.undefine('fragment', key);
+                    }
+                }
+            }
+        }
+        for (var i = 0; i < this._receivers.length; i++) {
+            var mesh = this._receivers[i];
+            var material = mesh.material;
+            if (dirLightHasCascade) {
+                material.define('fragment', 'SHADOW_CASCADE', dirLightHasCascade.shadowCascade);
+            }
+            else {
+                material.undefine('fragment', 'SHADOW_CASCADE');
+            }
+        }
 
-        // Iterate from far to near
-        shadowCascadeClipsNear.reverse();
-        shadowCascadeClipsFar.reverse();
-        // directionalLightShadowMaps.reverse();
-        directionalLightMatrices.reverse();
+        var shadowUniforms = scene.shadowUniforms;
 
         function getSize(texture) {
             return texture.height;
         }
-        var spotLightShadowMapSizes = spotLightShadowMaps.map(getSize);
-        var directionalLightShadowMapSizes = directionalLightShadowMaps.map(getSize);
+        if (directionalLightShadowMaps.length > 0) {
+            var directionalLightShadowMapSizes = directionalLightShadowMaps.map(getSize);
+            shadowUniforms.directionalLightShadowMaps = { value: directionalLightShadowMaps, type: 'tv' };
+            shadowUniforms.directionalLightMatrices = { value: directionalLightMatrices, type: 'm4v' };
+            shadowUniforms.directionalLightShadowMapSizes = { value: directionalLightShadowMapSizes, type: '1fv' };
+            if (dirLightHasCascade) {
+                var shadowCascadeClipsNear = shadowCascadeClips.slice();
+                var shadowCascadeClipsFar = shadowCascadeClips.slice();
+                shadowCascadeClipsNear.pop();
+                shadowCascadeClipsFar.shift();
 
-        var shadowDefineUpdatedShader = {};
-
-        for (var i = 0; i < this._receivers.length; i++) {
-            var mesh = this._receivers[i];
-            var material = mesh.material;
-
-            var shader = material.shader;
-
-            if (!shadowDefineUpdatedShader[shader.__GUID__]) {
-                var shaderNeedsUpdate = false;
-                for (var lightType in this._shadowMapNumber) {
-                    var number = this._shadowMapNumber[lightType];
-                    var key = lightType + '_SHADOWMAP_COUNT';
-
-                    if (shader.fragmentDefines[key] !== number) {
-                        if (number > 0) {
-                            shader.fragmentDefines[key] = number;
-                            shaderNeedsUpdate = true;
-                        }
-                        else if (shader.isDefined('fragment', key)) {
-                            shader.undefine('fragment', key);
-                            shaderNeedsUpdate = true;
-                        }
-                    }
-                }
-                if (shaderNeedsUpdate) {
-                    shader.dirty();
-                }
-                if (dirLightHasCascade) {
-                    shader.define('fragment', 'SHADOW_CASCADE', dirLightHasCascade.shadowCascade);
-                }
-                else {
-                    shader.undefine('fragment', 'SHADOW_CASCADE');
-                }
-                shadowDefineUpdatedShader[shader.__GUID__] = true;
+                // Iterate from far to near
+                shadowCascadeClipsNear.reverse();
+                shadowCascadeClipsFar.reverse();
+                // directionalLightShadowMaps.reverse();
+                directionalLightMatrices.reverse();
+                shadowUniforms.shadowCascadeClipsNear = { value: shadowCascadeClipsNear, type: '1fv' };
+                shadowUniforms.shadowCascadeClipsFar = { value: shadowCascadeClipsFar, type: '1fv' };
             }
+        }
 
-            if (spotLightShadowMaps.length > 0) {
-                material.setUniform('spotLightShadowMaps', spotLightShadowMaps);
-                material.setUniform('spotLightMatrices', spotLightMatrices);
-                material.setUniform('spotLightShadowMapSizes', spotLightShadowMapSizes);
-            }
-            if (directionalLightShadowMaps.length > 0) {
-                material.setUniform('directionalLightShadowMaps', directionalLightShadowMaps);
-                if (dirLightHasCascade) {
-                    material.setUniform('shadowCascadeClipsNear', shadowCascadeClipsNear);
-                    material.setUniform('shadowCascadeClipsFar', shadowCascadeClipsFar);
-                }
-                material.setUniform('directionalLightMatrices', directionalLightMatrices);
-                material.setUniform('directionalLightShadowMapSizes', directionalLightShadowMapSizes);
-            }
-            if (pointLightShadowMaps.length > 0) {
-                material.setUniform('pointLightShadowMaps', pointLightShadowMaps);
-            }
+        if (spotLightShadowMaps.length > 0) {
+            var spotLightShadowMapSizes = spotLightShadowMaps.map(getSize);
+            var shadowUniforms = scene.shadowUniforms;
+            shadowUniforms.spotLightShadowMaps = { value: spotLightShadowMaps, type: 'tv' };
+            shadowUniforms.spotLightMatrices = { value: spotLightMatrices, type: 'm4v' };
+            shadowUniforms.spotLightShadowMapSizes = { value: spotLightShadowMapSizes, type: '1fv' };
+        }
+
+        if (pointLightShadowMaps.length > 0) {
+            shadowUniforms.pointLightShadowMaps = { value: pointLightShadowMaps, type: 'tv' };
         }
     },
 
@@ -520,10 +387,13 @@ var ShadowMapPass = Base.extend(function () {
 
         return function (renderer, scene, sceneCamera, light, casters, shadowCascadeClips, directionalLightMatrices, directionalLightShadowMaps) {
 
-            var shadowBias = light.shadowBias;
-            this._bindDepthMaterial(casters, shadowBias, light.shadowSlopeScale);
-
-            casters.sort(Renderer.opaqueSortFunc);
+            var defaultShadowMaterial = this._getDepthMaterial(light);
+            var passConfig = {
+                getMaterial: function (renderable) {
+                    return renderable.shadowDepthMaterial || defaultShadowMaterial;
+                },
+                sortCompare: Renderer.opaqueSortCompare
+            };
 
             // First frame
             if (!scene.viewBoundingBoxLastFrame.isFinite()) {
@@ -538,11 +408,11 @@ var ShadowMapPass = Base.extend(function () {
 
             var lightCamera = this._getDirectionalLightCamera(light, scene, sceneCamera);
 
-            var lvpMat4Arr = lightViewProjMatrix._array;
+            var lvpMat4Arr = lightViewProjMatrix.array;
             lightProjMatrix.copy(lightCamera.projectionMatrix);
-            mat4.invert(lightViewMatrix._array, lightCamera.worldTransform._array);
-            mat4.multiply(lightViewMatrix._array, lightViewMatrix._array, sceneCamera.worldTransform._array);
-            mat4.multiply(lvpMat4Arr, lightProjMatrix._array, lightViewMatrix._array);
+            mat4.invert(lightViewMatrix.array, lightCamera.worldTransform.array);
+            mat4.multiply(lightViewMatrix.array, lightViewMatrix.array, sceneCamera.worldTransform.array);
+            mat4.multiply(lvpMat4Arr, lightProjMatrix.array, lightViewMatrix.array);
 
             var clipPlanes = [];
             var isPerspective = sceneCamera instanceof PerspectiveCamera;
@@ -571,11 +441,11 @@ var ShadowMapPass = Base.extend(function () {
                 var nearPlane = clipPlanes[i];
                 var farPlane = clipPlanes[i + 1];
                 if (isPerspective) {
-                    mat4.perspective(splitProjMatrix._array, sceneCamera.fov / 180 * Math.PI, sceneCamera.aspect, nearPlane, farPlane);
+                    mat4.perspective(splitProjMatrix.array, sceneCamera.fov / 180 * Math.PI, sceneCamera.aspect, nearPlane, farPlane);
                 }
                 else {
                     mat4.ortho(
-                        splitProjMatrix._array,
+                        splitProjMatrix.array,
                         sceneCamera.left, sceneCamera.right, sceneCamera.bottom, sceneCamera.top,
                         nearPlane, farPlane
                     );
@@ -583,8 +453,8 @@ var ShadowMapPass = Base.extend(function () {
                 splitFrustum.setFromProjection(splitProjMatrix);
                 splitFrustum.getTransformedBoundingBox(cropBBox, lightViewMatrix);
                 cropBBox.applyProjection(lightProjMatrix);
-                var _min = cropBBox.min._array;
-                var _max = cropBBox.max._array;
+                var _min = cropBBox.min.array;
+                var _max = cropBBox.max.array;
                 _min[0] = Math.max(_min[0], -1);
                 _min[1] = Math.max(_min[1], -1);
                 _max[0] = Math.min(_max[0], 1);
@@ -597,13 +467,7 @@ var ShadowMapPass = Base.extend(function () {
                 // Reversed, left to right => far to near
                 renderer.setViewport((light.shadowCascade - i - 1) * shadowSize, 0, shadowSize, shadowSize, 1);
 
-                // Set bias seperately for each cascade
-                // TODO Simply divide 1.5 ?
-                for (var key in this._depthMaterials) {
-                    this._depthMaterials[key].set('shadowBias', shadowBias);
-                }
-
-                renderer.renderQueue(casters, lightCamera);
+                renderer.renderPass(casters, lightCamera, passConfig);
 
                 // Filter for VSM
                 if (this.softShadow === ShadowMapPass.VSM) {
@@ -614,7 +478,7 @@ var ShadowMapPass = Base.extend(function () {
                 matrix.copy(lightCamera.viewMatrix)
                     .multiplyLeft(lightCamera.projectionMatrix);
 
-                directionalLightMatrices.push(matrix._array);
+                directionalLightMatrices.push(matrix.array);
 
                 lightCamera.projectionMatrix.copy(lightProjMatrix);
             }
@@ -625,13 +489,10 @@ var ShadowMapPass = Base.extend(function () {
         };
     })(),
 
-    renderSpotLightShadow: function (renderer, light, casters, spotLightMatrices, spotLightShadowMaps) {
-
-        this._bindDepthMaterial(casters, light.shadowBias, light.shadowSlopeScale);
-        casters.sort(Renderer.opaqueSortFunc);
+    renderSpotLightShadow: function (renderer, scene, light, casters, spotLightMatrices, spotLightShadowMaps) {
 
         var texture = this._getTexture(light);
-        var camera = this._getSpotLightCamera(light);
+        var lightCamera = this._getSpotLightCamera(light);
         var _gl = renderer.gl;
 
         this._frameBuffer.attach(texture);
@@ -639,7 +500,15 @@ var ShadowMapPass = Base.extend(function () {
 
         _gl.clear(_gl.COLOR_BUFFER_BIT | _gl.DEPTH_BUFFER_BIT);
 
-        renderer.renderQueue(casters, camera);
+        var defaultShadowMaterial = this._getDepthMaterial(light);
+        var passConfig = {
+            getMaterial: function (renderable) {
+                return renderable.shadowDepthMaterial || defaultShadowMaterial;
+            },
+            sortCompare: Renderer.opaqueSortCompare
+        };
+
+        renderer.renderPass(renderer.cullRenderList(casters, null, lightCamera), lightCamera, passConfig);
 
         this._frameBuffer.unbind(renderer);
 
@@ -649,20 +518,27 @@ var ShadowMapPass = Base.extend(function () {
         }
 
         var matrix = new Matrix4();
-        matrix.copy(camera.worldTransform)
+        matrix.copy(lightCamera.worldTransform)
             .invert()
-            .multiplyLeft(camera.projectionMatrix);
+            .multiplyLeft(lightCamera.projectionMatrix);
 
         spotLightShadowMaps.push(texture);
-        spotLightMatrices.push(matrix._array);
+        spotLightMatrices.push(matrix.array);
     },
 
-    renderPointLightShadow: function (renderer, light, casters, pointLightShadowMaps) {
+    renderPointLightShadow: function (renderer, scene, light, casters, pointLightShadowMaps) {
         var texture = this._getTexture(light);
         var _gl = renderer.gl;
         pointLightShadowMaps.push(texture);
 
-        this._bindDistanceMaterial(casters, light);
+        var defaultShadowMaterial = this._getDepthMaterial(light);
+        var passConfig = {
+            getMaterial: function (renderable) {
+                return renderable.shadowDepthMaterial || defaultShadowMaterial;
+            },
+            sortCompare: Renderer.opaqueSortCompare
+        };
+
         for (var i = 0; i < 6; i++) {
             var target = targets[i];
             var camera = this._getPointLightCamera(light, target);
@@ -671,9 +547,43 @@ var ShadowMapPass = Base.extend(function () {
             this._frameBuffer.bind(renderer);
             _gl.clear(_gl.COLOR_BUFFER_BIT | _gl.DEPTH_BUFFER_BIT);
 
-            renderer.renderQueue(casters, camera);
+            renderer.renderPass(renderer.cullRenderList(casters, null, camera), camera, passConfig);
         }
-            this._frameBuffer.unbind(renderer);
+
+        this._frameBuffer.unbind(renderer);
+    },
+
+    _getDepthMaterial: function (light) {
+        var shadowMaterial = this._lightMaterials[light.__uid__];
+        var isPointLight = light instanceof PointLight;
+        if (!shadowMaterial) {
+            var shaderPrefix = isPointLight ? 'clay.sm.distance.' : 'clay.sm.depth.';
+            shadowMaterial = new Material({
+                precision: this.precision,
+                shader: new Shader(Shader.source(shaderPrefix + 'vertex'), Shader.source(shaderPrefix + 'fragment'))
+            });
+
+            this._lightMaterials[light.__uid__] = shadowMaterial;
+        }
+        if (light.shadowSlopeScale != null) {
+            shadowMaterial.setUniform('slopeScale', light.shadowSlopeScale);
+        }
+        if (light.shadowBias != null) {
+            shadowMaterial.setUniform('shadowBias', light.shadowBias);
+        }
+        if (this.softShadow === ShadowMapPass.VSM) {
+            shadowMaterial.define('fragment', 'USE_VSM');
+        }
+        else {
+            shadowMaterial.undefine('fragment', 'USE_VSM');
+        }
+
+        if (isPointLight) {
+            shadowMaterial.set('lightPosition', light.getWorldPosition().array);
+            shadowMaterial.set('range', light.range);
+        }
+
+        return shadowMaterial;
     },
 
     _gaussianFilter: function (renderer, texture, size) {
@@ -682,7 +592,6 @@ var ShadowMapPass = Base.extend(function () {
             height: size,
             type: Texture.FLOAT
         };
-        var _gl = renderer.gl;
         var tmpTexture = this._texturePool.get(parameter);
 
         this._frameBuffer.attach(tmpTexture);
@@ -701,7 +610,7 @@ var ShadowMapPass = Base.extend(function () {
     },
 
     _getTexture: function (light, cascade) {
-        var key = light.__GUID__;
+        var key = light.__uid__;
         var texture = this._textures[key];
         var resolution = light.shadowResolution || 512;
         cascade = cascade || 1;
@@ -803,8 +712,8 @@ var ShadowMapPass = Base.extend(function () {
 
             lightViewBBox.copy(sceneViewBoundingBox).applyTransform(lightViewMatrix);
 
-            var min = lightViewBBox.min._array;
-            var max = lightViewBBox.max._array;
+            var min = lightViewBBox.min.array;
+            var max = lightViewBBox.max.array;
 
             // Move camera to adjust the near to 0
             camera.position.set((min[0] + max[0]) / 2, (min[1] + max[1]) / 2, max[2])
@@ -838,27 +747,18 @@ var ShadowMapPass = Base.extend(function () {
         camera.far = light.range;
         camera.worldTransform.copy(light.worldTransform);
         camera.updateProjectionMatrix();
-        mat4.invert(camera.viewMatrix._array, camera.worldTransform._array);
+        mat4.invert(camera.viewMatrix.array, camera.worldTransform.array);
 
         return camera;
     },
 
     /**
-     * @param  {qtek.Renderer|WebGLRenderingContext} [renderer]
-     * @memberOf qtek.prePass.ShadowMap.prototype
+     * @param  {clay.Renderer|WebGLRenderingContext} [renderer]
+     * @memberOf clay.prePass.ShadowMap.prototype
      */
     // PENDING Renderer or WebGLRenderingContext
     dispose: function (renderer) {
         var _gl = renderer.gl || renderer;
-
-        for (var guid in this._depthMaterials) {
-            var mat = this._depthMaterials[guid];
-            mat.dispose(_gl);
-        }
-        for (var guid in this._distanceMaterials) {
-            var mat = this._distanceMaterials[guid];
-            mat.dispose(_gl);
-        }
 
         if (this._frameBuffer) {
             this._frameBuffer.dispose(_gl);
@@ -901,13 +801,13 @@ var ShadowMapPass = Base.extend(function () {
 });
 
 /**
- * @name qtek.prePass.ShadowMap.VSM
+ * @name clay.prePass.ShadowMap.VSM
  * @type {number}
  */
 ShadowMapPass.VSM = 1;
 
 /**
- * @name qtek.prePass.ShadowMap.PCF
+ * @name clay.prePass.ShadowMap.PCF
  * @type {number}
  */
 ShadowMapPass.PCF = 2;

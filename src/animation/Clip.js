@@ -3,7 +3,7 @@ import Easing from './easing';
 function noop () {}
 /**
  * @constructor
- * @alias qtek.animation.Clip
+ * @alias clay.animation.Clip
  * @param {Object} [opts]
  * @param {Object} [opts.target]
  * @param {number} [opts.life]
@@ -104,7 +104,7 @@ Clip.prototype = {
     },
 
     /**
-     * @param {string|function} easing
+     * @param {string|Function} easing
      */
     setEasing: function (easing) {
         if (typeof(easing) === 'string') {

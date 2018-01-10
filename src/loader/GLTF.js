@@ -32,6 +32,7 @@ import Geometry from '../Geometry';
 
 // Import builtin shader
 import '../shader/builtin';
+import Shader from '../Shader';
 
 var semanticAttributeMap = {
     'NORMAL': 'normal',
@@ -97,29 +98,29 @@ function getAccessorData(json, lib, accessorIdx, isIndices) {
 }
 
 /**
- * @typedef {Object} qtek.loader.GLTF.IResult
+ * @typedef {Object} clay.loader.GLTF.IResult
  * @property {Object} json
- * @property {qtek.Scene} scene
- * @property {qtek.Node} rootNode
- * @property {qtek.Camera[]} cameras
- * @property {qtek.Texture[]} textures
- * @property {qtek.Material[]} materials
- * @property {qtek.Skeleton[]} skeletons
- * @property {qtek.Mesh[]} meshes
- * @property {qtek.animation.TrackClip[]} clips
- * @property {qtek.Node[]} nodes
+ * @property {clay.Scene} scene
+ * @property {clay.Node} rootNode
+ * @property {clay.Camera[]} cameras
+ * @property {clay.Texture[]} textures
+ * @property {clay.Material[]} materials
+ * @property {clay.Skeleton[]} skeletons
+ * @property {clay.Mesh[]} meshes
+ * @property {clay.animation.TrackClip[]} clips
+ * @property {clay.Node[]} nodes
  */
 
 /**
- * @constructor qtek.loader.GLTF
- * @extends qtek.core.Base
+ * @constructor clay.loader.GLTF
+ * @extends clay.core.Base
  */
 var GLTFLoader = Base.extend(
-/** @lends qtek.loader.GLTF# */
+/** @lends clay.loader.GLTF# */
 {
     /**
-     * 
-     * @type {qtek.Node}
+     *
+     * @type {clay.Node}
      */
     rootNode: null,
     /**
@@ -142,13 +143,13 @@ var GLTFLoader = Base.extend(
 
     /**
      * Shader used when creating the materials.
-     * @type {string}
-     * @default 'qtek.standard'
+     * @type {string|clay.Shader}
+     * @default 'clay.standard'
      */
-    shaderName: 'qtek.standard',
+    shader: 'clay.standard',
 
     /**
-     * If use {@link qtek.StandardMaterial}
+     * If use {@link clay.StandardMaterial}
      * @type {string}
      */
     useStandardMaterial: false,
@@ -192,7 +193,7 @@ function () {
         this.shaderLibrary = shaderLibrary.createLibrary();
     }
 },
-/** @lends qtek.loader.GLTF.prototype */
+/** @lends clay.loader.GLTF.prototype */
 {
     /**
      * @param {string} url
@@ -228,7 +229,7 @@ function () {
     /**
      * Parse glTF binary
      * @param {ArrayBuffer} buffer
-     * @return {qtek.loader.GLTF.IResult}
+     * @return {clay.loader.GLTF.IResult}
      */
     parseBinary: function (buffer) {
         var header = new Uint32Array(buffer, 0, 4);
@@ -240,9 +241,9 @@ function () {
             this.trigger('error', 'Only glTF2.0 is supported.');
             return;
         }
-        
+
         var dataView = new DataView(buffer, 12);
-        
+
         var json;
         var buffers = [];
         // Read chunks
@@ -283,7 +284,7 @@ function () {
     /**
      * @param {Object} json
      * @param {ArrayBuffer[]} [buffer]
-     * @return {qtek.loader.GLTF.IResult}
+     * @return {clay.loader.GLTF.IResult}
      */
     parse: function (json, buffers) {
         var self = this;
@@ -321,7 +322,7 @@ function () {
             util.each(json.buffers, function (bufferInfo, idx) {
                 loading++;
                 var path = bufferInfo.uri;
-    
+
                 self._loadBuffer(path, function (buffer) {
                     lib.buffers[idx] = buffer;
                     checkLoad();
@@ -408,7 +409,7 @@ function () {
         if (path && path.match(/^data:(.*?)base64,/)) {
             return path;
         }
-        
+
         var rootPath = this.bufferRootPath;
         if (rootPath == null) {
             rootPath = this.rootPath;
@@ -430,6 +431,15 @@ function () {
             rootPath = this.rootPath;
         }
         return util.relative2absolute(path, rootPath);
+    },
+
+    _getShader: function () {
+        if (typeof this.shader === 'string') {
+            return this.shaderLibrary.get(this.shader);
+        }
+        else if (this.shader instanceof Shader) {
+            return this.shader;
+        }
     },
 
     _loadBuffer: function (path, onsuccess, onerror) {
@@ -484,29 +494,9 @@ function () {
             lib.skeletons[idx] = skeleton;
         }, this);
 
-        var shaderLib = this.shaderLibrary;
-        var shaderName = this.shaderName;
         function enableSkinningForMesh(mesh, skeleton, jointIndices) {
             mesh.skeleton = skeleton;
             mesh.joints = jointIndices;
-            // Make sure meshs with different joints not have same material.
-            var originalShader = mesh.material.shader;
-            var material = mesh.material.clone();
-            mesh.material = material;
-            if (material instanceof StandardMaterial) {
-                material.jointCount = jointIndices.length;
-            }
-            else {
-                material.shader = shaderLib.get(
-                    shaderName, {
-                        textures: originalShader.getEnabledTextures(),
-                        vertexDefines: {
-                            SKINNING: null,
-                            JOINT_COUNT: jointIndices.length
-                        }
-                    }
-                );
-            }
         }
 
         function getJointIndex(joint) {
@@ -608,20 +598,17 @@ function () {
             });
         }
         else {
-            var fragmentDefines = {
-                USE_ROUGHNESS: null,
-                USE_METALNESS: null
-            };
-            if (materialInfo.doubleSided) {
-                fragmentDefines.DOUBLE_SIDED = null;
-            }
             material = new Material({
                 name: materialInfo.name,
-                shader: this.shaderLibrary.get(this.shaderName, {
-                    fragmentDefines: fragmentDefines,
-                    textures: enabledTextures
-                })
+                shader: this._getShader()
             });
+
+            material.define('fragment', 'USE_ROUGHNESS');
+            material.define('fragment', 'USE_METALNESS');
+
+            if (materialInfo.doubleSided) {
+                material.define('fragment', 'DOUBLE_SIDED');
+            }
         }
 
         if (uniforms.transparent) {
@@ -743,25 +730,24 @@ function () {
             }, commonProperties));
         }
         else {
-            var fragmentDefines = {
-                ROUGHNESS_CHANNEL: 1,
-                METALNESS_CHANNEL: 2,
-                USE_ROUGHNESS: null,
-                USE_METALNESS: null
-            };
-            if (alphaTest) {
-                fragmentDefines.ALPHA_TEST = null;
-            }
-            if (materialInfo.doubleSided) {
-                fragmentDefines.DOUBLE_SIDED = null;
-            }
+
             material = new Material({
                 name: materialInfo.name,
-                shader: this.shaderLibrary.get(this.shaderName, {
-                    fragmentDefines: fragmentDefines,
-                    textures: enabledTextures
-                })
+                shader: this._getShader()
             });
+
+            material.define('fragment', 'USE_ROUGHNESS');
+            material.define('fragment', 'USE_METALNESS');
+            material.define('fragment', 'ROUGHNESS_CHANNEL', 1);
+            material.define('fragment', 'METALNESS_CHANNEL', 2);
+
+            if (alphaTest) {
+                material.define('fragment', 'ALPHA_TEST');
+            }
+            if (materialInfo.doubleSided) {
+                material.define('fragment', 'DOUBLE_SIDED');
+            }
+
             material.set(commonProperties);
         }
 
@@ -825,22 +811,20 @@ function () {
             commonProperties.specularColor = [1, 1, 1];
         }
 
-        var fragmentDefines = {
-            GLOSSINESS_CHANNEL: 3
-        };
-        if (alphaTest) {
-            fragmentDefines.ALPHA_TEST = null;
-        }
-        if (materialInfo.doubleSided) {
-            fragmentDefines.DOUBLE_SIDED = null;
-        }
         material = new Material({
             name: materialInfo.name,
-            shader: this.shaderLibrary.get(this.shaderName, {
-                fragmentDefines: fragmentDefines,
-                textures: enabledTextures
-            })
+            shader: this._getShader()
         });
+
+        material.define('fragment', 'GLOSSINESS_CHANNEL', 3);
+
+        if (alphaTest) {
+            material.define('fragment', 'ALPHA_TEST');
+        }
+        if (materialInfo.doubleSided) {
+            material.define('fragment', 'DOUBLE_SIDED');
+        }
+
         material.set(commonProperties);
 
         if (materialInfo.alphaMode === 'BLEND') {
@@ -957,7 +941,7 @@ function () {
                 // Use default material
                 if (!material) {
                     material = new Material({
-                        shader: this.shaderLibrary.get(self.shaderName)
+                        shader: self._getShader()
                     });
                 }
                 var mesh = new Mesh({
@@ -973,7 +957,7 @@ function () {
                     mesh.geometry.generateVertexNormals();
                 }
                 if (((material instanceof StandardMaterial) && material.normalMap)
-                    || (material.shader && material.shader.isTextureEnabled('normalMap'))
+                    || (material.isTextureEnabled('normalMap'))
                 ) {
                     if (!mesh.geometry.attributes.tangent.value) {
                         mesh.geometry.generateTangents();

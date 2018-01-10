@@ -26,7 +26,7 @@ function makeAttrKey(attrName) {
 }
 /**
  * Geometry attribute
- * @alias qtek.Geometry.Attribute
+ * @alias clay.Geometry.Attribute
  * @constructor
  */
 function Attribute(name, type, size, semantic) {
@@ -64,7 +64,7 @@ function Attribute(name, type, size, semantic) {
      *  + `'COLOR'`
      *  + `'JOINT'`
      *  + `'WEIGHT'`
-     * 
+     *
      * In shader, attribute with same semantic will be automatically mapped. For example:
      * ```glsl
      * attribute vec3 pos: POSITION
@@ -172,8 +172,8 @@ function Attribute(name, type, size, semantic) {
 
 /**
  * Set item value at give index. Second parameter val is number if size is 1
- * @method
- * @name qtek.Geometry.Attribute#set
+ * @function
+ * @name clay.Geometry.Attribute#set
  * @param {number} idx
  * @param {number[]|number} val
  * @example
@@ -182,8 +182,8 @@ function Attribute(name, type, size, semantic) {
 
 /**
  * Get item value at give index. Second parameter out is no need if size is 1
- * @method
- * @name qtek.Geometry.Attribute#set
+ * @function
+ * @name clay.Geometry.Attribute#set
  * @param {number} idx
  * @param {number[]} [out]
  * @example
@@ -192,7 +192,7 @@ function Attribute(name, type, size, semantic) {
 
 /**
  * Initialize attribute with given vertex count
- * @param {number} nVertex 
+ * @param {number} nVertex
  */
 Attribute.prototype.init = function (nVertex) {
     if (!this.value || this.value.length != nVertex * this.size) {
@@ -262,11 +262,11 @@ function IndicesBuffer(buffer) {
 }
 
 /**
- * @constructor qtek.Geometry
- * @extends qtek.core.Base
+ * @constructor clay.Geometry
+ * @extends clay.core.Base
  */
 var Geometry = Base.extend(function () {
-    return /** @lends qtek.Geometry# */ {
+    return /** @lends clay.Geometry# */ {
         /**
          * Attributes of geometry. Including:
          *  + `position`
@@ -299,7 +299,7 @@ var Geometry = Base.extend(function () {
         },
         /**
          * Calculated bounding box of geometry.
-         * @type {qtek.math.BoundingBox}
+         * @type {clay.math.BoundingBox}
          */
         boundingBox: null,
 
@@ -324,7 +324,7 @@ var Geometry = Base.extend(function () {
 
     this._attributeList = Object.keys(this.attributes);
 },
-/** @lends qtek.Geometry.prototype */
+/** @lends clay.Geometry.prototype */
 {
     /**
      * Main attribute will be used to count vertex number
@@ -346,7 +346,7 @@ var Geometry = Base.extend(function () {
      * User defined ray picking algorithm instead of default
      * triangle ray intersection
      * ```typescript
-     * (ray: qtek.math.Ray, renderable: qtek.Renderable, out: Array) => boolean
+     * (ray: clay.math.Ray, renderable: clay.Renderable, out: Array) => boolean
      * ```
      * @type {?Function}
      */
@@ -364,8 +364,8 @@ var Geometry = Base.extend(function () {
         if (posArr && posArr.length) {
             var min = bbox.min;
             var max = bbox.max;
-            var minArr = min._array;
-            var maxArr = max._array;
+            var minArr = min.array;
+            var maxArr = max.array;
             vec3.set(minArr, posArr[0], posArr[1], posArr[2]);
             vec3.set(maxArr, posArr[0], posArr[1], posArr[2]);
             for (var i = 3; i < posArr.length;) {
@@ -394,6 +394,8 @@ var Geometry = Base.extend(function () {
         }
         this.dirtyIndices();
         this._enabledAttributes = null;
+
+        this._cache.dirty('any');
     },
     /**
      * Mark the indices needs to update.
@@ -446,7 +448,7 @@ var Geometry = Base.extend(function () {
 
     /**
      * Initialize indices from an array.
-     * @param {Array} array 
+     * @param {Array} array
      */
     initIndicesFromArray: function (array) {
         var value;
@@ -504,10 +506,10 @@ var Geometry = Base.extend(function () {
     /**
      * Get attribute
      * @param {string} name
-     * @return {qtek.Geometry.Attribute}
+     * @return {clay.Geometry.Attribute}
      */
     getAttribute: function (name) {
-        return this.attribute[name];
+        return this.attributes[name];
     },
 
     /**
@@ -543,7 +545,7 @@ var Geometry = Base.extend(function () {
 
     getBufferChunks: function (renderer) {
         var cache = this._cache;
-        cache.use(renderer.__GUID__);
+        cache.use(renderer.__uid__);
         var isAttributesDirty = cache.isDirty('attributes');
         var isIndicesDirty = cache.isDirty('indices');
         if (isAttributesDirty || isIndicesDirty) {
@@ -555,6 +557,7 @@ var Geometry = Base.extend(function () {
             cache.fresh('attributes');
             cache.fresh('indices');
         }
+        cache.fresh('any');
         return cache.get('chunks');
     },
 
@@ -880,7 +883,7 @@ var Geometry = Base.extend(function () {
         }
         this.dirty();
     },
-    
+
     /**
      * If vertices are not shared by different indices.
      */
@@ -955,7 +958,7 @@ var Geometry = Base.extend(function () {
             return;
         }
         array = attributes.barycentric.value = new Float32Array(indices.length * 3);
-        
+
         for (var i = 0; i < (indices ? indices.length : this.vertexCount / 3);) {
             for (var j = 0; j < 3; j++) {
                 var ii = indices ? indices[i++] : (i * 3 + j);
@@ -967,7 +970,7 @@ var Geometry = Base.extend(function () {
 
     /**
      * Apply transform to geometry attributes.
-     * @param {qtek.math.Matrix4} matrix
+     * @param {clay.math.Matrix4} matrix
      */
     applyTransform: function (matrix) {
 
@@ -976,7 +979,7 @@ var Geometry = Base.extend(function () {
         var normals = attributes.normal.value;
         var tangents = attributes.tangent.value;
 
-        matrix = matrix._array;
+        matrix = matrix.array;
         // Normal Matrix
         var inverseTransposeMatrix = mat4.create();
         mat4.invert(inverseTransposeMatrix, matrix);
@@ -998,13 +1001,13 @@ var Geometry = Base.extend(function () {
     },
     /**
      * Dispose geometry data in GL context.
-     * @param {qtek.Renderer} renderer
+     * @param {clay.Renderer} renderer
      */
     dispose: function (renderer) {
 
         var cache = this._cache;
 
-        cache.use(renderer.__GUID__);
+        cache.use(renderer.__uid__);
         var chunks = cache.get('chunks');
         if (chunks) {
             for (var c = 0; c < chunks.length; c++) {
@@ -1014,16 +1017,20 @@ var Geometry = Base.extend(function () {
                     var attribs = chunk.attributeBuffers[k];
                     renderer.gl.deleteBuffer(attribs.buffer);
                 }
+
+                if (chunk.indicesBuffer) {
+                    renderer.gl.deleteBuffer(chunk.indicesBuffer.buffer);
+                }
             }
         }
-        cache.deleteContext(renderer.__GUID__);
+        cache.deleteContext(renderer.__uid__);
     }
 
 });
 
 if (Object.defineProperty) {
     /**
-     * @name qtek.Geometry#vertexCount
+     * @name clay.Geometry#vertexCount
      * @type {number}
      * @readOnly
      */
@@ -1040,7 +1047,7 @@ if (Object.defineProperty) {
         }
     });
     /**
-     * @name qtek.Geometry#triangleCount
+     * @name clay.Geometry#triangleCount
      * @type {number}
      * @readOnly
      */

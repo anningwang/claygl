@@ -2,11 +2,11 @@ import Light from '../Light';
 import Vector3 from '../math/Vector3';
 
 /**
- * @constructor qtek.light.Spot
- * @extends qtek.Light
+ * @constructor clay.light.Spot
+ * @extends clay.Light
  */
 var SpotLight = Light.extend(
-/**@lends qtek.light.Spot */
+/**@lends clay.light.Spot */
 {
     /**
      * @type {number}
@@ -40,7 +40,7 @@ var SpotLight = Light.extend(
         spotLightPosition: {
             type: '3f',
             value: function (instance) {
-                return instance.getWorldPosition()._array;
+                return instance.getWorldPosition().array;
             }
         },
         spotLightRange: {
@@ -72,7 +72,7 @@ var SpotLight = Light.extend(
             value: function (instance) {
                 instance.__dir = instance.__dir || new Vector3();
                 // Direction is target to eye
-                return instance.__dir.copy(instance.worldTransform.z).negate()._array;
+                return instance.__dir.copy(instance.worldTransform.z).negate().array;
             }
         },
         spotLightColor: {
@@ -85,8 +85,8 @@ var SpotLight = Light.extend(
         }
     },
     /**
-     * @return {qtek.light.Spot}
-     * @memberOf qtek.light.Spot.prototype
+     * @return {clay.light.Spot}
+     * @memberOf clay.light.Spot.prototype
      */
     clone: function () {
         var light = Light.prototype.clone.call(this);

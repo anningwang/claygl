@@ -1,12 +1,12 @@
 define(function (require) {
 
-    var CanvasRenderer = require('qtek/canvas/Renderer');
-    var CanvasMaterial = require('qtek/canvas/Material');
-    var SphereGeometry = require('qtek/geometry/Sphere');
-    var Scene = require('qtek/Scene');
-    var PerspectiveCamera = require('qtek/camera/Perspective');
-    var Mesh = require('qtek/Mesh');
-    var Animation = require('qtek/animation/Animation');
+    var CanvasRenderer = require('clay/canvas/Renderer');
+    var CanvasMaterial = require('clay/canvas/Material');
+    var SphereGeometry = require('clay/geometry/Sphere');
+    var Scene = require('clay/Scene');
+    var PerspectiveCamera = require('clay/camera/Perspective');
+    var Mesh = require('clay/Mesh');
+    var Timeline = require('clay/animation/Timeline');
 
     var renderer = new CanvasRenderer({
         canvas: document.getElementById('main'),
@@ -42,10 +42,10 @@ define(function (require) {
 
     scene.add(mesh);
 
-    var animation = new Animation();
-    animation.start();
+    var timeline =  new Timeline();
+    timeline.start();
 
-    animation.on('frame', function (deltaTime) {
+    timeline.on('frame', function (deltaTime) {
         renderer.render(scene, camera);
 
         stats.update();

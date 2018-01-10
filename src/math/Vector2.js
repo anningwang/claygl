@@ -3,7 +3,7 @@ var vec2 = glMatrix.vec2;
 
 /**
  * @constructor
- * @alias qtek.math.Vector2
+ * @alias clay.math.Vector2
  * @param {number} x
  * @param {number} y
  */
@@ -13,18 +13,20 @@ var Vector2 = function(x, y) {
     y = y || 0;
 
     /**
-     * Storage of Vector2, read and write of x, y will change the values in _array
-     * All methods also operate on the _array instead of x, y components
-     * @name _array
+     * Storage of Vector2, read and write of x, y will change the values in array
+     * All methods also operate on the array instead of x, y components
+     * @name array
      * @type {Float32Array}
+     * @memberOf clay.math.Vector2#
      */
-    this._array = vec2.fromValues(x, y);
+    this.array = vec2.fromValues(x, y);
 
     /**
      * Dirty flag is used by the Node to determine
      * if the matrix is updated to latest
      * @name _dirty
      * @type {boolean}
+     * @memberOf clay.math.Vector2#
      */
     this._dirty = true;
 };
@@ -35,11 +37,11 @@ Vector2.prototype = {
 
     /**
      * Add b to self
-     * @param  {qtek.math.Vector2} b
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector2} b
+     * @return {clay.math.Vector2}
      */
     add: function(b) {
-        vec2.add(this._array, this._array, b._array);
+        vec2.add(this.array, this.array, b.array);
         this._dirty = true;
         return this;
     },
@@ -48,11 +50,11 @@ Vector2.prototype = {
      * Set x and y components
      * @param  {number}  x
      * @param  {number}  y
-     * @return {qtek.math.Vector2}
+     * @return {clay.math.Vector2}
      */
     set: function(x, y) {
-        this._array[0] = x;
-        this._array[1] = y;
+        this.array[0] = x;
+        this.array[1] = y;
         this._dirty = true;
         return this;
     },
@@ -60,11 +62,11 @@ Vector2.prototype = {
     /**
      * Set x and y components from array
      * @param  {Float32Array|number[]} arr
-     * @return {qtek.math.Vector2}
+     * @return {clay.math.Vector2}
      */
     setArray: function(arr) {
-        this._array[0] = arr[0];
-        this._array[1] = arr[1];
+        this.array[0] = arr[0];
+        this.array[1] = arr[1];
 
         this._dirty = true;
         return this;
@@ -72,7 +74,7 @@ Vector2.prototype = {
 
     /**
      * Clone a new Vector2
-     * @return {qtek.math.Vector2}
+     * @return {clay.math.Vector2}
      */
     clone: function() {
         return new Vector2(this.x, this.y);
@@ -80,74 +82,74 @@ Vector2.prototype = {
 
     /**
      * Copy x, y from b
-     * @param  {qtek.math.Vector2} b
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector2} b
+     * @return {clay.math.Vector2}
      */
     copy: function(b) {
-        vec2.copy(this._array, b._array);
+        vec2.copy(this.array, b.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Cross product of self and b, written to a Vector3 out
-     * @param  {qtek.math.Vector3} out
-     * @param  {qtek.math.Vector2} b
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector3} out
+     * @param  {clay.math.Vector2} b
+     * @return {clay.math.Vector2}
      */
     cross: function(out, b) {
-        vec2.cross(out._array, this._array, b._array);
+        vec2.cross(out.array, this.array, b.array);
         out._dirty = true;
         return this;
     },
 
     /**
      * Alias for distance
-     * @param  {qtek.math.Vector2} b
+     * @param  {clay.math.Vector2} b
      * @return {number}
      */
     dist: function(b) {
-        return vec2.dist(this._array, b._array);
+        return vec2.dist(this.array, b.array);
     },
 
     /**
      * Distance between self and b
-     * @param  {qtek.math.Vector2} b
+     * @param  {clay.math.Vector2} b
      * @return {number}
      */
     distance: function(b) {
-        return vec2.distance(this._array, b._array);
+        return vec2.distance(this.array, b.array);
     },
 
     /**
      * Alias for divide
-     * @param  {qtek.math.Vector2} b
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector2} b
+     * @return {clay.math.Vector2}
      */
     div: function(b) {
-        vec2.div(this._array, this._array, b._array);
+        vec2.div(this.array, this.array, b.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Divide self by b
-     * @param  {qtek.math.Vector2} b
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector2} b
+     * @return {clay.math.Vector2}
      */
     divide: function(b) {
-        vec2.divide(this._array, this._array, b._array);
+        vec2.divide(this.array, this.array, b.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Dot product of self and b
-     * @param  {qtek.math.Vector2} b
+     * @param  {clay.math.Vector2} b
      * @return {number}
      */
     dot: function(b) {
-        return vec2.dot(this._array, b._array);
+        return vec2.dot(this.array, b.array);
     },
 
     /**
@@ -155,7 +157,7 @@ Vector2.prototype = {
      * @return {number}
      */
     len: function() {
-        return vec2.len(this._array);
+        return vec2.len(this.array);
     },
 
     /**
@@ -163,82 +165,82 @@ Vector2.prototype = {
      * @return {number}
      */
     length: function() {
-        return vec2.length(this._array);
+        return vec2.length(this.array);
     },
 
     /**
      * Linear interpolation between a and b
-     * @param  {qtek.math.Vector2} a
-     * @param  {qtek.math.Vector2} b
+     * @param  {clay.math.Vector2} a
+     * @param  {clay.math.Vector2} b
      * @param  {number}  t
-     * @return {qtek.math.Vector2}
+     * @return {clay.math.Vector2}
      */
     lerp: function(a, b, t) {
-        vec2.lerp(this._array, a._array, b._array, t);
+        vec2.lerp(this.array, a.array, b.array, t);
         this._dirty = true;
         return this;
     },
 
     /**
      * Minimum of self and b
-     * @param  {qtek.math.Vector2} b
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector2} b
+     * @return {clay.math.Vector2}
      */
     min: function(b) {
-        vec2.min(this._array, this._array, b._array);
+        vec2.min(this.array, this.array, b.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Maximum of self and b
-     * @param  {qtek.math.Vector2} b
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector2} b
+     * @return {clay.math.Vector2}
      */
     max: function(b) {
-        vec2.max(this._array, this._array, b._array);
+        vec2.max(this.array, this.array, b.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Alias for multiply
-     * @param  {qtek.math.Vector2} b
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector2} b
+     * @return {clay.math.Vector2}
      */
     mul: function(b) {
-        vec2.mul(this._array, this._array, b._array);
+        vec2.mul(this.array, this.array, b.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Mutiply self and b
-     * @param  {qtek.math.Vector2} b
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector2} b
+     * @return {clay.math.Vector2}
      */
     multiply: function(b) {
-        vec2.multiply(this._array, this._array, b._array);
+        vec2.multiply(this.array, this.array, b.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Negate self
-     * @return {qtek.math.Vector2}
+     * @return {clay.math.Vector2}
      */
     negate: function() {
-        vec2.negate(this._array, this._array);
+        vec2.negate(this.array, this.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Normalize self
-     * @return {qtek.math.Vector2}
+     * @return {clay.math.Vector2}
      */
     normalize: function() {
-        vec2.normalize(this._array, this._array);
+        vec2.normalize(this.array, this.array);
         this._dirty = true;
         return this;
     },
@@ -246,10 +248,10 @@ Vector2.prototype = {
     /**
      * Generate random x, y components with a given scale
      * @param  {number} scale
-     * @return {qtek.math.Vector2}
+     * @return {clay.math.Vector2}
      */
     random: function(scale) {
-        vec2.random(this._array, scale);
+        vec2.random(this.array, scale);
         this._dirty = true;
         return this;
     },
@@ -257,42 +259,42 @@ Vector2.prototype = {
     /**
      * Scale self
      * @param  {number}  scale
-     * @return {qtek.math.Vector2}
+     * @return {clay.math.Vector2}
      */
     scale: function(s) {
-        vec2.scale(this._array, this._array, s);
+        vec2.scale(this.array, this.array, s);
         this._dirty = true;
         return this;
     },
 
     /**
      * Scale b and add to self
-     * @param  {qtek.math.Vector2} b
+     * @param  {clay.math.Vector2} b
      * @param  {number}  scale
-     * @return {qtek.math.Vector2}
+     * @return {clay.math.Vector2}
      */
     scaleAndAdd: function(b, s) {
-        vec2.scaleAndAdd(this._array, this._array, b._array, s);
+        vec2.scaleAndAdd(this.array, this.array, b.array, s);
         this._dirty = true;
         return this;
     },
 
     /**
      * Alias for squaredDistance
-     * @param  {qtek.math.Vector2} b
+     * @param  {clay.math.Vector2} b
      * @return {number}
      */
     sqrDist: function(b) {
-        return vec2.sqrDist(this._array, b._array);
+        return vec2.sqrDist(this.array, b.array);
     },
 
     /**
      * Squared distance between self and b
-     * @param  {qtek.math.Vector2} b
+     * @param  {clay.math.Vector2} b
      * @return {number}
      */
     squaredDistance: function(b) {
-        return vec2.squaredDistance(this._array, b._array);
+        return vec2.squaredDistance(this.array, b.array);
     },
 
     /**
@@ -300,7 +302,7 @@ Vector2.prototype = {
      * @return {number}
      */
     sqrLen: function() {
-        return vec2.sqrLen(this._array);
+        return vec2.sqrLen(this.array);
     },
 
     /**
@@ -308,81 +310,81 @@ Vector2.prototype = {
      * @return {number}
      */
     squaredLength: function() {
-        return vec2.squaredLength(this._array);
+        return vec2.squaredLength(this.array);
     },
 
     /**
      * Alias for subtract
-     * @param  {qtek.math.Vector2} b
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector2} b
+     * @return {clay.math.Vector2}
      */
     sub: function(b) {
-        vec2.sub(this._array, this._array, b._array);
+        vec2.sub(this.array, this.array, b.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Subtract b from self
-     * @param  {qtek.math.Vector2} b
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Vector2} b
+     * @return {clay.math.Vector2}
      */
     subtract: function(b) {
-        vec2.subtract(this._array, this._array, b._array);
+        vec2.subtract(this.array, this.array, b.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Transform self with a Matrix2 m
-     * @param  {qtek.math.Matrix2} m
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Matrix2} m
+     * @return {clay.math.Vector2}
      */
     transformMat2: function(m) {
-        vec2.transformMat2(this._array, this._array, m._array);
+        vec2.transformMat2(this.array, this.array, m.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Transform self with a Matrix2d m
-     * @param  {qtek.math.Matrix2d} m
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Matrix2d} m
+     * @return {clay.math.Vector2}
      */
     transformMat2d: function(m) {
-        vec2.transformMat2d(this._array, this._array, m._array);
+        vec2.transformMat2d(this.array, this.array, m.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Transform self with a Matrix3 m
-     * @param  {qtek.math.Matrix3} m
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Matrix3} m
+     * @return {clay.math.Vector2}
      */
     transformMat3: function(m) {
-        vec2.transformMat3(this._array, this._array, m._array);
+        vec2.transformMat3(this.array, this.array, m.array);
         this._dirty = true;
         return this;
     },
 
     /**
      * Transform self with a Matrix4 m
-     * @param  {qtek.math.Matrix4} m
-     * @return {qtek.math.Vector2}
+     * @param  {clay.math.Matrix4} m
+     * @return {clay.math.Vector2}
      */
     transformMat4: function(m) {
-        vec2.transformMat4(this._array, this._array, m._array);
+        vec2.transformMat4(this.array, this.array, m.array);
         this._dirty = true;
         return this;
     },
 
     toString: function() {
-        return '[' + Array.prototype.join.call(this._array, ',') + ']';
+        return '[' + Array.prototype.join.call(this.array, ',') + ']';
     },
 
     toArray: function () {
-        return Array.prototype.slice.call(this._array);
+        return Array.prototype.slice.call(this.array);
     }
 };
 
@@ -393,15 +395,15 @@ if (Object.defineProperty) {
     /**
      * @name x
      * @type {number}
-     * @memberOf qtek.math.Vector2
+     * @memberOf clay.math.Vector2
      * @instance
      */
     Object.defineProperty(proto, 'x', {
         get: function () {
-            return this._array[0];
+            return this.array[0];
         },
         set: function (value) {
-            this._array[0] = value;
+            this.array[0] = value;
             this._dirty = true;
         }
     });
@@ -409,15 +411,15 @@ if (Object.defineProperty) {
     /**
      * @name y
      * @type {number}
-     * @memberOf qtek.math.Vector2
+     * @memberOf clay.math.Vector2
      * @instance
      */
     Object.defineProperty(proto, 'y', {
         get: function () {
-            return this._array[1];
+            return this.array[1];
         },
         set: function (value) {
-            this._array[1] = value;
+            this.array[1] = value;
             this._dirty = true;
         }
     });
@@ -426,301 +428,301 @@ if (Object.defineProperty) {
 // Supply methods that are not in place
 
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
+ * @return {clay.math.Vector2}
  */
 Vector2.add = function(out, a, b) {
-    vec2.add(out._array, a._array, b._array);
+    vec2.add(out.array, a.array, b.array);
     out._dirty = true;
     return out;
 };
 
 /**
- * @param  {qtek.math.Vector2} out
+ * @param  {clay.math.Vector2} out
  * @param  {number}  x
  * @param  {number}  y
- * @return {qtek.math.Vector2}
+ * @return {clay.math.Vector2}
  */
 Vector2.set = function(out, x, y) {
-    vec2.set(out._array, x, y);
+    vec2.set(out.array, x, y);
     out._dirty = true;
     return out;
 };
 
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} b
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} b
+ * @return {clay.math.Vector2}
  */
 Vector2.copy = function(out, b) {
-    vec2.copy(out._array, b._array);
+    vec2.copy(out.array, b.array);
     out._dirty = true;
     return out;
 };
 
 /**
- * @param  {qtek.math.Vector3} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector3} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
+ * @return {clay.math.Vector2}
  */
 Vector2.cross = function(out, a, b) {
-    vec2.cross(out._array, a._array, b._array);
+    vec2.cross(out.array, a.array, b.array);
     out._dirty = true;
     return out;
 };
 /**
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
  * @return {number}
  */
 Vector2.dist = function(a, b) {
-    return vec2.distance(a._array, b._array);
+    return vec2.distance(a.array, b.array);
 };
 /**
- * @method
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
+ * @function
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
  * @return {number}
  */
 Vector2.distance = Vector2.dist;
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
+ * @return {clay.math.Vector2}
  */
 Vector2.div = function(out, a, b) {
-    vec2.divide(out._array, a._array, b._array);
+    vec2.divide(out.array, a.array, b.array);
     out._dirty = true;
     return out;
 };
 /**
- * @method
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
- * @return {qtek.math.Vector2}
+ * @function
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
+ * @return {clay.math.Vector2}
  */
 Vector2.divide = Vector2.div;
 /**
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
  * @return {number}
  */
 Vector2.dot = function(a, b) {
-    return vec2.dot(a._array, b._array);
+    return vec2.dot(a.array, b.array);
 };
 
 /**
- * @param  {qtek.math.Vector2} a
+ * @param  {clay.math.Vector2} a
  * @return {number}
  */
 Vector2.len = function(b) {
-    return vec2.length(b._array);
+    return vec2.length(b.array);
 };
 
 // Vector2.length = Vector2.len;
 
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
  * @param  {number}  t
- * @return {qtek.math.Vector2}
+ * @return {clay.math.Vector2}
  */
 Vector2.lerp = function(out, a, b, t) {
-    vec2.lerp(out._array, a._array, b._array, t);
+    vec2.lerp(out.array, a.array, b.array, t);
     out._dirty = true;
     return out;
 };
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
+ * @return {clay.math.Vector2}
  */
 Vector2.min = function(out, a, b) {
-    vec2.min(out._array, a._array, b._array);
+    vec2.min(out.array, a.array, b.array);
     out._dirty = true;
     return out;
 };
 
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
+ * @return {clay.math.Vector2}
  */
 Vector2.max = function(out, a, b) {
-    vec2.max(out._array, a._array, b._array);
+    vec2.max(out.array, a.array, b.array);
     out._dirty = true;
     return out;
 };
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
+ * @return {clay.math.Vector2}
  */
 Vector2.mul = function(out, a, b) {
-    vec2.multiply(out._array, a._array, b._array);
+    vec2.multiply(out.array, a.array, b.array);
     out._dirty = true;
     return out;
 };
 /**
- * @method
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
- * @return {qtek.math.Vector2}
+ * @function
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
+ * @return {clay.math.Vector2}
  */
 Vector2.multiply = Vector2.mul;
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @return {clay.math.Vector2}
  */
 Vector2.negate = function(out, a) {
-    vec2.negate(out._array, a._array);
+    vec2.negate(out.array, a.array);
     out._dirty = true;
     return out;
 };
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @return {clay.math.Vector2}
  */
 Vector2.normalize = function(out, a) {
-    vec2.normalize(out._array, a._array);
+    vec2.normalize(out.array, a.array);
     out._dirty = true;
     return out;
 };
 /**
- * @param  {qtek.math.Vector2} out
+ * @param  {clay.math.Vector2} out
  * @param  {number}  scale
- * @return {qtek.math.Vector2}
+ * @return {clay.math.Vector2}
  */
 Vector2.random = function(out, scale) {
-    vec2.random(out._array, scale);
+    vec2.random(out.array, scale);
     out._dirty = true;
     return out;
 };
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
  * @param  {number}  scale
- * @return {qtek.math.Vector2}
+ * @return {clay.math.Vector2}
  */
 Vector2.scale = function(out, a, scale) {
-    vec2.scale(out._array, a._array, scale);
+    vec2.scale(out.array, a.array, scale);
     out._dirty = true;
     return out;
 };
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
  * @param  {number}  scale
- * @return {qtek.math.Vector2}
+ * @return {clay.math.Vector2}
  */
 Vector2.scaleAndAdd = function(out, a, b, scale) {
-    vec2.scaleAndAdd(out._array, a._array, b._array, scale);
+    vec2.scaleAndAdd(out.array, a.array, b.array, scale);
     out._dirty = true;
     return out;
 };
 /**
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
  * @return {number}
  */
 Vector2.sqrDist = function(a, b) {
-    return vec2.sqrDist(a._array, b._array);
+    return vec2.sqrDist(a.array, b.array);
 };
 /**
- * @method
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
+ * @function
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
  * @return {number}
  */
 Vector2.squaredDistance = Vector2.sqrDist;
 
 /**
- * @param  {qtek.math.Vector2} a
+ * @param  {clay.math.Vector2} a
  * @return {number}
  */
 Vector2.sqrLen = function(a) {
-    return vec2.sqrLen(a._array);
+    return vec2.sqrLen(a.array);
 };
 /**
- * @method
- * @param  {qtek.math.Vector2} a
+ * @function
+ * @param  {clay.math.Vector2} a
  * @return {number}
  */
 Vector2.squaredLength = Vector2.sqrLen;
 
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
+ * @return {clay.math.Vector2}
  */
 Vector2.sub = function(out, a, b) {
-    vec2.subtract(out._array, a._array, b._array);
+    vec2.subtract(out.array, a.array, b.array);
     out._dirty = true;
     return out;
 };
 /**
- * @method
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Vector2} b
- * @return {qtek.math.Vector2}
+ * @function
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Vector2} b
+ * @return {clay.math.Vector2}
  */
 Vector2.subtract = Vector2.sub;
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Matrix2} m
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Matrix2} m
+ * @return {clay.math.Vector2}
  */
 Vector2.transformMat2 = function(out, a, m) {
-    vec2.transformMat2(out._array, a._array, m._array);
+    vec2.transformMat2(out.array, a.array, m.array);
     out._dirty = true;
     return out;
 };
 /**
- * @param  {qtek.math.Vector2}  out
- * @param  {qtek.math.Vector2}  a
- * @param  {qtek.math.Matrix2d} m
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2}  out
+ * @param  {clay.math.Vector2}  a
+ * @param  {clay.math.Matrix2d} m
+ * @return {clay.math.Vector2}
  */
 Vector2.transformMat2d = function(out, a, m) {
-    vec2.transformMat2d(out._array, a._array, m._array);
+    vec2.transformMat2d(out.array, a.array, m.array);
     out._dirty = true;
     return out;
 };
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
  * @param  {Matrix3} m
- * @return {qtek.math.Vector2}
+ * @return {clay.math.Vector2}
  */
 Vector2.transformMat3 = function(out, a, m) {
-    vec2.transformMat3(out._array, a._array, m._array);
+    vec2.transformMat3(out.array, a.array, m.array);
     out._dirty = true;
     return out;
 };
 /**
- * @param  {qtek.math.Vector2} out
- * @param  {qtek.math.Vector2} a
- * @param  {qtek.math.Matrix4} m
- * @return {qtek.math.Vector2}
+ * @param  {clay.math.Vector2} out
+ * @param  {clay.math.Vector2} a
+ * @param  {clay.math.Matrix4} m
+ * @return {clay.math.Vector2}
  */
 Vector2.transformMat4 = function(out, a, m) {
-    vec2.transformMat4(out._array, a._array, m._array);
+    vec2.transformMat4(out.array, a.array, m.array);
     out._dirty = true;
     return out;
 };

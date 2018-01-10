@@ -5,14 +5,14 @@ import util from './util';
 /**
  * Base class of all objects
  * @constructor
- * @alias qtek.core.Base
- * @mixes qtek.core.mixin.notifier
+ * @alias clay.core.Base
+ * @mixes clay.core.mixin.notifier
  */
 var Base = function () {
     /**
      * @type {number}
      */
-    this.__GUID__ = util.genGUID();
+    this.__uid__ = util.genGUID();
 };
 
 Base.__initializers__ = [

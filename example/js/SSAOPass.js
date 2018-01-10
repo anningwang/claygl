@@ -1,9 +1,9 @@
 define(function (require) {
-    var qtek = require('../../dist/qtek');
-    var Matrix4 = qtek.math.Matrix4;
-    var Vector3 = qtek.math.Vector3;
+    var clay = require('../../dist/claygl');
+    var Matrix4 = clay.math.Matrix4;
+    var Vector3 = clay.math.Vector3;
 
-    qtek.Shader.import(require('text!../shader/ssao.glsl'));
+    clay.Shader.import(require('text!../shader/ssao.glsl'));
 
     function generateNoiseData(size) {
         var data = new Uint8Array(size * size * 4);
@@ -22,10 +22,10 @@ define(function (require) {
     }
 
     function generateNoiseTexture(size) {
-        return new qtek.Texture2D({
+        return new clay.Texture2D({
             pixels: generateNoiseData(size),
-            wrapS: qtek.Texture.REPEAT,
-            wrapT: qtek.Texture.REPEAT,
+            wrapS: clay.Texture.REPEAT,
+            wrapT: clay.Texture.REPEAT,
             width: size,
             height: size
         });
@@ -47,14 +47,14 @@ define(function (require) {
     function SSAOPass(opt) {
         opt = opt || {};
 
-        this._ssaoPass = new qtek.compositor.Pass({
-            fragment: qtek.Shader.source('ssao.fragment')
+        this._ssaoPass = new clay.compositor.Pass({
+            fragment: clay.Shader.source('ssao.fragment')
         });
-        this._blurPass = new qtek.compositor.Pass({
-            fragment: qtek.Shader.source('ssao.blur.fragment')
+        this._blurPass = new clay.compositor.Pass({
+            fragment: clay.Shader.source('ssao.blur.fragment')
         });
-        this._framebuffer = new qtek.FrameBuffer();
-        this._ssaoTexture = new qtek.Texture2D();
+        this._framebuffer = new clay.FrameBuffer();
+        this._ssaoTexture = new clay.Texture2D();
 
         this.setNoiseSize(4);
         this.setKernelSize(opt.kernelSize || 64);
@@ -75,10 +75,10 @@ define(function (require) {
         var blurPass = this._blurPass;
 
         if (!deferredRenderer.useDepthTexture) {
-            ssaoPass.material.shader.define('fragment', 'DEPTH_ENCODED');
+            ssaoPass.material.define('fragment', 'DEPTH_ENCODED');
         }
         else {
-            ssaoPass.material.shader.undefine('fragment', 'DEPTH_ENCODED');
+            ssaoPass.material.undefine('fragment', 'DEPTH_ENCODED');
         }
         ssaoPass.setUniform('gBufferTex', gBufferTex);
         ssaoPass.setUniform('depthTex', deferredRenderer.getDepthBuffer());
@@ -123,7 +123,7 @@ define(function (require) {
             this.setKernelSize(val);
         }
         else if (name === 'blurSize') {
-            this._blurPass.material.shader.define('fragment', 'BLUR_SIZE', val);
+            this._blurPass.material.define('fragment', 'BLUR_SIZE', val);
         }
         else {
             this._ssaoPass.setUniform(name, val);
@@ -131,7 +131,7 @@ define(function (require) {
     };
 
     SSAOPass.prototype.setKernelSize = function (size) {
-        this._ssaoPass.material.shader.define('fragment', 'KERNEL_SIZE', size);
+        this._ssaoPass.material.define('fragment', 'KERNEL_SIZE', size);
         this._ssaoPass.setUniform('kernel', generateKernel(size));
     };
 

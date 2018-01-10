@@ -19,13 +19,14 @@ function convertToArray(val) {
 }
 
 /**
- * @alias module:echarts-x/util/OrbitControl
+ * @constructor
+ * @alias clay.plugin.OrbitControl
  */
 var OrbitControl = Base.extend(function () {
 
-    return {
+    return /** @lends clay.plugin.OrbitControl# */ {
 
-        animation: null,
+        timeline: null,
 
         /**
          * @type {HTMLDomElement}
@@ -33,11 +34,11 @@ var OrbitControl = Base.extend(function () {
         domElement: null,
 
         /**
-         * @type {qtek.Node}
+         * @type {clay.Node}
          */
         target: null,
         /**
-         * @type {qtek.math.Vector3}
+         * @type {clay.math.Vector3}
          */
         _center: new Vector3(),
 
@@ -152,7 +153,7 @@ var OrbitControl = Base.extend(function () {
     this.update = this.update.bind(this);
 
     this.init();
-}, {
+}, /** @lends clay.plugin.OrbitControl# */ {
     /**
      * Initialize.
      * Mouse event binding
@@ -165,8 +166,8 @@ var OrbitControl = Base.extend(function () {
         dom.addEventListener('mousedown', this._mouseDownHandler);
         dom.addEventListener('mousewheel', this._mouseWheelHandler);
 
-        if (this.animation) {
-            this.animation.on('frame', this.update);
+        if (this.timeline) {
+            this.timeline.on('frame', this.update);
         }
     },
 
@@ -186,8 +187,8 @@ var OrbitControl = Base.extend(function () {
         dom.removeEventListener('mouseup', this._mouseUpHandler);
         dom.removeEventListener('mousewheel', this._mouseWheelHandler);
 
-        if (this.animation) {
-            this.animation.off('frame', this.update);
+        if (this.timeline) {
+            this.timeline.off('frame', this.update);
         }
         this.stopAllAnimation();
     },
@@ -312,8 +313,8 @@ var OrbitControl = Base.extend(function () {
 
         var obj = {};
         var target = {};
-        var animation = this.animation;
-        if (!animation) {
+        var timeline = this.timeline;
+        if (!timeline) {
             return;
         }
         if (opts.distance != null) {
@@ -334,7 +335,7 @@ var OrbitControl = Base.extend(function () {
         }
 
         return this._addAnimator(
-            animation.animate(obj)
+            timeline.animate(obj)
                 .when(opts.duration || 1000, target)
                 .during(function () {
                     if (obj.alpha != null) {
@@ -356,7 +357,7 @@ var OrbitControl = Base.extend(function () {
     },
 
     /**
-     * Stop all animation
+     * Stop all animations
      */
     stopAllAnimation: function () {
         for (var i = 0; i < this._animators.length; i++) {
@@ -485,11 +486,6 @@ var OrbitControl = Base.extend(function () {
         v.normalize().scale(speed);
     },
 
-    // TODO Following code will cause decompose problem.
-    // camera.position.y = 2;
-    // camera.position.z = -4;
-    // camera.lookAt(scene.position);
-    // 
     decomposeTransform: function () {
         if (!this.target) {
             return;
@@ -497,13 +493,21 @@ var OrbitControl = Base.extend(function () {
 
         // FIXME euler order......
         // FIXME alpha is not certain when beta is 90 or -90
-        var euler = new Vector3();
-        euler.eulerFromQuat(
-            this.target.rotation.normalize(), 'ZYX'
-        );
+        // var euler = new Vector3();
+        // euler.eulerFromMat3(
+        //    new Matrix3().fromQuat(this.target.rotation), 'ZYX'
+        // );
+        // euler.eulerFromQuat(
+        //     this.target.rotation.normalize(), 'ZYX'
+        // );
+        this.target.updateWorldTransform();
 
-        this._theta = -euler.x;
-        this._phi = -euler.y;
+        var forward = this.target.worldTransform.z;
+        var alpha = Math.asin(forward.y);
+        var beta = Math.atan2(forward.x, forward.z);
+
+        this._theta = alpha;
+        this._phi = -beta;
 
         this.setBeta(this.getBeta());
         this.setAlpha(this.getAlpha());

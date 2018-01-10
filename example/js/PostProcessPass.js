@@ -1,14 +1,14 @@
 define(function (require) {
-    var qtek = require('../../dist/qtek');
+    var clay = require('../../dist/claygl');
 
     function PostProcessPass(shader, renderToTarget, clearColor) {
-        this._pass = new qtek.compositor.Pass({
+        this._pass = new clay.compositor.Pass({
             fragment: shader,
             clearColor: clearColor
         });
         if (renderToTarget) {
-            this._frameBuffer = new qtek.FrameBuffer();
-            this._targetTexture = new qtek.Texture2D();
+            this._frameBuffer = new clay.FrameBuffer();
+            this._targetTexture = new clay.Texture2D();
         }
     }
     PostProcessPass.prototype.setUniform = function (key, val) {
@@ -34,8 +34,8 @@ define(function (require) {
     PostProcessPass.prototype.getTargetTexture = function () {
         return this._targetTexture;
     };
-    PostProcessPass.prototype.getShader = function () {
-        return this._pass.material.shader;
+    PostProcessPass.prototype.getMaterial = function () {
+        return this._pass.material;
     };
 
     return PostProcessPass;

@@ -1,10 +1,10 @@
 import Camera from '../Camera';
 /**
- * @constructor qtek.camera.Orthographic
- * @extends qtek.Camera
+ * @constructor clay.camera.Orthographic
+ * @extends clay.Camera
  */
 var Orthographic = Camera.extend(
-/** @lends qtek.camera.Orthographic# */
+/** @lends clay.camera.Orthographic# */
 {
     /**
      * @type {number}
@@ -31,7 +31,7 @@ var Orthographic = Camera.extend(
      */
     bottom: -1
 },
-/** @lends qtek.camera.Orthographic.prototype */
+/** @lends clay.camera.Orthographic.prototype */
 {
 
     updateProjectionMatrix: function() {
@@ -39,7 +39,7 @@ var Orthographic = Camera.extend(
     },
 
     decomposeProjectionMatrix: function () {
-        var m = this.projectionMatrix._array;
+        var m = this.projectionMatrix.array;
         this.left = (-1 - m[12]) / m[0];
         this.right = (1 - m[12]) / m[0];
         this.top = (1 - m[13]) / m[5];
@@ -48,7 +48,7 @@ var Orthographic = Camera.extend(
         this.far = -(1 - m[14]) / m[10];
     },
     /**
-     * @return {qtek.camera.Orthographic}
+     * @return {clay.camera.Orthographic}
      */
     clone: function() {
         var camera = Camera.prototype.clone.call(this);

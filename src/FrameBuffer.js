@@ -16,11 +16,11 @@ var GL_RENDERBUFFER = glenum.RENDERBUFFER;
 var GL_DEPTH_ATTACHMENT = glenum.DEPTH_ATTACHMENT;
 var GL_COLOR_ATTACHMENT0 = glenum.COLOR_ATTACHMENT0;
 /**
- * @constructor qtek.FrameBuffer
- * @extends qtek.core.Base
+ * @constructor clay.FrameBuffer
+ * @extends clay.core.Base
  */
 var FrameBuffer = Base.extend(
-/** @lends qtek.FrameBuffer# */
+/** @lends clay.FrameBuffer# */
 {
     /**
      * If use depth buffer
@@ -46,7 +46,7 @@ var FrameBuffer = Base.extend(
     this._textures = {};
 },
 
-/**@lends qtek.FrameBuffer.prototype. */
+/**@lends clay.FrameBuffer.prototype. */
 {
     /**
      * Get attached texture width
@@ -67,7 +67,7 @@ var FrameBuffer = Base.extend(
 
     /**
      * Bind the framebuffer to given renderer before rendering
-     * @param  {qtek.Renderer} renderer
+     * @param  {clay.Renderer} renderer
      */
     bind: function (renderer) {
 
@@ -151,7 +151,7 @@ var FrameBuffer = Base.extend(
 
     /**
      * Unbind the frame buffer after rendering
-     * @param  {qtek.Renderer} renderer
+     * @param  {clay.Renderer} renderer
      */
     unbind: function (renderer) {
         // Remove status record on renderer
@@ -162,7 +162,7 @@ var FrameBuffer = Base.extend(
         _gl.bindFramebuffer(GL_FRAMEBUFFER, null);
         this._boundRenderer = null;
 
-        this._cache.use(renderer.__GUID__);
+        this._cache.use(renderer.__uid__);
         var viewport = this._cache.get('viewport');
         // Reset viewport;
         if (viewport) {
@@ -192,7 +192,7 @@ var FrameBuffer = Base.extend(
         }
     },
 
-    
+
     // 0x8CD5, 36053, FRAMEBUFFER_COMPLETE
     // 0x8CD6, 36054, FRAMEBUFFER_INCOMPLETE_ATTACHMENT
     // 0x8CD7, 36055, FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT
@@ -204,7 +204,7 @@ var FrameBuffer = Base.extend(
 
     _getFrameBufferGL: function (renderer) {
         var cache = this._cache;
-        cache.use(renderer.__GUID__);
+        cache.use(renderer.__uid__);
 
         if (cache.miss(KEY_FRAMEBUFFER)) {
             cache.put(KEY_FRAMEBUFFER, renderer.gl.createFramebuffer());
@@ -215,7 +215,7 @@ var FrameBuffer = Base.extend(
 
     /**
      * Attach a texture(RTT) to the framebuffer
-     * @param  {qtek.Texture} texture
+     * @param  {clay.Texture} texture
      * @param  {number} [attachment=gl.COLOR_ATTACHMENT0]
      * @param  {number} [target=gl.TEXTURE_2D]
      */
@@ -238,7 +238,7 @@ var FrameBuffer = Base.extend(
 
         if (_gl) {
             var cache = this._cache;
-            cache.use(boundRenderer.__GUID__);
+            cache.use(boundRenderer.__uid__);
             attachedTextures = cache.get('attached_textures');
         }
 
@@ -353,7 +353,7 @@ var FrameBuffer = Base.extend(
         this._textures[attachment] = null;
         if (this._boundRenderer) {
             var cache = this._cache;
-            cache.use(this._boundRenderer.__GUID__);
+            cache.use(this._boundRenderer.__uid__);
             this._doDetach(this._boundRenderer.gl, attachment, target);
         }
     },
@@ -366,7 +366,7 @@ var FrameBuffer = Base.extend(
         var _gl = renderer.gl;
         var cache = this._cache;
 
-        cache.use(renderer.__GUID__);
+        cache.use(renderer.__uid__);
 
         var renderBuffer = cache.get(KEY_RENDERBUFFER);
         if (renderBuffer) {
@@ -376,7 +376,7 @@ var FrameBuffer = Base.extend(
         if (frameBuffer) {
             _gl.deleteFramebuffer(frameBuffer);
         }
-        cache.deleteContext(renderer.__GUID__);
+        cache.deleteContext(renderer.__uid__);
 
         // Clear cache for reusing
         this._textures = {};

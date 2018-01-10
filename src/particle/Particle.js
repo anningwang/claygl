@@ -4,27 +4,27 @@ var vec3 = glMatrix.vec3;
 
 /**
  * @constructor
- * @alias qtek.particle.Particle
+ * @alias clay.particle.Particle
  */
 var Particle = function() {
     /**
-     * @type {qtek.math.Vector3}
+     * @type {clay.math.Vector3}
      */
     this.position = new Vector3();
 
     /**
      * Use euler angle to represent particle rotation
-     * @type {qtek.math.Vector3}
+     * @type {clay.math.Vector3}
      */
     this.rotation = new Vector3();
 
     /**
-     * @type {?qtek.math.Vector3}
+     * @type {?clay.math.Vector3}
      */
     this.velocity = null;
 
     /**
-     * @type {?qtek.math.Vector3}
+     * @type {?clay.math.Vector3}
      */
     this.angularVelocity = null;
 
@@ -49,7 +49,7 @@ var Particle = function() {
     this.weight = 1;
 
     /**
-     * @type {qtek.particle.Emitter}
+     * @type {clay.particle.Emitter}
      */
     this.emitter = null;
 };
@@ -60,10 +60,10 @@ var Particle = function() {
  */
 Particle.prototype.update = function(deltaTime) {
     if (this.velocity) {
-        vec3.scaleAndAdd(this.position._array, this.position._array, this.velocity._array, deltaTime);
+        vec3.scaleAndAdd(this.position.array, this.position.array, this.velocity.array, deltaTime);
     }
     if (this.angularVelocity) {
-        vec3.scaleAndAdd(this.rotation._array, this.rotation._array, this.angularVelocity._array, deltaTime);
+        vec3.scaleAndAdd(this.rotation.array, this.rotation.array, this.angularVelocity.array, deltaTime);
     }
 };
 

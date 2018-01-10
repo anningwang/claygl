@@ -3,17 +3,17 @@ import vendor from '../core/vendor';
 
 /**
  * Spherical Harmonic Ambient Light
- * @constructor qtek.light.AmbientSH
- * @extends qtek.Light
+ * @constructor clay.light.AmbientSH
+ * @extends clay.Light
  */
 var AmbientSHLight = Light.extend({
 
     castShadow: false,
 
-
     /**
      * Spherical Harmonic Coefficients
      * @type {Array.<number>}
+     * @memberOf clay.light.AmbientSH#
      */
     coefficients: [],
 
@@ -45,10 +45,10 @@ var AmbientSHLight = Light.extend({
         }
     }
     /**
-     * @method
+     * @function
      * @name clone
-     * @return {qtek.light.Ambient}
-     * @memberOf qtek.light.Ambient.prototype
+     * @return {clay.light.Ambient}
+     * @memberOf clay.light.Ambient.prototype
      */
 });
 

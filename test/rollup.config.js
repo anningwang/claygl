@@ -1,7 +1,7 @@
 import commonjs from 'rollup-plugin-commonjs';
 
 export default {
-    input: 'src/qtek.js',
+    input: 'src/claygl.js',
     plugins: [
         commonjs({
             include: 'src/dep/*',
@@ -11,8 +11,8 @@ export default {
     output: [
         {
             format: 'umd',
-            name: 'qtek',
-            file: 'dist/qtek.src.js'
+            name: 'clay',
+            file: 'dist/claygl.src.js'
         }
     ]
 };

@@ -2,11 +2,11 @@ import Light from '../Light';
 import Vector3 from '../math/Vector3';
 
 /**
- * @constructor qtek.light.Tube
- * @extends {qtek.Light}
+ * @constructor clay.light.Tube
+ * @extends {clay.Light}
  */
 var TubeLight = Light.extend(
-/** @lends qtek.light.Tube# */
+/** @lends clay.light.Tube# */
 {
     /**
      * @type {number}
@@ -25,7 +25,7 @@ var TubeLight = Light.extend(
         tubeLightPosition: {
             type: '3f',
             value: function(instance) {
-                return instance.getWorldPosition()._array;
+                return instance.getWorldPosition().array;
             }
         },
 
@@ -36,7 +36,7 @@ var TubeLight = Light.extend(
                 return function(instance) {
                     // Extend in x axis
                     return x.copy(instance.worldTransform.x)
-                        .normalize().scale(instance.length / 2)._array;
+                        .normalize().scale(instance.length / 2).array;
                 };
             })()
         },

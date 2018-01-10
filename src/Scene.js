@@ -1,16 +1,39 @@
 import Node from './Node';
 import Light from './Light';
+import Camera from './Camera';
 import BoundingBox from './math/BoundingBox';
+import util from './core/util';
+
+var programKeyCache = {};
+
+function getProgramKey(lightNumbers) {
+    var defineStr = [];
+    var lightTypes = Object.keys(lightNumbers);
+    lightTypes.sort();
+    for (var i = 0; i < lightTypes.length; i++) {
+        var lightType = lightNumbers[i];
+        defineStr.push(lightType + ' ' + lightNumbers[lightType]);
+    }
+    var key = defineStr.join('\n');
+
+    if (programKeyCache[key]) {
+        return programKeyCache[key];
+    }
+
+    var id = util.genGUID();
+    programKeyCache[key] = id;
+    return id;
+}
 
 /**
- * @constructor qtek.Scene
- * @extends qtek.Node
+ * @constructor clay.Scene
+ * @extends clay.Node
  */
 var Scene = Node.extend(function () {
-    return /** @lends qtek.Scene# */ {
+    return /** @lends clay.Scene# */ {
         /**
          * Global material of scene
-         * @type {qtek.Material}
+         * @type {clay.Material}
          */
         material: null,
 
@@ -21,17 +44,17 @@ var Scene = Node.extend(function () {
 
         /**
          * Opaque renderable list, it will be updated automatically
-         * @type {qtek.Renderable[]}
+         * @type {clay.Renderable[]}
          * @readonly
          */
-        opaqueQueue: [],
+        opaqueList: [],
 
         /**
          * Opaque renderable list, it will be updated automatically
-         * @type {qtek.Renderable[]}
+         * @type {clay.Renderable[]}
          * @readonly
          */
-        transparentQueue: [],
+        transparentList: [],
 
         lights: [],
 
@@ -43,13 +66,20 @@ var Scene = Node.extend(function () {
          * Notice:
          *  It is updated after rendering (in the step of frustum culling passingly). So may be not so accurate, but saves a lot of calculation
          *
-         * @type {qtek.math.BoundingBox}
+         * @type {clay.math.BoundingBox}
          */
         viewBoundingBoxLastFrame: new BoundingBox(),
+
+        // Uniforms for shadow map.
+        shadowUniforms: {},
+
+        _cameraList: [],
 
         // Properties to save the light information in the scene
         // Will be set in the render function
         _lightUniforms: {},
+
+        _previousLightNumber: {},
 
         _lightNumber: {
             // groupId: {
@@ -61,6 +91,8 @@ var Scene = Node.extend(function () {
             // }
         },
 
+        _lightProgramKeys: {},
+
         _opaqueObjectCount: 0,
         _transparentObjectCount: 0,
 
@@ -70,13 +102,19 @@ var Scene = Node.extend(function () {
 }, function () {
     this._scene = this;
 },
-/** @lends qtek.Scene.prototype. */
+/** @lends clay.Scene.prototype. */
 {
     /**
      * Add node to scene
      * @param {Node} node
      */
     addToScene: function (node) {
+        if (node instanceof Camera) {
+            if (this._cameraList.length > 0) {
+                console.warn('Found multiple camera in one scene. Use the fist one.');
+            }
+            this._cameraList.push(node);
+        }
         if (node.name) {
             this._nodeRepository[node.name] = node;
         }
@@ -87,6 +125,12 @@ var Scene = Node.extend(function () {
      * @param {Node} node
      */
     removeFromScene: function (node) {
+        if (node instanceof Camera) {
+            var idx = this._cameraList.indexOf(node);
+            if (idx >= 0) {
+                this._cameraList.splice(idx, 1);
+            }
+        }
         if (node.name) {
             delete this._nodeRepository[node.name];
         }
@@ -105,8 +149,8 @@ var Scene = Node.extend(function () {
     /**
      * Clone a new scene node recursively, including material, skeleton.
      * Shader and geometry instances will not been cloned
-     * @param  {qtek.Node} node
-     * @return {qtek.Node}
+     * @param  {clay.Node} node
+     * @return {clay.Node}
      */
     cloneNode: function (node) {
         var newNode = node.clone();
@@ -118,7 +162,7 @@ var Scene = Node.extend(function () {
                 currentNew.joints = current.joints.slice();
             }
             if (current.material) {
-                materialsMap[current.material.__GUID__] = {
+                materialsMap[current.material.__uid__] = {
                     oldMat: current.material
                 };
             }
@@ -136,7 +180,7 @@ var Scene = Node.extend(function () {
         // Replace material
         newNode.traverse(function (current) {
             if (current.material) {
-                current.material = materialsMap[current.material.__GUID__].newMat;
+                current.material = materialsMap[current.material.__uid__].newMat;
             }
         });
 
@@ -164,20 +208,16 @@ var Scene = Node.extend(function () {
 
         lights.length = 0;
 
-        this._updateRenderQueue(this, sceneMaterialTransparent);
+        this._updateRenderList(this, sceneMaterialTransparent);
 
-        this.opaqueQueue.length = this._opaqueObjectCount;
-        this.transparentQueue.length = this._transparentObjectCount;
+        this.opaqueList.length = this._opaqueObjectCount;
+        this.transparentList.length = this._transparentObjectCount;
 
         // reset
         if (!notUpdateLights) {
-            var lightNumber = this._lightNumber;
-            // Reset light numbers
-            for (var group in lightNumber) {
-                for (var type in lightNumber[group]) {
-                    lightNumber[group][type] = 0;
-                }
-            }
+            this._previousLightNumber = this._lightNumber;
+
+            var lightNumber = {};
             for (var i = 0; i < lights.length; i++) {
                 var light = lights[i];
                 var group = light.group;
@@ -188,15 +228,23 @@ var Scene = Node.extend(function () {
                 lightNumber[group][light.type] = lightNumber[group][light.type] || 0;
                 lightNumber[group][light.type]++;
             }
-            // PENDING Remove unused group?
+            this._lightNumber = lightNumber;
+
+            for (var groupId in lightNumber) {
+                this._lightProgramKeys[groupId] = getProgramKey(lightNumber[groupId]);
+            }
 
             this._updateLightUniforms();
         }
     },
 
+    getMainCamera: function () {
+        return this._cameraList[0];
+    },
+
     // Traverse the scene and add the renderable
-    // object to the render queue
-    _updateRenderQueue: function (parent, sceneMaterialTransparent) {
+    // object to the render list
+    _updateRenderList: function (parent, sceneMaterialTransparent) {
         if (parent.invisible) {
             return;
         }
@@ -207,16 +255,16 @@ var Scene = Node.extend(function () {
             if (child instanceof Light) {
                 this.lights.push(child);
             }
-            if (child.isRenderable()) {
+            else if (child.isRenderable()) {
                 if (child.material.transparent || sceneMaterialTransparent) {
-                    this.transparentQueue[this._transparentObjectCount++] = child;
+                    this.transparentList[this._transparentObjectCount++] = child;
                 }
                 else {
-                    this.opaqueQueue[this._opaqueObjectCount++] = child;
+                    this.opaqueList[this._opaqueObjectCount++] = child;
                 }
             }
             if (child._children.length > 0) {
-                this._updateRenderQueue(child);
+                this._updateRenderList(child);
             }
         }
     },
@@ -238,8 +286,11 @@ var Scene = Node.extend(function () {
             var group = light.group;
 
             for (var symbol in light.uniformTemplates) {
-
                 var uniformTpl = light.uniformTemplates[symbol];
+                var value = uniformTpl.value(light);
+                if (value == null) {
+                    continue;
+                }
                 if (!lightUniforms[group]) {
                     lightUniforms[group] = {};
                 }
@@ -249,7 +300,6 @@ var Scene = Node.extend(function () {
                         value: []
                     };
                 }
-                var value = uniformTpl.value(light);
                 var lu = lightUniforms[group][symbol];
                 lu.type = uniformTpl.type + 'v';
                 switch (uniformTpl.type) {
@@ -261,7 +311,7 @@ var Scene = Node.extend(function () {
                     case '2f':
                     case '3f':
                     case '4f':
-                        for (var j =0; j < value.length; j++) {
+                        for (var j = 0; j < value.length; j++) {
                             lu.value.push(value[j]);
                         }
                         break;
@@ -271,23 +321,48 @@ var Scene = Node.extend(function () {
             }
         }
     },
-    
+
+    getLightGroups: function () {
+        var lightGroups = [];
+        for (var groupId in this._lightNumber) {
+            lightGroups.push(groupId);
+        }
+        return lightGroups;
+    },
+
+    getNumberChangedLightGroups: function () {
+        var lightGroups = [];
+        for (var groupId in this._lightNumber) {
+            if (this.isLightNumberChanged(groupId)) {
+                lightGroups.push(groupId);
+            }
+        }
+        return lightGroups;
+    },
+
     /**
-     * Determine if light group of the shader is different from scene's
+     * Determine if light group is different with since last frame
      * Used to determine whether to update shader and scene's uniforms in Renderer.render
      * @param {Shader} shader
      * @returns {Boolean}
      */
-    isShaderLightNumberChanged: function (shader) {
-        var group = shader.lightGroup;
+    isLightNumberChanged: function (lightGroup) {
+        var prevLightNumber = this._previousLightNumber;
+        var currentLightNumber = this._lightNumber;
         // PENDING Performance
-        for (var type in this._lightNumber[group]) {
-            if (this._lightNumber[group][type] !== shader.lightNumber[type]) {
+        for (var type in currentLightNumber[lightGroup]) {
+            if (!prevLightNumber[lightGroup]) {
+                return true;
+            }
+            if (currentLightNumber[lightGroup][type] !== prevLightNumber[lightGroup][type]) {
                 return true;
             }
         }
-        for (var type in shader.lightNumber) {
-            if (this._lightNumber[group][type] !== shader.lightNumber[type]) {
+        for (var type in prevLightNumber[lightGroup]) {
+            if (!currentLightNumber[lightGroup]) {
+                return true;
+            }
+            if (currentLightNumber[lightGroup][type] !== prevLightNumber[lightGroup][type]) {
                 return true;
             }
         }
@@ -298,33 +373,42 @@ var Scene = Node.extend(function () {
      * Set shader's light group with scene's
      * @param {Shader} shader
      */
-    setShaderLightNumber: function (shader) {
-        var group = shader.lightGroup;
-        for (var type in this._lightNumber[group]) {
-            shader.lightNumber[type] = this._lightNumber[group][type];
-        }
-        shader.dirty();
+    getLightsNumbers: function (lightGroup) {
+        return this._lightNumber[lightGroup];
     },
 
-    setLightUniforms: function (shader, renderer) {
-        var group = shader.lightGroup;
-        for (var symbol in this._lightUniforms[group]) {
-            var lu = this._lightUniforms[group][symbol];
-            if (lu.type === 'tv') {
-                for (var i = 0; i < lu.value.length; i++) {
-                    var texture = lu.value[i];
-                    var slot = shader.currentTextureSlot();
-                    var result = shader.setUniform(renderer.gl, '1i', symbol, slot);
-                    if (result) {
-                        shader.takeCurrentTextureSlot(renderer, texture);
+    getProgramKey: function (lightGroup) {
+        return this._lightProgramKeys[lightGroup];
+    },
+
+    setLightUniforms: (function () {
+        function setUniforms(uniforms, program, renderer) {
+            for (var symbol in uniforms) {
+                var lu = uniforms[symbol];
+                if (lu.type === 'tv') {
+                    if (!program.hasUniform(symbol)) {
+                        continue;
                     }
+                    var texSlots = [];
+                    for (var i = 0; i < lu.value.length; i++) {
+                        var texture = lu.value[i];
+                        var slot = program.takeCurrentTextureSlot(renderer, texture);
+                        texSlots.push(slot);
+                    }
+                    program.setUniform(renderer.gl, '1iv', symbol, texSlots);
+                }
+                else {
+                    program.setUniform(renderer.gl, lu.type, symbol, lu.value);
                 }
             }
-            else {
-                shader.setUniform(renderer.gl, lu.type, symbol, lu.value);
-            }
         }
-    },
+
+        return function (program, lightGroup, renderer) {
+            setUniforms(this._lightUniforms[lightGroup], program, renderer);
+            // Set shadows
+            setUniforms(this.shadowUniforms, program, renderer);
+        };
+    })(),
 
     /**
      * Dispose self, clear all the scene objects
@@ -333,8 +417,8 @@ var Scene = Node.extend(function () {
      */
     dispose: function () {
         this.material = null;
-        this.opaqueQueue = [];
-        this.transparentQueue = [];
+        this.opaqueList = [];
+        this.transparentList = [];
 
         this.lights = [];
 

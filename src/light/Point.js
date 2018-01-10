@@ -1,11 +1,11 @@
 import Light from '../Light';
 
 /**
- * @constructor qtek.light.Point
- * @extends qtek.Light
+ * @constructor clay.light.Point
+ * @extends clay.Light
  */
 var PointLight = Light.extend(
-/** @lends qtek.light.Point# */
+/** @lends clay.light.Point# */
 {
     /**
      * @type {number}
@@ -24,7 +24,7 @@ var PointLight = Light.extend(
         pointLightPosition: {
             type: '3f',
             value: function(instance) {
-                return instance.getWorldPosition()._array;
+                return instance.getWorldPosition().array;
             }
         },
         pointLightRange: {
@@ -43,8 +43,8 @@ var PointLight = Light.extend(
         }
     },
     /**
-     * @return {qtek.light.Point}
-     * @memberOf qtek.light.Point.prototype
+     * @return {clay.light.Point}
+     * @memberOf clay.light.Point.prototype
      */
     clone: function() {
         var light = Light.prototype.clone.call(this);
